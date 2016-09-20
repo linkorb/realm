@@ -1,0 +1,15 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h3>Properties</h3>
+<ul>
+{% for property in project.getProperties() %}
+<li><span class="badge">{{ property.getLanguage() }}</span> <b>{{ property.getName() }}</b>: {{ property.getValue() }}</li>
+{% endfor %}
+</ul>
+
+<hr />
+<a href="/" class="btn btn-primary">Back</a>
+<hr />
+
+{% endblock %}

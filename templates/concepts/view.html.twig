@@ -1,0 +1,16 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h3>Concept: {{ concept.getId }}</h3>
+<dl>
+  <dt>ID</dt><dd>{{ concept.getId }}</dd>
+  <dt>OID</dt><dd>{{ concept.getOid }}</dd>
+  <dt>ShortName</dt><dd>{{ concept.getShortName }}</dd>
+  <dt>Type</dt><dd>{{ concept.getType }}</dd>
+  <dt>Data-type</dt><dd>{{ concept.getDataType }}</dd>
+  {% if concept.getLengthMin %}
+  <dt>Length</dt><dd>{{ concept.getLengthMin }} {{ concept.getLengthMax }}</dd>
+  {% endif %}
+  <dt>CodelistName</dt><dd><a href="/{{ project.getId}}/codelists/{{ concept.getCodelistName }}">{{ concept.getCodelistName }}</a></dd>
+</dl>
+{% endblock %}

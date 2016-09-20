@@ -1,0 +1,8 @@
+---
+projects:
+  -
+    type: realm
+    filename: ../example/realm.xml
+  -
+    type: decor
+    filename: ../other/decor.xml

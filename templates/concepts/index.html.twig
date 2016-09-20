@@ -1,0 +1,27 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h3>Concepts</h3>
+<table class="table">
+{% for concept in project.getConcepts() %}
+<tr>
+  <td>
+    <a href="/{{ project.getId() }}/concepts/{{ concept.getId() }}">{{ concept.getId() }}</a><br />
+    <span style="font-size: 60%">{{ concept.getOid() }}</span>
+  </td>
+  <td>
+    {% if concept.getType() == 'group' %}
+    <b>{{ concept.getShortNameHtml() }}</b>
+    {% else %}
+    {{ concept.getShortNameHtml() }}
+    {% endif %}
+  </td>
+  <td>{{ concept.getType() }}</td>
+  <td>
+    {{ concept.getDataType() }}
+  </td>
+  <td>{{ concept.getStatus() }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

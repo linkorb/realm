@@ -1,0 +1,15 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h3>Codelists</h3>
+<table class="table">
+{% for codelist in project.getCodelists() %}
+<tr>
+  <td>
+    <a href="/{{ project.getId() }}/codelists/{{ codelist.getId() }}">{{ codelist.getId() }}</a><br />
+    <span style="font-size: 60%">{{ codelist.getOid() }}</span>
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

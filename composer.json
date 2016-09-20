@@ -17,6 +17,11 @@
     "guzzlehttp/streams": "~3.0",
     "twig/twig": "~1.0"
   },
+  "require-dev": {
+    "silex/silex": "2.0.*@dev",
+    "twig/twig": "1.16.*@dev",
+    "symfony/yaml": "~2.7"
+  },
   "autoload": {
     "psr-4": {
       "Realm\\": "src/"

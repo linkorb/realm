@@ -4,7 +4,7 @@ namespace Realm\Model;
 
 use RuntimeException;
 
-class Realm
+class Project
 {
     use PropertyTrait;
     protected $id;

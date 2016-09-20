@@ -4,7 +4,7 @@ namespace Realm\Loader;
 
 use SimpleXMLElement;
 use Realm\Model\Concept;
-use Realm\Model\Realm;
+use Realm\Model\Project;
 use Realm\Model\Property;
 use Realm\Model\Form;
 use Realm\Model\Field;
@@ -23,13 +23,16 @@ class DecorLoader
         $xml = file_get_contents($filename);
         $root = simplexml_load_string($xml);
 
-        $realm = new Realm();
-        $this->loadConcepts($realm, $root);
+        $project = new Project();
+        $id = substr(basename($filename), 0, -4);
+        $id = str_replace('.', '-', $id);
+        $project->setId($id);
+        $this->loadConcepts($project, $root);
 
-        return $realm;
+        return $project;
     }
     
-    public function loadConcepts($realm, SimpleXMLElement $root)
+    public function loadConcepts($project, SimpleXMLElement $root)
     {
         foreach ($root->concept as $conceptNode) {
             $concept = new Concept();
@@ -38,7 +41,7 @@ class DecorLoader
             $concept->setOid((string)$conceptNode['id']);
             $concept->setShortName((string)$conceptNode['shortName']);
             $concept->setStatus((string)$conceptNode['statusCode']);
-            $realm->addConcept($concept);
+            $project->addConcept($concept);
             //echo (string)$conceptNode['iddisplay'] . "\n";
             
             foreach ($conceptNode->name as $propertyNode) {
@@ -70,14 +73,14 @@ class DecorLoader
             
             if (isset($conceptNode->valueSet)) {
                 $concept->setCodelistName((string)$conceptNode->valueSet['name']);
-                $this->loadCodelist($realm, $conceptNode->valueSet);
+                $this->loadCodelist($project, $conceptNode->valueSet);
             }
-            $this->loadConcepts($realm, $conceptNode);
+            $this->loadConcepts($project, $conceptNode);
         }
-        return $realm;
+        return $project;
     }
     
-    protected function loadCodelist($realm, $valueSetNode)
+    protected function loadCodelist($project, $valueSetNode)
     {
         $codelist = new Codelist();
         $codelist->setId((string)$valueSetNode['name']);
@@ -112,7 +115,7 @@ class DecorLoader
         
         //print_r($codelist); exit();
         //print_r($valueSetNode); exit();
-        $realm->addCodelist($codelist);
+        $project->addCodelist($codelist);
     }
     protected function loadProperties(SimpleXMLElement $root, $obj)
     {

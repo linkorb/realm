@@ -116,6 +116,11 @@ class Concept
         return $this;
     }
     
+    public function getShortNameHtml()
+    {
+        return str_replace('_', ' ', $this->getShortName());
+    }
+    
     
     
 }
