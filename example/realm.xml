@@ -1,0 +1,4 @@
+<realm id="commerce">
+  <property name="definition">Definitions for the commerce realm</property>
+  <property name="notes">Some notes on this realm</property>
+</realm>
