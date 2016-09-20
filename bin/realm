@@ -21,5 +21,6 @@ require $loader;
 
 $application = new Application('Realm', '1.0.0');
 $application->setCatchExceptions(true);
-$application->add(new \Realm\Command\LoadCommand());
+$application->add(new \Realm\Command\RealmLoadCommand());
+$application->add(new \Realm\Command\DecorLoadCommand());
 $application->run();

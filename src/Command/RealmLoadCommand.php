@@ -11,7 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Realm\Loader\XmlRealmLoader;
 use RuntimeException;
 
-class LoadCommand extends Command
+class RealmLoadCommand extends Command
 {
     /**
      * {@inheritdoc}
@@ -21,11 +21,11 @@ class LoadCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('load')
+            ->setName('realm:load')
             ->setDescription('Load realm, and output contents')
             ->addOption(
-                'realm',
-                'r',
+                'filename',
+                'f',
                 InputOption::VALUE_REQUIRED,
                 null
             )
@@ -37,13 +37,13 @@ class LoadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $projectPath = $input->getOption('realm');
-        if (!$projectPath) {
-            $projectPath = getcwd() . '/realm.xml';
+        $filename = $input->getOption('filename');
+        if (!$filename) {
+            $filename = getcwd() . '/realm.xml';
         }
-        $output->writeLn("Loading realm: " . $projectPath);
+        $output->writeLn("Loading realm file: " . $filename);
         $realmLoader = new XmlRealmLoader();
-        $realm = $realmLoader->loadFile($projectPath);
+        $realm = $realmLoader->loadFile($filename);
         var_dump($realm);
     }
 }

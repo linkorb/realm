@@ -6,6 +6,7 @@ class Property
 {
     protected $name;
     protected $value;
+    protected $language;
     
     public function getName()
     {
@@ -28,4 +29,16 @@ class Property
         $this->value = $value;
         return $this;
     }
+    
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+    
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+    
 }

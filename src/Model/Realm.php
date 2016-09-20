@@ -23,7 +23,7 @@ class Realm
         return $this;
     }
     
-    public function addConcept(concept $concept)
+    public function addConcept(Concept $concept)
     {
         $this->concepts[$concept->getId()] = $concept;
         return $this;
@@ -57,5 +57,29 @@ class Realm
     public function getForms()
     {
         return $this->forms;
+    }
+    
+    public function addCodelist(Codelist $codelist)
+    {
+        $this->codelists[$codelist->getId()] = $codelist;
+        return $this;
+    }
+    
+    public function getCodelists()
+    {
+        return $this->codelists;
+    }
+    
+    public function hasCodelist($id)
+    {
+        return isset($this->codelists[$id]);
+    }
+    
+    public function getCodelist($id)
+    {
+        if (!$this->hasCodelist($id)) {
+            throw new RuntimeException("Undefined codelist: " . $id);
+        }
+        return $this->codelists[$id];
     }
 }
