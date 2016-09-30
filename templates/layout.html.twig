@@ -1,6 +1,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.3.0/css/flat-ui.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     </head>
     <style>
@@ -14,16 +15,32 @@
         }
     </style>
     <body>
-        <div class="container">
-            <h1>Realm viewer</h1>
-            {% if project is defined %}
-            <h2>Project: {{ project.getId }}</h2>
-            <a href="/{{ project.getId }}">Home</a> | 
-            <a href="/{{ project.getId }}/concepts">Concepts</a> |
-            <a href="/{{ project.getId }}/codelists">Codelists</a>
-            <br />
-            {% endif %}
-            <hr />
+        {% if project is defined %}
+        <!-- Static navbar -->
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/{{ project.getId }}">Project: {{ project.getId }}</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="/{{ project.getId }}/concepts">Concepts</a></li>
+                <li><a href="/{{ project.getId }}/codelists">Codelists</a></li>
+                <li><a href="/{{ project.getId }}/sectionTypes">Section types</a></li>
+                <li><a href="/{{ project.getId }}/resources">Resources</a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div><!--/.container-fluid -->
+        </nav>
+        {% endif %}
+        
+        <div class="container-fluid">
             {% block content %}{% endblock %}
             <hr style="margin-top: 100px;"/>
         </div>

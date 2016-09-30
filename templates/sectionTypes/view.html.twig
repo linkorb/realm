@@ -1,0 +1,36 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h3>Section Type: {{ sectionType.getId }}</h3>
+<dl>
+  <dt>ID</dt><dd>{{ sectionType.getId }}</dd>
+</dl>
+
+<h3>Properties</h3>
+<ul>
+{% for property in sectionType.getProperties() %}
+  <li><span class="badge">{{ property.getLanguage() }}</span> <b>{{ property.getName() }}</b>: {{ property.getValue() }}</li>
+{% endfor %}
+</ul>
+
+
+<h3>Fields</h3>
+<table class="table">
+  <tr>
+    <th>Concept</th>
+    <th>Cardinality</th>
+    
+{% for field in sectionType.getFields() %}
+  <tr>
+    <td>
+      <a href="/{{ project.getId() }}/concepts/{{ field.getConcept().getId() }}">
+      {{ field.getConcept().getId() }}
+      </a> ({{ field.getConcept().getShortName() }})
+    </td>
+    <td>
+      {{ field.getMin() }} - {{ field.getMax() }}
+    </td>
+  </tr>
+{% endfor %}
+</table>
+{% endblock %}

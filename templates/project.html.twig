@@ -1,6 +1,12 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
+<h3>Project</h3>
+<dl>
+  <dt>ID</dt><dd>{{ project.getId }}</dd>
+</dl>
+
+  
 <h3>Properties</h3>
 <ul>
 {% for property in project.getProperties() %}
@@ -8,8 +14,5 @@
 {% endfor %}
 </ul>
 
-<hr />
 <a href="/" class="btn btn-primary">Back</a>
-<hr />
-
 {% endblock %}

@@ -1,0 +1,40 @@
+<codelist id="gender">
+  <property name="definition">List of genders</property>
+  <property name="oid">2.16.840.1.113883.2.4.11.110</property>
+
+  <item
+    code="1"
+    codeSystem="2.16.840.1.113883.2.4.4.13.21"
+    displayName="Male"
+    level="0"
+    type="L"
+  />
+  <item
+    code="2"
+    codeSystem="2.16.840.1.113883.2.4.4.13.21"
+    displayName="Female"
+    level="0"
+    type="L"
+  />
+  <item
+    code="3"
+    codeSystem="2.16.840.1.113883.2.4.4.13.21"
+    displayName="Inconclusive"
+    level="0"
+    type="L"
+  />
+  <item
+    code="UNK"
+    codeSystem="2.16.840.1.113883.5.1008"
+    displayName="Unknown"
+    level="0"
+    type="L"
+  />
+  <item
+    code="NI"
+    codeSystem="2.16.840.1.113883.5.1008"
+    displayName="No information"
+    level="0"
+    type="L"
+  />
+</codelist>

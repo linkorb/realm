@@ -10,7 +10,8 @@ class Project
     protected $id;
     protected $concepts = [];
     protected $codelists = [];
-    protected $forms = [];
+    protected $sectionTypes = [];
+    protected $resources = [];
     
     public function getId()
     {
@@ -48,15 +49,29 @@ class Project
         return $this->concepts[$id];
     }
     
-    public function addForm(Form $form)
+    public function addSectionType(SectionType $sectionType)
     {
-        $this->forms[$form->getId()] = $form;
+        $this->sectionTypes[$sectionType->getId()] = $sectionType;
         return $this;
     }
     
-    public function getForms()
+    public function getSectionTypes()
     {
-        return $this->forms;
+        return $this->sectionTypes;
+    }
+    
+    public function hasSectionType($id)
+    {
+        return isset($this->sectionTypes[$id]);
+    }
+    
+    public function getSectionType($id)
+    {
+        $id = (string)$id;
+        if (!$this->hasSectionType($id)) {
+            throw new RuntimeException("No such section-type: " . $id);
+        }
+        return $this->sectionTypes[$id];
     }
     
     public function addCodelist(Codelist $codelist)
@@ -81,5 +96,21 @@ class Project
             throw new RuntimeException("Undefined codelist: " . $id);
         }
         return $this->codelists[$id];
+    }
+    
+    public function addResource(Resource $resource)
+    {
+        $this->resources[$resource->getId()] = $resource;
+        return $this;
+    }
+    
+    public function getResources()
+    {
+        return $this->resources;
+    }
+    
+    public function getResource($id)
+    {
+        return $this->resources[$id];
     }
 }

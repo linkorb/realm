@@ -102,6 +102,64 @@ class WebController
         return $response;
     }
     
+    public function sectionTypeIndexAction(Application $app, Request $request, $projectId)
+    {
+        $data = [];
+        $data['project'] = $app->getProject($projectId);
+        $html = $this->render('sectionTypes/index.html', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+    
+    public function sectionTypeViewAction(Application $app, Request $request, $projectId, $sectionTypeId)
+    {
+        $data = [];
+        $data['project'] = $app->getProject($projectId);
+        $data['sectionType'] = $data['project']->getSectionType($sectionTypeId);
+        $html = $this->render('sectionTypes/view.html', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+    
+    public function resourceIndexAction(Application $app, Request $request, $projectId)
+    {
+        $data = [];
+        $data['project'] = $app->getProject($projectId);
+        $html = $this->render('resources/index.html', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+    
+    public function resourceViewAction(Application $app, Request $request, $projectId, $resourceId)
+    {
+        $data = [];
+        $data['project'] = $app->getProject($projectId);
+        $data['resource'] = $data['project']->getResource($resourceId);
+        $html = $this->render('resources/view.html', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+    
     private function render($templatename, $data = array())
     {
         $loader = new Twig_Loader_Filesystem(__DIR__ . '/../../templates/');

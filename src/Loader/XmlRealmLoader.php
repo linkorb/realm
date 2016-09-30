@@ -3,11 +3,16 @@
 namespace Realm\Loader;
 
 use SimpleXMLElement;
+use Realm\Model\Value;
 use Realm\Model\Concept;
+use Realm\Model\Resource;
+use Realm\Model\ResourceSection;
 use Realm\Model\Project;
 use Realm\Model\Property;
-use Realm\Model\Form;
-use Realm\Model\Field;
+use Realm\Model\Codelist;
+use Realm\Model\CodelistItem;
+use Realm\Model\SectionType;
+use Realm\Model\SectionFieldType;
 use RuntimeException;
 
 class XmlRealmLoader
@@ -23,20 +28,36 @@ class XmlRealmLoader
 
         $project = $this->loadProject($root);
 
+        $files = glob($basePath . '/codelists/*.xml');
+        foreach ($files as $filename) {
+            $xml = file_get_contents($filename);
+            $root = simplexml_load_string($xml);
+            $codelist = $this->loadCodelist($root, $project);
+            $project->addCodelist($codelist);
+        }
+
         $files = glob($basePath . '/concepts/*.xml');
         foreach ($files as $filename) {
             $xml = file_get_contents($filename);
             $root = simplexml_load_string($xml);
-            $concept = $this->loadConcept($root);
+            $concept = $this->loadConcept($root, $project);
             $project->addConcept($concept);
         }
 
-        $files = glob($basePath . '/forms/*.xml');
+        $files = glob($basePath . '/sectionTypes/*.xml');
         foreach ($files as $filename) {
             $xml = file_get_contents($filename);
             $root = simplexml_load_string($xml);
-            $form = $this->loadForm($root, $project);
-            $project->addForm($form);
+            $sectionType = $this->loadSectionType($root, $project);
+            $project->addSectionType($sectionType);
+        }
+        
+        $files = glob($basePath . '/resources/*.xml');
+        foreach ($files as $filename) {
+            $xml = file_get_contents($filename);
+            $root = simplexml_load_string($xml);
+            $resource = $this->loadResource($root, $project);
+            $project->addResource($resource);
         }
 
 
@@ -51,29 +72,62 @@ class XmlRealmLoader
         return $project;
     }
     
-    public function loadConcept(SimpleXMLElement $root)
+    public function loadCodelist(SimpleXMLElement $root, Project $project)
+    {
+        $codelist = new Codelist();
+        $codelist->setId((string)$root['id']);
+        $this->loadProperties($root, $codelist);
+        foreach ($root->item as $iNode) {
+            $item = new CodelistItem();
+            $item->setCode((string)$iNode['code']);
+            $item->setCodeSystem((string)$iNode['codeSystem']);
+            $item->setDisplayName((string)$iNode['displayName']);
+            $item->setLevel((string)$iNode['level']);
+            $item->setType((string)$iNode['type']);
+            
+            $codelist->addItem($item);
+        }
+        //print_r($sectionType); exit();
+        return $codelist;
+    }
+    
+    public function loadConcept(SimpleXMLElement $root, Project $project)
     {
         $concept = new Concept();
         $concept->setId((string)$root['id']);
+        $concept->setShortName((string)$root['shortName']);
+        $concept->setOid((string)$root['oid']);
+        $concept->setType((string)$root['type']);
+        $concept->setDataType((string)$root['dataType']);
+        $concept->setLengthMax((string)$root['lengthMax']);
+        $concept->setLengthMin((string)$root['lengthMin']);
+        if (isset($root['codelist'])) {
+            $codelistName = (string)$root['codelist'];
+            $codelist = $project->getCodelist($codelistName);
+            $concept->setCodelist($codelist);
+        }
+        
+        
         $this->loadProperties($root, $concept);
         return $concept;
     }
     
-    public function loadForm(SimpleXMLElement $root, Project $project)
+    public function loadSectionType(SimpleXMLElement $root, Project $project)
     {
-        $form = new Form();
-        $form->setId((string)$root['id']);
-        $this->loadProperties($root, $form);
+        $sectionType = new SectionType();
+        $sectionType->setId((string)$root['id']);
+        $this->loadProperties($root, $sectionType);
         foreach ($root->field as $fNode) {
-            $field = new Field();
+            $field = new SectionFieldType();
             $concept = $project->getConcept($fNode['concept']);
             $field->setConcept($concept);
             $field->setMin((string)$fNode['min']);
             $field->setMax((string)$fNode['max']);
             
-            $form->addField($field);
+            $sectionType->addField($field);
         }
-        return $form;
+        //print_r($sectionType); exit();
+        return $sectionType;
     }
     
     protected function loadProperties(SimpleXMLElement $root, $obj)
@@ -87,5 +141,32 @@ class XmlRealmLoader
         }
     }
     
-    
+    public function loadResource(SimpleXMLElement $root, Project $project)
+    {
+        $resource = new Resource();
+        $resource->setId((string)$root['id']);
+        //$this->loadProperties($root, $sectionType);
+        $id = 1;
+        foreach ($root->section as $sectionNode) {
+            $section = new ResourceSection();
+            $section->setId((string)$sectionNode['id']);
+            
+            if (isset($sectionNode['type'])) {
+                $sectionType = $project->getSectionType((string)$sectionNode['type']);
+                $section->setType($sectionType);
+            }
+
+            foreach ($sectionNode->value as $valueNode) {
+                $value = new Value();
+                $value->setLabel((string)$valueNode['label']);
+                $value->setValue((string)$valueNode['value']);
+                $section->addValue($value);
+            }
+            
+            $resource->addSection($section);
+            $id++;
+        }
+        //print_r($sectionType); exit();
+        return $resource;
+    }
 }

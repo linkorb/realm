@@ -1,0 +1,6 @@
+<conceptMapping from="legacy-gender" to="commerce-gender">
+  <map from="M" to="1" />
+  <map from="F" to="2" />
+  <map from="" to="UNK" />
+  <map from="*" to="UNK" />
+</conceptMapping>

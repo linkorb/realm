@@ -1,0 +1,14 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h3>Resources</h3>
+<table class="table">
+{% for resource in project.getResources() %}
+<tr>
+  <td>
+    <a href="/{{ project.getId() }}/resources/{{ resource.getId() }}">{{ resource.getId() }}</a><br />
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

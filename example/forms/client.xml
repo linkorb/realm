@@ -1,6 +1,0 @@
-<form id="client">
-  <property name="definition">Commerce client details</property>
-  <property name="notes">Some extra notes</property>
-  
-  <field concept="commerce-firstnames" min="0" max="1" />
-</form>

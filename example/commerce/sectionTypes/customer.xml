@@ -1,0 +1,7 @@
+<sectionType id="customer">
+  <property name="definition">Customer details</property>
+  <property name="notes">Some extra notes</property>
+  
+  <field concept="commerce-firstname" min="0" max="1" />
+  <field concept="commerce-gender" min="0" max="1" />
+</sectionType>

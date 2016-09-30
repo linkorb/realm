@@ -10,7 +10,7 @@ class Concept
     protected $type; // group or item
     protected $status; // draft, cancelled, pending, deprecated, final
     protected $dataType; // datetime, identifier, code, text, boolean, quantity, complex
-    protected $codelistName;
+    protected $codelist;
     protected $lengthMin;
     protected $lengthMax;
     
@@ -72,14 +72,14 @@ class Concept
         return $this;
     }
     
-    public function getCodelistName()
+    public function getCodelist()
     {
-        return $this->codelistName;
+        return $this->codelist;
     }
     
-    public function setCodelistName($codelistName)
+    public function setCodelist(Codelist $codelist)
     {
-        $this->codelistName = $codelistName;
+        $this->codelist = $codelist;
         return $this;
     }
     

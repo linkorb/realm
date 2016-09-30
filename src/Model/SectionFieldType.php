@@ -2,7 +2,7 @@
 
 namespace Realm\Model;
 
-class Field
+class SectionFieldType
 {
     protected $concept;
     protected $min;
@@ -13,7 +13,7 @@ class Field
         return $this->concept;
     }
     
-    public function setConcept($concept)
+    public function setConcept(Concept $concept)
     {
         $this->concept = $concept;
         return $this;

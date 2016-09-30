@@ -1,8 +1,0 @@
-<concept id="commerce-firstnames">
-  <property name="type">string</property>
-  <property name="example">John</property>
-  <property name="max-length">64</property>
-  <property name="definition">Official firstname(s) registered at birth</property>
-  <property name="example">John</property>
-  <property name="notes">may contain multiple firstnames, seperated by spaces</property>
-</concept>

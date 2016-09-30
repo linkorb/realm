@@ -2,10 +2,11 @@
 
 namespace Realm\Model;
 
-class Form
+class SectionType
 {
     use PropertyTrait;
     protected $id;
+    protected $label;
     protected $fields = [];
     
     public function getId()
@@ -20,9 +21,9 @@ class Form
     }
     
     
-    public function addField(Field $field)
+    public function addField(SectionFieldType $field)
     {
-        $this->fields = $field;
+        $this->fields[] = $field;
         return $this;
     }
 
@@ -30,5 +31,15 @@ class Form
     {
         return $this->fields;
     }
-
+    
+    public function getLabel()
+    {
+        return $this->label;
+    }
+    
+    public function setLabel($label)
+    {
+        $this->label = $label;
+        return $this;
+    }
 }

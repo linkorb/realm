@@ -41,4 +41,26 @@ $app->match(
     '/{projectId}/codelists/{codelistId}',
     'Realm\\Controller\\WebController::codelistViewAction'
 )->method('GET|POST');
+
+$app->match(
+    '/{projectId}/sectionTypes',
+    'Realm\\Controller\\WebController::sectionTypeIndexAction'
+)->method('GET|POST');
+
+$app->match(
+    '/{projectId}/sectionTypes/{sectionTypeId}',
+    'Realm\\Controller\\WebController::sectionTypeViewAction'
+)->method('GET|POST');
+
+$app->match(
+    '/{projectId}/resources',
+    'Realm\\Controller\\WebController::resourceIndexAction'
+)->method('GET|POST');
+
+$app->match(
+    '/{projectId}/resources/{resourceId}',
+    'Realm\\Controller\\WebController::resourceViewAction'
+)->method('GET|POST');
+
+
 return $app;

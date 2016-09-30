@@ -1,0 +1,17 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h3>Section Types</h3>
+<table class="table">
+{% for sectionType in project.getSectionTypes() %}
+<tr>
+  <td>
+    <a href="/{{ project.getId() }}/sectionTypes/{{ sectionType.getId() }}">{{ sectionType.getId() }}</a><br />
+  </td>
+  <td>
+    <b>{{ concept.getShortName() }}</b>
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -72,8 +72,10 @@ class DecorLoader
             }
             
             if (isset($conceptNode->valueSet)) {
-                $concept->setCodelistName((string)$conceptNode->valueSet['name']);
                 $this->loadCodelist($project, $conceptNode->valueSet);
+                $name = (string)$conceptNode->valueSet['name'];
+                $codelist = $project->getCodelist($name);
+                $concept->setCodelist($codelist);
             }
             $this->loadConcepts($project, $conceptNode);
         }
@@ -116,6 +118,7 @@ class DecorLoader
         //print_r($codelist); exit();
         //print_r($valueSetNode); exit();
         $project->addCodelist($codelist);
+        return $codelist;
     }
     protected function loadProperties(SimpleXMLElement $root, $obj)
     {
