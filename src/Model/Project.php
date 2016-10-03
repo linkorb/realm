@@ -12,6 +12,7 @@ class Project
     protected $codelists = [];
     protected $sectionTypes = [];
     protected $resources = [];
+    protected $mappings = [];
     
     public function getId()
     {
@@ -112,5 +113,28 @@ class Project
     public function getResource($id)
     {
         return $this->resources[$id];
+    }
+    
+    public function addMapping(ConceptMapping $mapping)
+    {
+        $this->mappings[$mapping->getFrom()] = $mapping;
+        return $this;
+    }
+    
+    public function getMappings()
+    {
+        return $this->mappings;
+    }
+    
+    public function hasMapping($conceptId)
+    {
+        return isset($this->mappings[$conceptId]);
+    }
+    public function getMapping($conceptId)
+    {
+        if (!$this->hasMapping($conceptId)) {
+            throw new RuntimeException("No concept mapping for conceptId: " . $conceptId);
+        }
+        return $this->mappings[$conceptId];
     }
 }

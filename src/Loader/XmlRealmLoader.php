@@ -13,6 +13,7 @@ use Realm\Model\Codelist;
 use Realm\Model\CodelistItem;
 use Realm\Model\SectionType;
 use Realm\Model\SectionFieldType;
+use Realm\Loader\XmlResourceLoader;
 use RuntimeException;
 
 class XmlRealmLoader
@@ -52,11 +53,10 @@ class XmlRealmLoader
             $project->addSectionType($sectionType);
         }
         
+        $resourceLoader = new XmlResourceLoader();
         $files = glob($basePath . '/resources/*.xml');
         foreach ($files as $filename) {
-            $xml = file_get_contents($filename);
-            $root = simplexml_load_string($xml);
-            $resource = $this->loadResource($root, $project);
+            $resource = $resourceLoader->loadFile($filename, $project);
             $project->addResource($resource);
         }
 
@@ -116,6 +116,7 @@ class XmlRealmLoader
     {
         $sectionType = new SectionType();
         $sectionType->setId((string)$root['id']);
+        $sectionType->setLabel((string)$root['label']);
         $this->loadProperties($root, $sectionType);
         foreach ($root->field as $fNode) {
             $field = new SectionFieldType();
@@ -139,34 +140,5 @@ class XmlRealmLoader
             $property->setValue((string)$pNode);
             $obj->addProperty($property);
         }
-    }
-    
-    public function loadResource(SimpleXMLElement $root, Project $project)
-    {
-        $resource = new Resource();
-        $resource->setId((string)$root['id']);
-        //$this->loadProperties($root, $sectionType);
-        $id = 1;
-        foreach ($root->section as $sectionNode) {
-            $section = new ResourceSection();
-            $section->setId((string)$sectionNode['id']);
-            
-            if (isset($sectionNode['type'])) {
-                $sectionType = $project->getSectionType((string)$sectionNode['type']);
-                $section->setType($sectionType);
-            }
-
-            foreach ($sectionNode->value as $valueNode) {
-                $value = new Value();
-                $value->setLabel((string)$valueNode['label']);
-                $value->setValue((string)$valueNode['value']);
-                $section->addValue($value);
-            }
-            
-            $resource->addSection($section);
-            $id++;
-        }
-        //print_r($sectionType); exit();
-        return $resource;
     }
 }

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7ae4a7a9f921c7c87b60155361a6ac70",
-    "content-hash": "dc070df0b3713995998890436893040c",
+    "hash": "f4babc862cc5c51dcbd427662fc77d7a",
+    "content-hash": "5f1d9cc65bc4a32b5f0ead5fd91ea4eb",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -227,6 +227,50 @@
                 "stream"
             ],
             "time": "2014-10-12 19:18:40"
+        },
+        {
+            "name": "linkorb/presenter",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/linkorb/presenter.git",
+                "reference": "d3747f06e6c7073290dca41909edc38e4363b752"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/linkorb/presenter/zipball/d3747f06e6c7073290dca41909edc38e4363b752",
+                "reference": "d3747f06e6c7073290dca41909edc38e4363b752",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LinkORB\\Presenter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "LinkORB Engineering",
+                    "email": "engineering@linkorb.com",
+                    "role": "Development"
+                }
+            ],
+            "description": "Presenter pattern implementation",
+            "homepage": "http://www.github.com/linkorb/presenter",
+            "keywords": [
+                "linkorb",
+                "mvp",
+                "php",
+                "presenter"
+            ],
+            "time": "2016-10-01 08:38:14"
         },
         {
             "name": "psr/http-message",
@@ -555,12 +599,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "f9eadbcd1836d7c72d30e140459d79f0fa8c7165"
+                "reference": "2b2fabb33bbad9bf4dfcfab5ada09daf6460997a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/f9eadbcd1836d7c72d30e140459d79f0fa8c7165",
-                "reference": "f9eadbcd1836d7c72d30e140459d79f0fa8c7165",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/2b2fabb33bbad9bf4dfcfab5ada09daf6460997a",
+                "reference": "2b2fabb33bbad9bf4dfcfab5ada09daf6460997a",
                 "shasum": ""
             },
             "require": {
@@ -632,7 +676,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2016-09-10 19:12:12"
+            "time": "2016-09-26 20:57:27"
         },
         {
             "name": "symfony/debug",

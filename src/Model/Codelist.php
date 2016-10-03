@@ -77,4 +77,13 @@ class Codelist
     {
         return $this->items;
     }
+    
+    public function getItem($code)
+    {
+        foreach ($this->items as $item) {
+            if ($item->getCode() == $code) {
+                return $item;
+            }
+        }
+    }
 }

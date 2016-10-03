@@ -29,4 +29,9 @@ class Resource
     {
         return $this->sections;
     }
+    
+    public function getSection($id)
+    {
+        return $this->sections[$id];
+    }
 }

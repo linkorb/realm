@@ -62,5 +62,10 @@ $app->match(
     'Realm\\Controller\\WebController::resourceViewAction'
 )->method('GET|POST');
 
+$app->match(
+    '/{projectId}/resources/{resourceId}/{sectionId}',
+    'Realm\\Controller\\WebController::resourceViewAction'
+)->method('GET|POST');
+
 
 return $app;

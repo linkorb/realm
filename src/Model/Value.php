@@ -2,12 +2,17 @@
 
 namespace Realm\Model;
 
+use LinkORB\Presenter\PresenterTrait;
+
 class Value
 {
     protected $displayValue;
     protected $value;
     protected $label;
     protected $concept;
+    protected $conceptId;
+    
+    use PresenterTrait;
     
     public function getConcept()
     {
@@ -17,6 +22,17 @@ class Value
     public function setConcept($concept)
     {
         $this->concept = $concept;
+        return $this;
+    }
+    
+    public function getConceptId()
+    {
+        return $this->conceptId;
+    }
+    
+    public function setConceptId($conceptId)
+    {
+        $this->conceptId = $conceptId;
         return $this;
     }
     
@@ -44,10 +60,7 @@ class Value
     
     public function getDisplayValue()
     {
-        if ($this->displayValue) {
-            return $this->displayValue;
-        }
-        return $this->getValue();
+        return $this->displayValue;
     }
     
     public function setDisplayValue($displayValue)

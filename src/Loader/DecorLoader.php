@@ -4,12 +4,15 @@ namespace Realm\Loader;
 
 use SimpleXMLElement;
 use Realm\Model\Concept;
+use Realm\Model\ConceptMapping;
+use Realm\Model\ConceptMappingItem;
 use Realm\Model\Project;
 use Realm\Model\Property;
 use Realm\Model\Form;
 use Realm\Model\Field;
 use Realm\Model\Codelist;
 use Realm\Model\CodelistItem;
+use Realm\Loader\XmlFormLoader;
 use RuntimeException;
 
 class DecorLoader
@@ -28,10 +31,45 @@ class DecorLoader
         $id = str_replace('.', '-', $id);
         $project->setId($id);
         $this->loadConcepts($project, $root);
+        
+        $files = glob($basePath . '/mappings/*.xml');
+        foreach ($files as $filename) {
+            $xml = file_get_contents($filename);
+            $root = simplexml_load_string($xml);
+            $this->loadMappings($root, $project);
+        }
+        
+        $resourceLoader = new XmlFormLoader();
+        $files = glob($basePath . '/forms/*.xml');
+        $id = 1;
+        foreach ($files as $filename) {
+            $resource = $resourceLoader->loadFile($filename, $project);
+            $resource->setId($id);
+            $project->addResource($resource);
+            $id++;
+        }
 
         return $project;
     }
     
+    public function loadMappings($root, $project)
+    {
+        foreach ($root->mapping as $mappingNode) {
+            $mapping = new ConceptMapping();
+            $mapping->setFrom((string)$mappingNode['from']);
+            $mapping->setTo((string)$mappingNode['to']);
+            if ($mappingNode->item) {
+                foreach ($mappingNode->item as $itemNode) {
+                    $item = new ConceptMappingItem();
+                    $item->setFrom((string)$itemNode['from']);
+                    $item->setTo((string)$itemNode['to']);
+                    $mapping->addItem($item);
+                }
+            }
+            $project->addMapping($mapping);
+        }
+    }
+
     public function loadConcepts($project, SimpleXMLElement $root)
     {
         foreach ($root->concept as $conceptNode) {
@@ -120,6 +158,7 @@ class DecorLoader
         $project->addCodelist($codelist);
         return $codelist;
     }
+    
     protected function loadProperties(SimpleXMLElement $root, $obj)
     {
         foreach ($root->property as $pNode) {
@@ -129,6 +168,4 @@ class DecorLoader
             $obj->addProperty($property);
         }
     }
-    
-    
 }

@@ -145,11 +145,16 @@ class WebController
         return $response;
     }
     
-    public function resourceViewAction(Application $app, Request $request, $projectId, $resourceId)
+    public function resourceViewAction(Application $app, Request $request, $projectId, $resourceId, $sectionId = null)
     {
         $data = [];
         $data['project'] = $app->getProject($projectId);
-        $data['resource'] = $data['project']->getResource($resourceId);
+        $resource = $data['project']->getResource($resourceId);
+        $data['resource'] = $resource;
+        if ($sectionId) {
+            $section = $resource->getSection($sectionId);
+            $data['section'] = $section;
+        }
         $html = $this->render('resources/view.html', $data);
 
         $response = new Response(
