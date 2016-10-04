@@ -1,4 +1,7 @@
-<sectionType id="customer">
+<sectionType
+  id="customer"
+  label="Customer"
+  >
   <property name="definition">Customer details</property>
   <property name="notes">Some extra notes</property>
   

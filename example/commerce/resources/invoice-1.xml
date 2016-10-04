@@ -4,12 +4,12 @@
     <value label="Firstname" value="John" concept="commerce-firstname" />
     <value label="Gender" value="1" displayValue="Male" concept="commerce-gender" />
   </section>
-  <section xtype="invoice-line" id="2">
+  <section xtype="invoice-line" label="Line" id="2">
     <value label="Product code" value="BR42" />
     <value label="Product description" value="Red bicycle" />
     <value label="Quantity" value="1" />
   </section>
-  <section xtype="invoice-line" id="3">
+  <section xtype="invoice-line" label="Line" id="3">
     <value label="Product code" value="HXL" />
     <value label="Product description" value="Helmet XL" />
     <value label="Quantity" value="1" />
