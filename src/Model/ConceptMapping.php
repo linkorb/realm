@@ -6,29 +6,31 @@ use RuntimeException;
 
 class ConceptMapping
 {
-    protected $from;
-    protected $to;
+    protected $id;
+    protected $concept;
     protected $items = [];
+    protected $comment;
+    protected $status;
     
-    public function getFrom()
+    public function getId()
     {
-        return $this->from;
+        return $this->id;
     }
     
-    public function setFrom($from)
+    public function setId($id)
     {
-        $this->from = $from;
+        $this->id = $id;
         return $this;
     }
     
-    public function getTo()
+    public function getConcept()
     {
-        return $this->to;
+        return $this->concept;
     }
     
-    public function setTo($to)
+    public function setConcept(Concept $concept)
     {
-        $this->to = $to;
+        $this->concept = $concept;
         return $this;
     }
     
@@ -63,13 +65,37 @@ class ConceptMapping
         if ($this->hasItems()) {
             if ($this->hasItem($value)) {
                 $item = $this->getItem($value);
-                return $item->getTo();
+                return $item->getTo()->getCode();
             }
             if ($this->hasItem('*')) {
-                return $this->getItem('*')->getTo();
+                return $this->getItem('*')->getTo()->getCode();
             }
-            throw new RuntimeException("Can't map " . $value . ' of concept ' . $this->getFrom());
+            throw new RuntimeException("Can't map `" . $value . '` of mapping `' . $this->getId() . '`');
         }
         return $value;
     }
+    
+    public function getComment()
+    {
+        return $this->comment;
+    }
+    
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+        return $this;
+    }
+    
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+    
+    
 }

@@ -1,0 +1,38 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h3>Mappings</h3>
+<table class="table">
+  <tr>
+    <th>ID</th>
+    <th>Concept</th>
+    <th>Status</th>
+    <th>Comment</th>
+  </tr>
+{% for mapping in project.getMappings() %}
+<tr>
+  <td>
+    <a href="/{{ project.getId() }}/mappings/{{ mapping.getId() }}">
+      {{ mapping.getId() }}
+    </a>
+  </td>
+  <td>
+    {% if mapping.getConcept() %}
+    <a href="/{{ project.getId() }}/concepts/{{ mapping.getConcept().getId() }}">{{ mapping.getConcept().getId() }}</a>
+    ({{ mapping.getConcept().getShortName()}})
+    <br />
+    {% else %}
+    -
+    {% endif %}
+    <span style="font-size: 60%">{{ codelist.getOid() }}</span>
+  </td>
+  <td style="text-align: center;">
+    <span class="label label-info">{{ mapping.getStatus()}}</span>
+  </td>
+  <td>
+    {{ mapping.getComment()}}
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

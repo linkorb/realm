@@ -4,8 +4,6 @@ namespace Realm\Loader;
 
 use SimpleXMLElement;
 use Realm\Model\Concept;
-use Realm\Model\ConceptMapping;
-use Realm\Model\ConceptMappingItem;
 use Realm\Model\Project;
 use Realm\Model\Property;
 use Realm\Model\Form;
@@ -17,7 +15,7 @@ use RuntimeException;
 
 class DecorLoader
 {
-    public function loadFile($filename)
+    public function loadFile($filename, $project)
     {
         if (!file_exists($filename)) {
             throw new RuntimeException("File not found: " . $filename);
@@ -26,54 +24,18 @@ class DecorLoader
         $xml = file_get_contents($filename);
         $root = simplexml_load_string($xml);
 
-        $project = new Project();
-        $id = substr(basename($filename), 0, -4);
-        $id = str_replace('.', '-', $id);
-        $project->setId($id);
         $this->loadConcepts($project, $root);
-        
-        $files = glob($basePath . '/mappings/*.xml');
-        foreach ($files as $filename) {
-            $xml = file_get_contents($filename);
-            $root = simplexml_load_string($xml);
-            $this->loadMappings($root, $project);
-        }
-        
-        $resourceLoader = new XmlFormLoader();
-        $files = glob($basePath . '/forms/*.xml');
-        $id = 1;
-        foreach ($files as $filename) {
-            $resource = $resourceLoader->loadFile($filename, $project);
-            $resource->setId($id);
-            $project->addResource($resource);
-            $id++;
-        }
 
         return $project;
     }
-    
-    public function loadMappings($root, $project)
-    {
-        foreach ($root->mapping as $mappingNode) {
-            $mapping = new ConceptMapping();
-            $mapping->setFrom((string)$mappingNode['from']);
-            $mapping->setTo((string)$mappingNode['to']);
-            if ($mappingNode->item) {
-                foreach ($mappingNode->item as $itemNode) {
-                    $item = new ConceptMappingItem();
-                    $item->setFrom((string)$itemNode['from']);
-                    $item->setTo((string)$itemNode['to']);
-                    $mapping->addItem($item);
-                }
-            }
-            $project->addMapping($mapping);
-        }
-    }
 
-    public function loadConcepts($project, SimpleXMLElement $root)
+    public function loadConcepts($project, SimpleXMLElement $root, $parent = null)
     {
         foreach ($root->concept as $conceptNode) {
             $concept = new Concept();
+            if ($parent) {
+                $concept->setParent($parent);
+            }
             $concept->setType((string)$conceptNode['type']);
             $concept->setId((string)$conceptNode['iddisplay']);
             $concept->setOid((string)$conceptNode['id']);
@@ -115,7 +77,7 @@ class DecorLoader
                 $codelist = $project->getCodelist($name);
                 $concept->setCodelist($codelist);
             }
-            $this->loadConcepts($project, $conceptNode);
+            $this->loadConcepts($project, $conceptNode, $concept);
         }
         return $project;
     }

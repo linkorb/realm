@@ -5,6 +5,8 @@ namespace Realm\Loader;
 use SimpleXMLElement;
 use Realm\Model\Value;
 use Realm\Model\Concept;
+use Realm\Model\ConceptMapping;
+use Realm\Model\ConceptMappingItem;
 use Realm\Model\Resource;
 use Realm\Model\ResourceSection;
 use Realm\Model\Project;
@@ -27,7 +29,9 @@ class XmlRealmLoader
         $xml = file_get_contents($filename);
         $root = simplexml_load_string($xml);
 
-        $project = $this->loadProject($root);
+        $project = new Project();
+        $project->setBasePath($basePath);
+        $this->loadProject($root, $project);
 
         $files = glob($basePath . '/codelists/*.xml');
         foreach ($files as $filename) {
@@ -41,8 +45,16 @@ class XmlRealmLoader
         foreach ($files as $filename) {
             $xml = file_get_contents($filename);
             $root = simplexml_load_string($xml);
-            $concept = $this->loadConcept($root, $project);
-            $project->addConcept($concept);
+            if ($root->getName()=='concept') {
+                $concept = $this->loadConcept($root, $project);
+                $project->addConcept($concept);
+            }
+            if ($root->getName()=='concepts') {
+                foreach ($root->concept as $conceptNode) {
+                    $concept = $this->loadConcept($conceptNode, $project);
+                    $project->addConcept($concept);
+                }
+            }
         }
 
         $files = glob($basePath . '/sectionTypes/*.xml');
@@ -51,6 +63,23 @@ class XmlRealmLoader
             $root = simplexml_load_string($xml);
             $sectionType = $this->loadSectionType($root, $project);
             $project->addSectionType($sectionType);
+        }
+        
+        $files = glob($basePath . '/mappings/*.xml');
+        foreach ($files as $filename) {
+            $xml = file_get_contents($filename);
+            $root = simplexml_load_string($xml);
+            $this->loadMappings($root, $project);
+        }
+        
+        $resourceLoader = new XmlFormLoader();
+        $files = glob($basePath . '/forms/*.xml');
+        $id = 1;
+        foreach ($files as $filename) {
+            $resource = $resourceLoader->loadFile($filename, $project);
+            $resource->setId($id);
+            $project->addResource($resource);
+            $id++;
         }
         
         $resourceLoader = new XmlResourceLoader();
@@ -64,11 +93,19 @@ class XmlRealmLoader
         return $project;
     }
     
-    public function loadProject(SimpleXMLElement $root)
+    public function loadProject(SimpleXMLElement $root, $project)
     {
-        $project = new Project();
         $project->setId((string)$root['id']);
         $this->loadProperties($root, $project);
+        foreach ($root->include as $includeNode) {
+            $filename = (string)$includeNode['filename'];
+            switch ((string)$includeNode['type']) {
+                case 'decor':
+                    $decorLoader = new DecorLoader($filename);
+                    $decorLoader->loadFile($project->getBasePath() . '/' . $filename, $project);
+                    break;
+            }
+        }
         return $project;
     }
     
@@ -139,6 +176,36 @@ class XmlRealmLoader
             $property->setLanguage((string)$pNode['language']);
             $property->setValue((string)$pNode);
             $obj->addProperty($property);
+        }
+    }
+    
+    public function loadMappings($root, $project)
+    {
+        foreach ($root->mapping as $mappingNode) {
+            $mapping = new ConceptMapping();
+            $mapping->setId((string)$mappingNode['id']);
+            $mapping->setStatus((string)$mappingNode['status']);
+            if (!$mapping->getStatus()) {
+                $mapping->setStatus('?');
+            }
+            $conceptId = (string)$mappingNode['concept'];
+            if ($conceptId) {
+                $concept = $project->getConcept($conceptId);
+                $mapping->setConcept($concept);
+                $mapping->setComment((string)$mappingNode['comment']);
+                if ($mappingNode->item) {
+                    $codelist = $concept->getCodelist();
+                    foreach ($mappingNode->item as $itemNode) {
+                        $item = new ConceptMappingItem();
+                        $item->setFrom((string)$itemNode['from']);
+                        $item->setLabel((string)$itemNode['label']);
+                        $i = $codelist->getItem((string)$itemNode['to']);
+                        $item->setTo($i);
+                        $mapping->addItem($item);
+                    }
+                }
+            }
+            $project->addMapping($mapping);
         }
     }
 }

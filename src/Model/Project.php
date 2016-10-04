@@ -13,6 +13,7 @@ class Project
     protected $sectionTypes = [];
     protected $resources = [];
     protected $mappings = [];
+    protected $basePath;
     
     public function getId()
     {
@@ -117,7 +118,7 @@ class Project
     
     public function addMapping(ConceptMapping $mapping)
     {
-        $this->mappings[$mapping->getFrom()] = $mapping;
+        $this->mappings[$mapping->getId()] = $mapping;
         return $this;
     }
     
@@ -137,4 +138,16 @@ class Project
         }
         return $this->mappings[$conceptId];
     }
+    
+    public function getBasePath()
+    {
+        return $this->basePath;
+    }
+    
+    public function setBasePath($basePath)
+    {
+        $this->basePath = $basePath;
+        return $this;
+    }
+    
 }

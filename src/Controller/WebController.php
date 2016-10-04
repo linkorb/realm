@@ -102,6 +102,35 @@ class WebController
         return $response;
     }
     
+    public function mappingIndexAction(Application $app, Request $request, $projectId)
+    {
+        $data = [];
+        $data['project'] = $app->getProject($projectId);
+        $html = $this->render('mappings/index.html', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+    
+    public function mappingViewAction(Application $app, Request $request, $projectId, $mappingId)
+    {
+        $data = [];
+        $data['project'] = $app->getProject($projectId);
+        $data['mapping'] = $data['project']->getMapping($mappingId);
+        $html = $this->render('mappings/view.html', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+    
     public function sectionTypeIndexAction(Application $app, Request $request, $projectId)
     {
         $data = [];

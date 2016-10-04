@@ -39,6 +39,7 @@
               <ul class="nav navbar-nav">
                 <li><a href="/{{ project.getId }}/concepts">Concepts</a></li>
                 <li><a href="/{{ project.getId }}/codelists">Codelists</a></li>
+                <li><a href="/{{ project.getId }}/mappings">Mappings</a></li>
                 <li><a href="/{{ project.getId }}/sectionTypes">Section types</a></li>
                 <li><a href="/{{ project.getId }}/resources">Resources</a></li>
               </ul>
@@ -51,5 +52,19 @@
             {% block content %}{% endblock %}
             <hr style="margin-top: 100px;"/>
         </div>
+        
+        <script>
+        
+        $("#searchInput").keyup(function () {
+          var rows = $("#table-body").find("tr").hide();
+          if (this.value.length) {
+              var data = this.value.split(" ");
+              $.each(data, function (i, v) {
+                  rows.filter(":contains('" + v + "')").show();
+              });
+              //rows.filter(":contains('group')").show();
+          } else rows.show();
+        });
+        </script>
     </body>
 </html>

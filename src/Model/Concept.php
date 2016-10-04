@@ -13,7 +13,7 @@ class Concept
     protected $codelist;
     protected $lengthMin;
     protected $lengthMax;
-    
+    protected $parent;
 
     use PropertyTrait;
     
@@ -120,6 +120,43 @@ class Concept
     {
         return str_replace('_', ' ', $this->getShortName());
     }
+    
+    public function getParent()
+    {
+        return $this->parent;
+    }
+    
+    public function setParent(Concept $parent)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+    
+    public function getDepth()
+    {
+        $depth = 0;
+        $concept = $this;
+        while ($concept) {
+            $concept = $concept->getParent();
+            $depth ++;
+        }
+        return $depth;
+    }
+    
+    public function getBreadCrumbs()
+    {
+        $o = '';
+        $concept = $this;
+        while ($concept) {
+            $concept = $concept->getParent();
+            if ($concept) {
+                $o = $concept->getShortName() . ' / ' . $o;
+            }
+        }
+        $o = rtrim($o, ' /');
+        return $o;
+    }
+    
     
     
     

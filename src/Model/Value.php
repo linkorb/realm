@@ -10,7 +10,8 @@ class Value
     protected $value;
     protected $label;
     protected $concept;
-    protected $conceptId;
+    protected $sourceConceptId;
+    protected $sourceValue;
     
     use PresenterTrait;
     
@@ -22,17 +23,6 @@ class Value
     public function setConcept($concept)
     {
         $this->concept = $concept;
-        return $this;
-    }
-    
-    public function getConceptId()
-    {
-        return $this->conceptId;
-    }
-    
-    public function setConceptId($conceptId)
-    {
-        $this->conceptId = $conceptId;
         return $this;
     }
     
@@ -68,4 +58,29 @@ class Value
         $this->displayValue = $displayValue;
         return $this;
     }
+    
+    
+    public function getSourceConceptId()
+    {
+        return $this->sourceConceptId;
+    }
+    
+    public function setSourceConceptId($sourceConceptId)
+    {
+        $this->sourceConceptId = $sourceConceptId;
+        return $this;
+    }
+    
+    public function getSourceValue()
+    {
+        return $this->sourceValue;
+    }
+    
+    public function setSourceValue($sourceValue)
+    {
+        $this->sourceValue = $sourceValue;
+        return $this;
+    }
+    
+    
 }

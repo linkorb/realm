@@ -69,29 +69,29 @@ class XmlFormLoader
         foreach ($valueNodes as $valueNode) {
             $value = new Value();
             $value->setLabel((string)$valueNode['label']);
+            
             $value->setValue((string)$valueNode['value']);
+            $value->setSourceValue((string)$valueNode['value']);
+            
             if ($valueNode['type'] == 'date') {
                 $value->setDisplayValue(date('d-M-Y', (int)$value->getValue()));
             }
             $conceptId = null;
             if (isset($valueNode['keyid'])) {
                 $keyId = (string)'keyid-' . $valueNode['keyid'];
+                $value->setSourceConceptId($keyId);
                 $mappings = $project->getMappings();
                 if ($project->hasMapping($keyId)) {
                     $mapping = $project->getMapping($keyId);
-                    if ($mapping->getTo()!='') {
-                        $conceptId = $mapping->getTo();
+                    if ($mapping->getConcept()) {
+                        $conceptId = $mapping->getConcept()->getId();
                         $value->setValue($mapping->mapValue($value->getValue()));
-                    } else {
-                        $value->setConceptId($keyId);
                     }
-                     
-                } else {
-                    $value->setConceptId($keyId);
                 }
             }
             if (isset($valueNode['concept'])) {
                 $conceptId = (string)$valueNode['concept'];
+                $value->setSourceConceptId($conceptId);
             }
             if ($conceptId) {
                 $concept = $project->getConcept($conceptId);

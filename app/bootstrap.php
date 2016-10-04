@@ -43,6 +43,16 @@ $app->match(
 )->method('GET|POST');
 
 $app->match(
+    '/{projectId}/mappings',
+    'Realm\\Controller\\WebController::mappingIndexAction'
+)->method('GET|POST');
+
+$app->match(
+    '/{projectId}/mappings/{mappingId}',
+    'Realm\\Controller\\WebController::mappingViewAction'
+)->method('GET|POST');
+
+$app->match(
     '/{projectId}/sectionTypes',
     'Realm\\Controller\\WebController::sectionTypeIndexAction'
 )->method('GET|POST');

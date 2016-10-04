@@ -1,0 +1,34 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h3>Mapping: {{ mapping.getId }} <span class="label label-info">{{ mapping.getStatus() }}</span></h3>
+<dl>
+  <dt>ID</dt><dd>{{ mapping.getId }}</dd>
+  <dt>Concept</dt><dd>{{ mapping.getConcept.getId() }} ({{ mapping.getConcept.getShortName() }})</dd>
+  <dt>Comment</dt><dd>{{ mapping.getComment }}</dd>
+</dl>
+
+<h3>Properties</h3>
+<ul>
+{% for property in mapping.getProperties() %}
+  <li><span class="badge">{{ property.getLanguage() }}</span> <b>{{ property.getName() }}</b>: {{ property.getValue() }}</li>
+{% endfor %}
+</ul>
+
+<h3>Items</h3>
+<table class="table">
+  <tr>
+    <th style="width: 10px;">From</th>
+    <th style="width: 10px;">To</th>
+    <th>Comment</th>
+  </tr>
+  {% for item in mapping.getItems() %}
+  <tr>
+    <td><b>{{ item.getFrom() }}</b> <i>{{ item.getLabel() }}</i></td>
+    <td><b>{{ item.getTo().getCode() }}</b> <i>{{ item.getTo().getDisplayName() }}</i></td>
+    <td>{{ item.getComment() }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

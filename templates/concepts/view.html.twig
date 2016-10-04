@@ -2,10 +2,12 @@
 
 {% block content %}
 <h3>Concept: {{ concept.getId }}</h3>
+<h4>{{ concept.getBreadCrumbs() }} / {{ concept.getShortName()}}</h4>
 <dl>
   <dt>ID</dt><dd>{{ concept.getId }}</dd>
   <dt>OID</dt><dd>{{ concept.getOid }}</dd>
   <dt>ShortName</dt><dd>{{ concept.getShortName }}</dd>
+  <dt>Hierarchy</dt><dd>{{ concept.getBreadCrumbs }}</dd>
   <dt>Type</dt><dd>{{ concept.getType }}</dd>
   <dt>Data-type</dt><dd>{{ concept.getDataType }}</dd>
   {% if concept.getLengthMin %}

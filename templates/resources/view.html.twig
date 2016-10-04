@@ -51,16 +51,16 @@
           <div class="meta"  style="margin-top: 5px">
             <strong>Concept: </strong>
           {% if value.getConcept() %}
+            {% if value.getSourceConceptId() != value.getConcept().getId() %}
+              <a href="/{{ project.getId() }}/mappings/{{ value.getSourceConceptId() }}" style="text-decoration: line-through;">{{ value.getSourceConceptId() }}</a>
+              mapped to 
+            {% endif %}
             <a href="/{{ project.getId() }}/concepts/{{value.getConcept().getId()}}">{{ value.getConcept().getId() }}</a>
             ({{ value.getConcept().getShortName() }})
           {% else %}
-            {% if value.getConceptId() %}
               <span style="color: red;">
-                <i>{{ value.getConceptId() }} (undefined)</i>
+                <i>{{ value.getSourceConceptId() }} (undefined)</i>
               </span>
-            {% else %}
-              Undefined
-            {% endif %}
           {% endif %}
           </div>
         </div>
