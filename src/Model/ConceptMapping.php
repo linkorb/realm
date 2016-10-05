@@ -70,6 +70,9 @@ class ConceptMapping
             if ($this->hasItem('*')) {
                 return $this->getItem('*')->getTo()->getCode();
             }
+            if ($value=='') {
+                return '';
+            }
             throw new RuntimeException("Can't map `" . $value . '` of mapping `' . $this->getId() . '`');
         }
         return $value;
