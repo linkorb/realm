@@ -11,6 +11,7 @@ class ConceptMapping
     protected $items = [];
     protected $comment;
     protected $status;
+    protected $transformer;
     
     public function getId()
     {
@@ -100,5 +101,15 @@ class ConceptMapping
         return $this;
     }
     
+    public function getTransformer()
+    {
+        return $this->transformer;
+    }
+    
+    public function setTransformer($transformer)
+    {
+        $this->transformer = $transformer;
+        return $this;
+    }
     
 }

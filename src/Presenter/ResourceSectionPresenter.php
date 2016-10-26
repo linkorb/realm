@@ -31,4 +31,14 @@ class ResourceSectionPresenter extends BasePresenter
         }
         return $d->format('d-m-Y');
     }
+    
+    public function presentValueByField($field)
+    {
+        $conceptId = $field->getConcept()->getId();
+        $value = $this->presenterObject->getValue($conceptId);
+        if ($value) {
+            return $value->getPresenter()->getDisplayValue();
+        }
+        return '-';
+    }
 }

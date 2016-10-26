@@ -20,7 +20,6 @@ class ValuePresenter extends BasePresenter
     public function getDisplayValue()
     {
         $value = $this->presenterObject->getValue();
-        
         // Prefer explicitly defined displayValue
         if ($this->presenterObject->getDisplayValue()) {
             return $this->presenterObject->getDisplayValue();
@@ -30,6 +29,12 @@ class ValuePresenter extends BasePresenter
         if ($this->presenterObject->getConcept()) {
             $concept = $this->presenterObject->getConcept();
             switch ($concept->getDataType()) {
+                case 'datetime':
+                    if (!$value) {
+                        return '-';
+                    }
+                    return $value;
+                    break;
                 case 'code':
                     $codelist = $concept->getCodelist();
                     $item = $codelist->getItem($value);
@@ -40,6 +45,9 @@ class ValuePresenter extends BasePresenter
             }
         }
         // last resort, return raw value
+        if (!$value) {
+            return '-';
+        }
         return $value;
     }
 }

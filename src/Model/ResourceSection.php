@@ -9,11 +9,16 @@ class ResourceSection
     protected $id;
     protected $label;
     protected $type;
+    protected $sourceTypeId;
     protected $values = [];
     protected $created_at;
     protected $updated_at;
     protected $occurred_at;
+    protected $view = 'detail'; // master or detail
+    protected $parent; // for section hierarchy
     
+    protected $sections = [];
+        
     use PresenterTrait;
     
     public function getId()
@@ -66,10 +71,23 @@ class ResourceSection
         return $this->values;
     }
     
+    public function getValue($id)
+    {
+        foreach ($this->values as $value) {
+            if ($value->getConcept()) {
+                if ($value->getConcept()->getId() == $id) {
+                    return $value;
+                }
+            }
+        }
+    }
+    
+    /*
     public function getSections()
     {
         return $this->sections;
     }
+    */
     
     public function getCreatedAt()
     {
@@ -104,5 +122,55 @@ class ResourceSection
         return $this;
     }
     
+    public function getSourceTypeId()
+    {
+        return $this->sourceTypeId;
+    }
+    
+    public function setSourceTypeId($sourceTypeId)
+    {
+        $this->sourceTypeId = $sourceTypeId;
+        return $this;
+    }
+    
+    
+    
+    public function addSection(ResourceSection $section)
+    {
+        $this->sections[$section->getId()] = $section;
+        return $this;
+    }
+    
+    public function getSections()
+    {
+        return $this->sections;
+    }
+    
+    public function getSection($id)
+    {
+        return $this->sections[$id];
+    }
+    
+    public function getView()
+    {
+        return $this->view;
+    }
+    
+    public function setView($view)
+    {
+        $this->view = $view;
+        return $this;
+    }
+    
+    public function getParent()
+    {
+        return $this->parent;
+    }
+    
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
     
 }

@@ -2,6 +2,8 @@
 
 namespace Realm\Model;
 
+use RuntimeException;
+
 class Resource
 {
     protected $id;
@@ -30,8 +32,15 @@ class Resource
         return $this->sections;
     }
     
+    public function hasSection($id)
+    {
+        return isset($this->sections[$id]);
+    }
     public function getSection($id)
     {
+        if (!$this->hasSection($id)) {
+            throw new RuntimeException("No such sectionId: " . $id);
+        }
         return $this->sections[$id];
     }
 }

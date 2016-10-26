@@ -56,20 +56,29 @@ class XmlRealmLoader
                 }
             }
         }
-
-        $files = glob($basePath . '/sectionTypes/*.xml');
-        foreach ($files as $filename) {
-            $xml = file_get_contents($filename);
-            $root = simplexml_load_string($xml);
-            $sectionType = $this->loadSectionType($root, $project);
-            $project->addSectionType($sectionType);
-        }
         
         $files = glob($basePath . '/mappings/*.xml');
         foreach ($files as $filename) {
             $xml = file_get_contents($filename);
             $root = simplexml_load_string($xml);
             $this->loadMappings($root, $project);
+        }
+        
+        $files = glob($basePath . '/sectionTypes/*.xml');
+        foreach ($files as $filename) {
+            $xml = file_get_contents($filename);
+            $root = simplexml_load_string($xml);
+            //print_r($root);
+            if ($root->getName()=='sectionType') {
+                $sectionType = $this->loadSectionType($root, $project);
+                $project->addSectionType($sectionType);
+            }
+            if ($root->getName()=='sectionTypes') {
+                foreach ($root->sectionType as $sectionType) {
+                    $sectionType = $this->loadSectionType($sectionType, $project);
+                    $project->addSectionType($sectionType);
+                }
+            }
         }
         
         $resourceLoader = new XmlFormLoader();
@@ -154,6 +163,8 @@ class XmlRealmLoader
         $sectionType = new SectionType();
         $sectionType->setId((string)$root['id']);
         $sectionType->setLabel((string)$root['label']);
+        $sectionType->setLabelPl((string)$root['label_pl']);
+        $sectionType->setType((string)$root['type']);
         $this->loadProperties($root, $sectionType);
         foreach ($root->field as $fNode) {
             $field = new SectionFieldType();
@@ -161,6 +172,9 @@ class XmlRealmLoader
             $field->setConcept($concept);
             $field->setMin((string)$fNode['min']);
             $field->setMax((string)$fNode['max']);
+            $field->setListed((string)$fNode['listed']);
+            $field->setListLink((string)$fNode['list-link']);
+            $field->setListHeader((string)$fNode['list-header']);
             
             $sectionType->addField($field);
         }

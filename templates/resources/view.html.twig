@@ -20,11 +20,13 @@
   <div class="col-md-3">
       <h4>Sections</h4>
       {% for section in resource.getSections() %}
+        {% if not section.getParent() %}
         <a href="/{{project.getId()}}/resources/{{resource.getId()}}/{{ section.getId() }}">{{ section.getLabel() }}</a>
         <small>
           {{ section.getPresenter().getOccurredAt()}}
         </small>
         <br />
+        {% endif %}
       {% endfor %}
   </div>
   
@@ -32,6 +34,7 @@
     {% if section %}
       <h4>{{ section.getLabel() }}</h4>
       <div class="meta">
+        <b>TypeID</b>: <i>{{ section.getSourceTypeId() }}</i>
         <b>Type:</b>
         {% if section.getType() %}
           <a href="/{{ project.getId }}/sectionTypes/{{section.getType().getId() }}">{{ section.getType().getId() }}</a></span>
@@ -42,29 +45,59 @@
         <b>Created:</b> {{ section.getPresenter().getCreatedAt()}}
         <b>Updated:</b> {{ section.getPresenter().getUpdatedAt()}}
         <b>Occurred:</b> {{ section.getPresenter().getOccurredAt()}}
+        <b>View:</b> {{ section.getView() }}
       </div>
-      {% for value in section.getValues() %}
-        <div style="border: 2px solid #f0f0f0; margin-bottom: 20px; padding: 0 5px 0px; ">
-          <label>{{ value.getPresenter().getLabel()}}</label><br />
+      {% if section.getView()=='master' %}
+        <table class="table">
+          <tr>
+            {% for field in section.getType().getFields() %}
+            <th>{{ field.getPresenter().presentListHeader() }}</th>
+            {% endfor %}
+          </tr>
+          {% for section in section.getSections() %}
+          <tr>
+                
+            {% for field in section.getType().getFields() %}
+            <th>
+              {% if field.getListLink() %}
+                <a href="/{{ project.getId() }}/resources/{{resource.getId}}/{{section.getId()}}">
+              {% endif %}
+              {{ section.getPresenter().presentValueByField(field) }}
+              {% if field.getListLink() %}
+                </a>
+              {% endif %}
+            </th>
+              
+            {% endfor %}
+          </tr>
+          {% endfor %}
 
-          <input style="margin-bottom: 0px;" disabled class="form-control"  value="{{ value.getPresenter().getDisplayValue() }}" />
-          <div class="meta"  style="margin-top: 5px">
-            <strong>Concept: </strong>
-          {% if value.getConcept() %}
-            {% if value.getSourceConceptId() != value.getConcept().getId() %}
-              <a href="/{{ project.getId() }}/mappings/{{ value.getSourceConceptId() }}" style="text-decoration: line-through;">{{ value.getSourceConceptId() }}</a>
-              mapped to 
+        </table>
+      {% else %}
+        
+        {% for value in section.getValues() %}
+          <div style="border: 2px solid #f0f0f0; margin-bottom: 20px; padding: 0 5px 0px; ">
+            <label>{{ value.getPresenter().getLabel()}}</label><br />
+
+            <input style="margin-bottom: 0px;" disabled class="form-control"  value="{{ value.getPresenter().getDisplayValue() }}" />
+            <div class="meta"  style="margin-top: 5px">
+              <strong>Concept: </strong>
+            {% if value.getConcept() %}
+              {% if value.getSourceConceptId() != value.getConcept().getId() %}
+                <a href="/{{ project.getId() }}/mappings/{{ value.getSourceConceptId() }}" style="text-decoration: line-through;">{{ value.getSourceConceptId() }}</a>
+                mapped to 
+              {% endif %}
+              <a href="/{{ project.getId() }}/concepts/{{value.getConcept().getId()}}">{{ value.getConcept().getId() }}</a>
+              ({{ value.getConcept().getShortName() }})
+            {% else %}
+                <span style="color: red;">
+                  <i>{{ value.getSourceConceptId() }} (undefined)</i>
+                </span>
             {% endif %}
-            <a href="/{{ project.getId() }}/concepts/{{value.getConcept().getId()}}">{{ value.getConcept().getId() }}</a>
-            ({{ value.getConcept().getShortName() }})
-          {% else %}
-              <span style="color: red;">
-                <i>{{ value.getSourceConceptId() }} (undefined)</i>
-              </span>
-          {% endif %}
+            </div>
           </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      {% endif %}
     {% endif %}
   </div>
   <div class="col-md-3">
