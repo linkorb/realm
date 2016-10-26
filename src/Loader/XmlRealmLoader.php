@@ -185,6 +185,7 @@ class XmlRealmLoader
             $mapping = new ConceptMapping();
             $mapping->setId((string)$mappingNode['id']);
             $mapping->setStatus((string)$mappingNode['status']);
+            $mapping->setTransformer((string)$mappingNode['transformer']);
             if (!$mapping->getStatus()) {
                 $mapping->setStatus('?');
             }

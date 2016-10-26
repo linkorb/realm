@@ -37,21 +37,38 @@ class XmlFormLoader
         //$this->loadProperties($root, $sectionType);
         $forms = $root->xpath('.//form');
         foreach ($forms as $sectionNode) {
+            $parent = $resource;
             $section = new ResourceSection();
             $section->setId((string)$sectionNode['uuid']);
             $section->setLabel((string)$sectionNode['label']);
             
-        
+            $groupSection = null;
             if (isset($sectionNode['keyid'])) {
                 $keyId = (string)$sectionNode['keyid'];
+                $section->setSourceTypeId($keyId);
                 if ($project->hasSectionType($keyId)) {
                     $sectionType = $project->getSectionType($keyId);
                     $section->setType($sectionType);
+                    
+                    if ($sectionType->getType()=='group') {
+                        if ($resource->hasSection($sectionType->getId())) {
+                            $groupSection = $resource->getSection($sectionType->getId());
+                        } else {
+                            $groupSection = new ResourceSection();
+                            $groupSection->setId($sectionType->getId());
+                            $groupSection->setLabel($sectionType->getLabelPl());
+                            $groupSection->setType($sectionType);
+                            $groupSection->setView('master');
+                            $resource->addSection($groupSection);
+                        }
+                        $groupSection->addSection($section);
+                    }
                 }
             }
             $dt = new DateTime();
             $dt->setTimestamp((string)$sectionNode['createstamp']);
             $section->setCreatedAt($dt);
+            $section->setParent($groupSection);
 
             $this->loadResourceSectionValues($project, $section, $sectionNode->values->value);
             
@@ -83,6 +100,25 @@ class XmlFormLoader
                 $mappings = $project->getMappings();
                 if ($project->hasMapping($keyId)) {
                     $mapping = $project->getMapping($keyId);
+
+                    if ($mapping->getTransformer()) {
+                        switch ($mapping->getTransformer()) {
+                            case 'stamp2date':
+                                $value->setValue(date('Y-m-d', $value->getValue()));
+                                break;
+                            case 'gestation2days':
+                                $part = explode('+', $value->getValue());
+                                if (count($part)==2) {
+                                    $value->setValue((7 * $part[0]) + $part[1]);
+                                }
+                                break;
+                            default:
+                                throw new RuntimeException(
+                                    "Unsupported transformer: " . $mapping->getTransformer()
+                                );
+                        }
+                    }
+
                     if ($mapping->getConcept()) {
                         $conceptId = $mapping->getConcept()->getId();
                         $value->setValue($mapping->mapValue($value->getValue()));
