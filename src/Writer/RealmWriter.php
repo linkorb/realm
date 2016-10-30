@@ -14,7 +14,7 @@ class RealmWriter
             throw new RuntimeException("basepath does not exist: " . $basePath);
         }
         
-        //$this->writeConcepts($project, $basePath . '/concepts');
+        $this->writeConcepts($project, $basePath . '/concepts');
         $this->writeCodelists($project, $basePath . '/codelists');
     }
     
