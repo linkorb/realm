@@ -28,5 +28,6 @@
       "Realm\\": "src/"
     }
   },
+  "bin": ["bin/realm"],
   "license": "MIT"
 }
