@@ -31,6 +31,12 @@ class DecorConvertCommand extends Command
                 InputOption::VALUE_REQUIRED,
                 null
             )
+            ->addOption(
+                'output',
+                'o',
+                InputOption::VALUE_REQUIRED,
+                null
+            )
         ;
     }
 
@@ -49,7 +55,12 @@ class DecorConvertCommand extends Command
         $realmLoader = new DecorLoader();
         $realmLoader->loadFile($filename, $project);
         
+        $output = $input->getOption('output');
+        if (!$output) {
+            $output = 'output/';
+        }
+        
         $realWriter = new RealmWriter();
-        $realWriter->write($project, 'output/');
+        $realWriter->write($project, $output);
     }
 }
