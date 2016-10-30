@@ -68,24 +68,40 @@ class DecorLoader
                         $concept->setLengthMax((string)$conceptNode->valueDomain->property['maxLength']);
                     }
                 }
-                
             }
             
             if (isset($conceptNode->valueSet)) {
                 $this->loadCodelist($project, $conceptNode->valueSet);
                 $name = (string)$conceptNode->valueSet['name'];
-                $codelist = $project->getCodelist($name);
-                $concept->setCodelist($codelist);
+                if ($project->hasCodelist($name)) {
+                    $codelist = $project->getCodelist($name);
+                    $concept->setCodelist($codelist);
+                }
             }
             $this->loadConcepts($project, $conceptNode, $concept);
         }
         return $project;
     }
     
+    public function loadPropertyNodes($obj, $nodes, $name)
+    {
+        foreach ($nodes as $propertyNode) {
+            $property = new Property();
+            $property->setName($propertyNode->getName());
+            $property->setValue((string)$propertyNode);
+            $property->setLanguage((string)$propertyNode['language']);
+            $obj->addProperty($property);
+        }
+    }
+    
     protected function loadCodelist($project, $valueSetNode)
     {
         $codelist = new Codelist();
-        $codelist->setId((string)$valueSetNode['name']);
+        $id = (string)$valueSetNode['name'];
+        if (!$id) {
+            return;
+        }
+        $codelist->setId($id);
         $codelist->setOid((string)$valueSetNode['id']);
         $codelist->setShortName((string)$valueSetNode['name']);
         $codelist->setDisplayName((string)$valueSetNode['displayName']);
@@ -99,7 +115,9 @@ class DecorLoader
             $item->setDisplayName((string)$itemNode['displayName']);
             $item->setLevel((string)$itemNode['level']);
             $item->setType((string)$itemNode['type']);
-            // fetch (string)$itemNode->name ?
+            
+            $this->loadPropertyNodes($item, $itemNode->name, 'name');
+            $this->loadPropertyNodes($item, $itemNode->desc, 'description');
             
             $codelist->addItem($item);
         }
@@ -110,7 +128,9 @@ class DecorLoader
             $item->setDisplayName((string)$itemNode['displayName']);
             $item->setLevel((string)$itemNode['level']);
             $item->setType((string)$itemNode['type']);
-            // fetch (string)$itemNode->name ?
+
+            $this->loadPropertyNodes($item, $itemNode->name, 'name');
+            $this->loadPropertyNodes($item, $itemNode->desc, 'description');
             
             $codelist->addItem($item);
         }

@@ -10,6 +10,8 @@ class CodelistItem
     protected $level;
     protected $type;
 
+    use PropertyTrait;
+
     public function getCode()
     {
         return $this->code;

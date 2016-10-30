@@ -9,9 +9,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
 use Realm\Loader\DecorLoader;
+use Realm\Writer\RealmWriter;
+use Realm\Model\Project;
 use RuntimeException;
 
-class DecorLoadCommand extends Command
+class DecorConvertCommand extends Command
 {
     /**
      * {@inheritdoc}
@@ -21,7 +23,7 @@ class DecorLoadCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('decor:load')
+            ->setName('decor:convert')
             ->setDescription('Load decor xml file and output contents')
             ->addOption(
                 'filename',
@@ -42,14 +44,12 @@ class DecorLoadCommand extends Command
             $filename = getcwd() . '/decor.xml';
         }
         $output->writeLn("Loading decor file: " . $filename);
+        $project = new Project();
+
         $realmLoader = new DecorLoader();
-        $realm = $realmLoader->loadFile($filename);
+        $realmLoader->loadFile($filename, $project);
         
-        var_dump($realm);
-        
-        $concept = $realm->getConcept('xxxxx');
-        print_r($concept);
-        $codelist = $realm->getCodelist('yyyyy');
-        print_r($codelist);
+        $realWriter = new RealmWriter();
+        $realWriter->write($project, 'output/');
     }
 }
