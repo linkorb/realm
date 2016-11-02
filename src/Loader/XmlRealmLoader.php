@@ -20,7 +20,7 @@ use RuntimeException;
 
 class XmlRealmLoader
 {
-    public function loadFile($filename)
+    public function loadFile($filename, $project)
     {
         if (!file_exists($filename)) {
             throw new RuntimeException("File not found: " . $filename);
@@ -28,8 +28,30 @@ class XmlRealmLoader
         $basePath = dirname($filename);
         $xml = file_get_contents($filename);
         $root = simplexml_load_string($xml);
+        
+        /*
+        foreach ($root->include as $includeNode) {
+            $filename = (string)$includeNode['filename'];
+            switch ((string)$includeNode['type']) {
+                case 'decor':
+                    $decorLoader = new DecorLoader($filename);
+                    $decorLoader->loadFile($project->getBasePath() . '/' . $filename, $project);
+                    break;
+            }
+        }
+        */
 
-        $project = new Project();
+        foreach ($root->dependency as $dependencyNode) {
+            $name = (string)$dependencyNode['name'];
+            $path = $basePath . '/../realm-' . $name;
+            if (file_exists($path . '/realm.xml')) {
+                $this->loadFile($path . '/realm.xml', $project);
+            } else {
+                throw new RuntimeException("dependency not found: " . $name . ' (' . $path . ')');
+            }
+
+        }
+
         $project->setBasePath($basePath);
         $this->loadProject($root, $project);
 
@@ -106,15 +128,6 @@ class XmlRealmLoader
     {
         $project->setId((string)$root['id']);
         $this->loadProperties($root, $project);
-        foreach ($root->include as $includeNode) {
-            $filename = (string)$includeNode['filename'];
-            switch ((string)$includeNode['type']) {
-                case 'decor':
-                    $decorLoader = new DecorLoader($filename);
-                    $decorLoader->loadFile($project->getBasePath() . '/' . $filename, $project);
-                    break;
-            }
-        }
         return $project;
     }
     

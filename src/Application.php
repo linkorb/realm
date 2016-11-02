@@ -46,7 +46,8 @@ class Application extends SilexApplication
                 default:
                     throw new RuntimeException("Invalid project type: " . $projectType);
             }
-            $project = $projectLoader->loadFile($filename);
+            $project = new Project();
+            $projectLoader->loadFile($filename, $project);
             $this->addProject($project);
         }
     }
