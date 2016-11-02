@@ -37,11 +37,11 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                <li><a href="/{{ project.getId }}/concepts">Concepts</a></li>
-                <li><a href="/{{ project.getId }}/codelists">Codelists</a></li>
-                <li><a href="/{{ project.getId }}/mappings">Mappings</a></li>
-                <li><a href="/{{ project.getId }}/sectionTypes">Section types</a></li>
-                <li><a href="/{{ project.getId }}/resources">Resources</a></li>
+                <li><a href="/{{ project.getId }}/concepts">Concepts ({{ project.getConcepts()|length }})</a> </li>
+                <li><a href="/{{ project.getId }}/codelists">Codelists ({{ project.getCodelists()|length }})</a></li>
+                <li><a href="/{{ project.getId }}/mappings">Mappings ({{ project.getMappings()|length }})</a></li>
+                <li><a href="/{{ project.getId }}/sectionTypes">Section types ({{ project.getSectionTypes()|length }})</a></li>
+                <li><a href="/{{ project.getId }}/resources">Resources ({{ project.getResources()|length }})</a></li>
               </ul>
             </div><!--/.nav-collapse -->
           </div><!--/.container-fluid -->
