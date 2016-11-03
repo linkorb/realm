@@ -32,29 +32,19 @@ class XmlRealmLoader
         $xml = file_get_contents($filename);
         $root = simplexml_load_string($xml);
         
-        /*
-        foreach ($root->include as $includeNode) {
-            $filename = (string)$includeNode['filename'];
-            switch ((string)$includeNode['type']) {
-                case 'decor':
-                    $decorLoader = new DecorLoader($filename);
-                    $decorLoader->loadFile($project->getBasePath() . '/' . $filename, $project);
-                    break;
-            }
-        }
-        */
-
         foreach ($root->dependency as $dependencyNode) {
             $name = (string)$dependencyNode['name'];
-            $path = $basePath . '/../realm-' . $name;
-            if (file_exists($path . '/realm.xml')) {
-                $this->loadFile($path . '/realm.xml', $project);
-            } else {
-                throw new RuntimeException("dependency not found: " . $name . ' (' . $path . ')');
+            $filename = stream_resolve_include_path($name . '/realm.xml');
+            if (!$filename) {
+                $filename = stream_resolve_include_path('realm-' . $name . '/realm.xml');
             }
-
+            if (!$filename) {
+                throw new RuntimeException(
+                    "Dependency not found in include paths: " . $name
+                );
+            }
+            $this->loadFile($filename, $project);
         }
-
         $project->setBasePath($basePath);
         $this->loadProject($root, $project);
 
