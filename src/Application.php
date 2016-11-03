@@ -27,6 +27,11 @@ class Application extends SilexApplication
         $yaml = file_get_contents($filename);
         $data = Yaml::parse($yaml);
         //print_r($data);
+        
+        foreach ($data['include_paths'] as $path) {
+            set_include_path(get_include_path(). ':' . $path);
+        }
+        
         foreach ($data['projects'] as $projectData) {
             if (!isset($projectData['type'])) {
                 throw new RuntimeException("Project type not defined");
