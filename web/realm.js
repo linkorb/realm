@@ -1,14 +1,23 @@
 $( document ).ready(function() {
   console.log("ready!");
   $(".realm-value").each(function(index) {
-    $(this).mouseover(function() {
-      console.log($(this).text());
-      $(this).addClass('realm-value-hover')
+    $(this).click(function() {
+      $(".realm-value").each(function(index) {
+        $(this).removeClass('realm-value-hover')
+      })
+      $(this).addClass('realm-value-hover');
+      return false;
     });
-    $(this).mouseout(function() {
-      console.log($(this).text());
-      $(this).removeClass('realm-value-hover')
+    $(document).mouseout(function() {
+      //$(this).removeClass('realm-value-hover')
     });
     console.log( index + ": " + $( this ).text() );
   });
+
+  $(document).click(function() {
+    $(".realm-value").each(function(index) {
+      $(this).removeClass('realm-value-hover')
+    })
+  });
+
 });
