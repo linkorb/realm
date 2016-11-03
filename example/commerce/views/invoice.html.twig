@@ -1,0 +1,53 @@
+<h1>Invoice view</h1>
+<fieldset>
+  <legend>Client details</legend>
+  <div class="row">
+    <div class="col-md-6">
+      <dl>
+        <dt>Firstname</dt>
+        <dd>{{ fusion.getPresenter().presentValueByConceptId('commerce-firstname')|raw }}</dd>
+        <dt>Gender</dt>
+        <dd>{{ fusion.getPresenter().presentValueByConceptId('commerce-gender')|raw }}</dd>
+      </dl>
+    </div>
+    <div class="col-md-6">
+      <dl>
+        <dt>Lastname</dt>
+        <dd>{{ fusion.getPresenter().presentValueByConceptId('commerce-lastname')|raw }}</dd>
+      </dl>
+    </div>
+
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend>Invoice lines</legend>
+  <table class="table">
+    <tr>
+      <th style="width: 1px;">Source</th>
+      <th>Product</th>
+      <th style="text-align: center;">Quantity</th>
+      <th>Date/time</th>
+    </tr>
+    {% for section in fusion.getSectionsByTypeId('invoice-line') %}
+    <tr>
+      <td style="width: 1px;">
+        <img src="{{ section.getResource().getSource().getLogoUrl() }}" style="width: 32px;"/>
+      </td>
+      <td>
+        <a href="{{ baseUrl }}/sections/{{ section.getId() }}">
+          <b>{{ section.getValue('commerce-product-code').getValue() }}</b> :
+          {{ section.getValue('commerce-product-description').getValue() }}
+        </a>
+      </td>
+      <td style="text-align: center;">
+        {{ section.getValue('commerce-quantity').getValue() }}
+      </td>
+      <td>
+        {{ section.getPresenter().getEffectiveAt() }}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+      
+</fieldset>

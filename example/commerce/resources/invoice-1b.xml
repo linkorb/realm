@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource id="invoice-1b">
+  <source
+    id="IB"
+    displayName="Source Two"
+    logoUrl="http://www.clker.com/cliparts/G/V/k/w/7/Z/two-green-square-rounded-edge-hi.png"
+  />
+  <sections>
+    <section type="customer" id="1b" effectiveStamp="1478164258">
+      <values>
+        <value label="Firstname" value="Johnny" concept="commerce-firstname" />
+        <value label="Gender" value="1" displayValue="Male" concept="commerce-gender" />
+      </values>
+    </section>
+    <section type="invoice-line" id="2b" effectiveStamp="1478165258">
+      <values>
+        <value label="Product code" value="BP42" concept="commerce-product-code" />
+        <value label="Product description" value="Purple bicycle" concept="commerce-product-description" />
+        <value label="Quantity" value="3" concept="commerce-quantity" />
+      </values>
+    </section>
+    <section type="invoice-line" id="3b" effectiveStamp="1478167258">
+      <values>
+        <value label="Product code" value="HXS" concept="commerce-product-code" />
+        <value label="Product description" value="Helmet XS" concept="commerce-product-description" />
+        <value label="Quantity" value="2" concept="commerce-quantity" />
+      </values>
+    </section>
+  </sections>
+</resource>

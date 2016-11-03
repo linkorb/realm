@@ -1,0 +1,11 @@
+<concept
+  id="commerce-quantity"
+  oid="1.2.3.4.5.6.7.8.10010"
+  shortName="Quantity"
+  type="item"
+  dataType="integer"
+  lengthMax="64"
+  >
+  <property name="example">42</property>
+  <property name="definition">Quantity</property>
+</concept>

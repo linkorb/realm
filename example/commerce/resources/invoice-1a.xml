@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource id="invoice-1a">
+  <source
+    id="IA"
+    displayName="Source One"
+    logoUrl="https://pbs.twimg.com/profile_images/1900891219/OneSquare_black_400x400.jpg"
+  />
+  <sections>
+    <section type="customer" id="1a" effectiveStamp="1478164258">
+      <values>
+        <value label="Firstname" value="John" concept="commerce-firstname" />
+        <value label="Lastname" value="Johnson" concept="commerce-lastname" />
+        <value label="Gender" value="1" displayValue="Male" concept="commerce-gender" />
+      </values>
+    </section>
+    <section type="invoice-line" label="Line" id="2a" effectiveStamp="1478167258">
+      <values>
+        <value label="Product code" value="BR42" concept="commerce-product-code" />
+        <value label="Product description" value="Red bicycle" concept="commerce-product-description" />
+        <value label="Quantity" value="1" concept="commerce-quantity" />
+      </values>
+    </section>
+    <section type="invoice-line" label="Line" id="3a" effectiveStamp="1478168258">
+      <values>
+        <value label="Product code" value="HXL" concept="commerce-product-code" />
+        <value label="Product description" value="Helmet XL" concept="commerce-product-description" />
+        <value label="Quantity" value="1" concept="commerce-quantity" />
+      </values>
+    </section>
+  </sections>
+</resource>

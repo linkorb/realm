@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sectionType
+  id="invoice-line"
+  label="Invoice line"
+  >
+  <property name="definition">Invoice line</property>
+  <property name="notes">Some extra notes on invoice lines</property>
+  
+  <field concept="commerce-product-code" min="0" max="1" />
+  <field concept="commerce-product-description" min="0" max="1" />
+  <field concept="commerce-quantity" min="0" max="1" />
+</sectionType>
