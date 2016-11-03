@@ -5,7 +5,9 @@
 <h2>Projects</h2>
 <ul>
 {% for project in projects %}
+  {% if project.getListed() %}
   <li><a href="/{{ project.getId() }}">{{ project.getId() }}</a></li>
+  {% endif %}
 {% endfor %}
 </ul>
 {% endblock %}

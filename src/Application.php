@@ -48,6 +48,9 @@ class Application extends SilexApplication
             }
             $project = new Project();
             $projectLoader->loadFile($filename, $project);
+            if (isset($projectData['unlisted'])) {
+                $project->setListed(false);
+            }
             $this->addProject($project);
         }
     }

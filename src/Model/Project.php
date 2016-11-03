@@ -16,6 +16,7 @@ class Project
     protected $views = [];
     protected $mappings = [];
     protected $basePath;
+    protected $listed = true;
     
     public function getId()
     {
@@ -201,4 +202,16 @@ class Project
         }
         return $views;
     }
+    
+    public function getListed()
+    {
+        return $this->listed;
+    }
+    
+    public function setListed($listed)
+    {
+        $this->listed = $listed;
+        return $this;
+    }
+    
 }
