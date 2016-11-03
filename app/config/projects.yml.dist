@@ -1,8 +1,13 @@
 ---
+include_paths:
+  - /my/realm/projects
+  - /other/realm/projects
+  
 projects:
   -
     type: realm
     filename: ../example/realm.xml
   -
-    type: decor
-    filename: ../other/decor.xml
+    type: realm
+    filename: ../example2/realm.xml
+    unlisted: true
