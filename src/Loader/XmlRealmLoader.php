@@ -10,12 +10,15 @@ use Realm\Model\ConceptMappingItem;
 use Realm\Model\Resource;
 use Realm\Model\ResourceSection;
 use Realm\Model\Project;
+use Realm\Model\Fusion;
 use Realm\Model\Property;
 use Realm\Model\Codelist;
 use Realm\Model\CodelistItem;
 use Realm\Model\SectionType;
 use Realm\Model\SectionFieldType;
 use Realm\Loader\XmlResourceLoader;
+use Realm\Loader\XmlFusionLoader;
+use Realm\Loader\XmlViewLoader;
 use RuntimeException;
 
 class XmlRealmLoader
@@ -120,6 +123,19 @@ class XmlRealmLoader
             $project->addResource($resource);
         }
 
+        $fusionLoader = new XmlFusionLoader();
+        $files = glob($basePath . '/fusions/*.xml');
+        foreach ($files as $filename) {
+            $fusion = $fusionLoader->loadFile($filename, $project);
+            $project->addFusion($fusion);
+        }
+
+        $viewLoader = new XmlViewLoader();
+        $files = glob($basePath . '/views/*.xml');
+        foreach ($files as $filename) {
+            $view = $viewLoader->loadFile($filename, $project);
+            $project->addView($view);
+        }
 
         return $project;
     }
@@ -176,8 +192,6 @@ class XmlRealmLoader
         $sectionType = new SectionType();
         $sectionType->setId((string)$root['id']);
         $sectionType->setLabel((string)$root['label']);
-        $sectionType->setLabelPl((string)$root['label_pl']);
-        $sectionType->setType((string)$root['type']);
         $this->loadProperties($root, $sectionType);
         foreach ($root->field as $fNode) {
             $field = new SectionFieldType();
@@ -185,10 +199,6 @@ class XmlRealmLoader
             $field->setConcept($concept);
             $field->setMin((string)$fNode['min']);
             $field->setMax((string)$fNode['max']);
-            $field->setListed((string)$fNode['listed']);
-            $field->setListLink((string)$fNode['list-link']);
-            $field->setListHeader((string)$fNode['list-header']);
-            
             $sectionType->addField($field);
         }
         //print_r($sectionType); exit();

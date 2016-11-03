@@ -1,0 +1,26 @@
+<h4>Views <small>{{ project.getViewsByType('fusion')|length }}</small></h4>
+<ul class="list-unstyled">
+  {% for view in project.getViewsByType('fusion') %}
+  <a style="line-height: 1;" href="/{{project.getId()}}/fusions/{{fusion.getId()}}/views/{{ view.getId() }}">
+    <li style="margin-bottom: 5px; line-height: 1; border: 1px solid #e0e0e0; padding: 10px 10px 10px 10px;">
+      <b>{{ view.getLabel() }}</b><br />
+    </li>
+  </a>
+  {% endfor %}
+</ul>
+  
+<h4>Sections <small>{{ fusion.getSections()|length }}</small></h4>
+<ul class="list-unstyled">
+{% for section in fusion.getSections() %}
+<a style="line-height: 1;" href="/{{project.getId()}}/fusions/{{fusion.getId()}}/sections/{{ section.getId() }}">
+<li style="margin-bottom: 5px; line-height: 1; border: 1px solid #e0e0e0; padding: 3px;">
+  <img src="{{ section.getResource().getSource().getLogoUrl() }}" style="width: 32px; float: left; margin-right: 5px;" />
+  <b>{{ section.getLabel() }}</b>
+  <br />
+  <small>
+    <i>{{ section.getPresenter().getEffectiveAt() }}</i>
+  </small>
+</li>
+</a>
+{% endfor %}
+</ul>

@@ -49,26 +49,11 @@ class XmlFormLoader
                 if ($project->hasSectionType($keyId)) {
                     $sectionType = $project->getSectionType($keyId);
                     $section->setType($sectionType);
-                    
-                    if ($sectionType->getType()=='group') {
-                        if ($resource->hasSection($sectionType->getId())) {
-                            $groupSection = $resource->getSection($sectionType->getId());
-                        } else {
-                            $groupSection = new ResourceSection();
-                            $groupSection->setId($sectionType->getId());
-                            $groupSection->setLabel($sectionType->getLabelPl());
-                            $groupSection->setType($sectionType);
-                            $groupSection->setView('master');
-                            $resource->addSection($groupSection);
-                        }
-                        $groupSection->addSection($section);
-                    }
                 }
             }
             $dt = new DateTime();
             $dt->setTimestamp((string)$sectionNode['createstamp']);
             $section->setCreatedAt($dt);
-            $section->setParent($groupSection);
 
             $this->loadResourceSectionValues($project, $section, $sectionNode->values->value);
             

@@ -194,6 +194,75 @@ class WebController
         return $response;
     }
     
+    public function fusionIndexAction(Application $app, Request $request, $projectId)
+    {
+        $data = [];
+        $data['project'] = $app->getProject($projectId);
+        $html = $this->render('fusions/index.html', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+    
+    public function fusionViewAction(Application $app, Request $request, $projectId, $fusionId, $sectionId = null)
+    {
+        $data = [];
+        $data['project'] = $app->getProject($projectId);
+        $fusion = $data['project']->getFusion($fusionId);
+        $data['fusion'] = $fusion;
+        if ($sectionId) {
+            $section = $fusion->getSection($sectionId);
+            $data['section'] = $section;
+        }
+        $html = $this->render('fusions/view.html', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+    
+    
+    public function fusionViewViewAction(Application $app, Request $request, $projectId, $fusionId, $viewId)
+    {
+        $data = [];
+        $project = $app->getProject($projectId);
+        $data['project'] = $project;
+        $fusion = $data['project']->getFusion($fusionId);
+        $data['fusion'] = $fusion;
+        
+        /*
+        if ($sectionId) {
+            $section = $fusion->getSection($sectionId);
+            $data['section'] = $section;
+        }
+        */
+        
+        
+        $loader = new Twig_Loader_Filesystem($project->getBasePath() . '/views/');
+        $twig = new Twig_Environment($loader, array());
+        $viewData = [];
+        $viewData['fusion'] = $fusion;
+        $viewData['baseUrl'] = '/' . $projectId . '/fusions/' . $fusionId;
+        $viewHtml = $twig->render($viewId . '.html.twig', $viewData);
+        $data['viewHtml'] = $viewHtml;
+        
+        $html = $this->render('fusions/viewview.html', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+    
     private function render($templatename, $data = array())
     {
         $loader = new Twig_Loader_Filesystem(__DIR__ . '/../../templates/');

@@ -12,6 +12,8 @@ class Project
     protected $codelists = [];
     protected $sectionTypes = [];
     protected $resources = [];
+    protected $fusions = [];
+    protected $views = [];
     protected $mappings = [];
     protected $basePath;
     
@@ -150,4 +152,53 @@ class Project
         return $this;
     }
     
+    public function addFusion(Fusion $fusion)
+    {
+        $this->fusions[$fusion->getId()] = $fusion;
+        return $this;
+    }
+    
+    public function getFusions()
+    {
+        return $this->fusions;
+    }
+    
+    public function getFusion($id)
+    {
+        return $this->fusions[$id];
+    }
+    
+    public function addView(View $view)
+    {
+        $this->views[$view->getId()] = $view;
+        return $this;
+    }
+    
+    public function getViews()
+    {
+        $views = $this->views;
+        usort(
+            $views,
+            function ($a, $b) {
+                return $a->getPriority() > $b->getPriority();
+            }
+        );
+        return $views;
+    }
+    
+    public function getView($id)
+    {
+        return $this->views[$id];
+    }
+    
+    public function getViewsByType($type)
+    {
+        $views = [];
+        foreach ($this->getViews() as $view) {
+            if ($view->getType() == $type) {
+                $views[] = $view;
+            }
+        }
+        return $views;
+    }
 }

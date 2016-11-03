@@ -13,7 +13,9 @@ use Realm\Model\Codelist;
 use Realm\Model\CodelistItem;
 use Realm\Model\SectionType;
 use Realm\Model\SectionFieldType;
+use Realm\Model\Source;
 use RuntimeException;
+use DateTime;
 
 class XmlResourceLoader
 {
@@ -35,21 +37,32 @@ class XmlResourceLoader
         $resource->setId((string)$root['id']);
         //$this->loadProperties($root, $sectionType);
 
-        foreach ($root->section as $sectionNode) {
+        foreach ($root->sections->section as $sectionNode) {
             $section = new ResourceSection();
+            $section->setResource($resource);
             $section->setId((string)$sectionNode['id']);
             $section->setLabel((string)$sectionNode['label']);
+            $dt = new DateTime();
+            $dt->setTimestamp((int)$sectionNode['effectiveStamp']);
+            $section->setEffectiveAt($dt);
             
             if (isset($sectionNode['type'])) {
                 $sectionType = $project->getSectionType((string)$sectionNode['type']);
                 $section->setType($sectionType);
             }
 
-            $this->loadResourceSectionValues($project, $section, $sectionNode->value);
+            $this->loadResourceSectionValues($project, $section, $sectionNode->values->value);
             
             $resource->addSection($section);
         }
-        //print_r($sectionType); exit();
+        
+        if ($root->source) {
+            $source = new Source();
+            $source->setId((string)$root->source['id']);
+            $source->setDisplayName((string)$root->source['displayName']);
+            $source->setLogoUrl((string)$root->source['logoUrl']);
+            $resource->setSource($source);
+        }
         return $resource;
     }
     
@@ -57,6 +70,7 @@ class XmlResourceLoader
     {
         foreach ($valueNodes as $valueNode) {
             $value = new Value();
+            $value->setSection($section);
             $value->setLabel((string)$valueNode['label']);
             $value->setValue((string)$valueNode['value']);
             if (isset($valueNode['concept'])) {

@@ -73,9 +73,28 @@ $app->match(
 )->method('GET|POST');
 
 $app->match(
-    '/{projectId}/resources/{resourceId}/{sectionId}',
+    '/{projectId}/resources/{resourceId}/sections/{sectionId}',
     'Realm\\Controller\\WebController::resourceViewAction'
 )->method('GET|POST');
 
+$app->match(
+    '/{projectId}/fusions',
+    'Realm\\Controller\\WebController::fusionIndexAction'
+)->method('GET|POST');
+
+$app->match(
+    '/{projectId}/fusions/{fusionId}',
+    'Realm\\Controller\\WebController::fusionViewAction'
+)->method('GET|POST');
+
+$app->match(
+    '/{projectId}/fusions/{fusionId}/sections/{sectionId}',
+    'Realm\\Controller\\WebController::fusionViewAction'
+)->method('GET|POST');
+
+$app->match(
+    '/{projectId}/fusions/{fusionId}/views/{viewId}',
+    'Realm\\Controller\\WebController::fusionViewViewAction'
+)->method('GET|POST');
 
 return $app;

@@ -16,10 +16,10 @@ class ResourceSectionPresenter extends BasePresenter
         return $this->presentDate($this->presenterObject->getUpdatedAt());
     }
     
-    public function getOccurredAt()
+    public function getEffectiveAt()
     {
-        if ($this->presenterObject->getOccurredAt()) {
-            return $this->presentDate($this->presenterObject->getOccurredAt());
+        if ($this->presenterObject->getEffectiveAt()) {
+            return $this->presentDate($this->presenterObject->getEffectiveAt());
         }
         return $this->presentDate($this->presenterObject->getCreatedAt());
     }
@@ -27,9 +27,9 @@ class ResourceSectionPresenter extends BasePresenter
     protected function presentDate($d)
     {
         if (!$d) {
-            return '-';
+            return '-/-/-';
         }
-        return $d->format('d-m-Y');
+        return $d->format('d-m-Y H:i');
     }
     
     public function presentValueByField($field)

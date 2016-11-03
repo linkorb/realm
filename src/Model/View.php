@@ -2,12 +2,12 @@
 
 namespace Realm\Model;
 
-class SectionType
+class View
 {
-    use PropertyTrait;
     protected $id;
+    protected $type; // fusion, resource, section
     protected $label;
-    protected $fields = [];
+    protected $priority;
     
     public function getId()
     {
@@ -20,15 +20,15 @@ class SectionType
         return $this;
     }
     
-    public function addField(SectionFieldType $field)
+    public function getType()
     {
-        $this->fields[] = $field;
-        return $this;
+        return $this->type;
     }
-
-    public function getFields()
+    
+    public function setType($type)
     {
-        return $this->fields;
+        $this->type = $type;
+        return $this;
     }
     
     public function getLabel()
@@ -39,6 +39,17 @@ class SectionType
     public function setLabel($label)
     {
         $this->label = $label;
+        return $this;
+    }
+    
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+    
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
         return $this;
     }
 }

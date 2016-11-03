@@ -8,6 +8,7 @@ class Resource
 {
     protected $id;
     protected $sections = [];
+    protected $source;
     
     public function getId()
     {
@@ -19,7 +20,6 @@ class Resource
         $this->id = $id;
         return $this;
     }
-    
     
     public function addSection(ResourceSection $section)
     {
@@ -42,5 +42,17 @@ class Resource
             throw new RuntimeException("No such sectionId: " . $id);
         }
         return $this->sections[$id];
+    }
+    
+    
+    public function getSource()
+    {
+        return $this->source;
+    }
+    
+    public function setSource(Source $source)
+    {
+        $this->source = $source;
+        return $this;
     }
 }

@@ -1,0 +1,14 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+<h3>Fusions</h3>
+<table class="table">
+{% for fusion in project.getFusions() %}
+<tr>
+  <td>
+    <a href="/{{ project.getId() }}/fusions/{{ fusion.getId() }}">{{ fusion.getId() }}</a><br />
+  </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

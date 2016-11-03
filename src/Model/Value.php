@@ -12,8 +12,21 @@ class Value
     protected $concept;
     protected $sourceConceptId;
     protected $sourceValue;
+    protected $section; // parent
     
     use PresenterTrait;
+    
+    public function getSection()
+    {
+        return $this->section;
+    }
+    
+    public function setSection($section)
+    {
+        $this->section = $section;
+        return $this;
+    }
+    
     
     public function getConcept()
     {

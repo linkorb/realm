@@ -13,11 +13,8 @@ class ResourceSection
     protected $values = [];
     protected $created_at;
     protected $updated_at;
-    protected $occurred_at;
-    protected $view = 'detail'; // master or detail
-    protected $parent; // for section hierarchy
-    
-    protected $sections = [];
+    protected $effective_at;
+    protected $resource;
         
     use PresenterTrait;
     
@@ -82,13 +79,6 @@ class ResourceSection
         }
     }
     
-    /*
-    public function getSections()
-    {
-        return $this->sections;
-    }
-    */
-    
     public function getCreatedAt()
     {
         return $this->created_at;
@@ -111,14 +101,14 @@ class ResourceSection
         return $this;
     }
     
-    public function getOccurredAt()
+    public function getEffectiveAt()
     {
-        return $this->occurred_at;
+        return $this->effective_at;
     }
     
-    public function setOccurredAt($occurred_at)
+    public function setEffectiveAt($effective_at)
     {
-        $this->occurred_at = $occurred_at;
+        $this->effective_at = $effective_at;
         return $this;
     }
     
@@ -133,43 +123,14 @@ class ResourceSection
         return $this;
     }
     
-    
-    
-    public function addSection(ResourceSection $section)
+    public function getResource()
     {
-        $this->sections[$section->getId()] = $section;
-        return $this;
+        return $this->resource;
     }
     
-    public function getSections()
+    public function setResource(Resource $resource)
     {
-        return $this->sections;
-    }
-    
-    public function getSection($id)
-    {
-        return $this->sections[$id];
-    }
-    
-    public function getView()
-    {
-        return $this->view;
-    }
-    
-    public function setView($view)
-    {
-        $this->view = $view;
-        return $this;
-    }
-    
-    public function getParent()
-    {
-        return $this->parent;
-    }
-    
-    public function setParent($parent)
-    {
-        $this->parent = $parent;
+        $this->resource = $resource;
         return $this;
     }
     

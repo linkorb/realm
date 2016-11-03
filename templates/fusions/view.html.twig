@@ -1,24 +1,9 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
-{#
-<h3>Resource: {{ resource.getId }}</h3>
-<dl>
-  <dt>ID</dt><dd>{{ resource.getId }}</dd>
-</dl>
-
-
-<h3>Properties</h3>
-<ul>
-{% for property in resource.getProperties() %}
-  <li><span class="badge">{{ property.getLanguage() }}</span> <b>{{ property.getName() }}</b>: {{ property.getValue() }}</li>
-{% endfor %}
-</ul>
-#}
-
 <div class="row">
   <div class="col-md-3">
-    {% include 'navbar-resource.html.twig' %}
+    {% include 'navbar-fusion.html.twig' %}
   </div>
   
   <div class="col-md-6">
@@ -28,7 +13,11 @@
   </div>
   <div class="col-md-3">
     <div style="border: 2px solid #f0f0f0; background-color: #f8f8f8; min-height: 200px; padding: 0px 10px 0px 10px">
-      <h4>Resource</h4>
+      <h4>Fusion</h4>
+      {% for resource in fusion.getResources() %}
+      <h5>Resource</h5>
+      {{ resource.getId() }}
+      
       <h5>Source</h5>
       {% if resource.getSource() %}
       <dl>
@@ -37,6 +26,10 @@
         <dt>Logo</dt><dd><img src="{{ resource.getSource().getLogoUrl() }}" style="width: 100%"/></dd>
       </dl>
       {% endif %}
+      {% endfor %}
+
+
+
     </div>
   </div>
 

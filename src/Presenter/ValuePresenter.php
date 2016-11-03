@@ -12,7 +12,7 @@ class ValuePresenter extends BasePresenter
             return $this->presenterObject->getLabel();
         }
         if ($this->presenterObject->getConcept()) {
-            return $this->presenterObject->getConcept()->getLabel();
+            return $this->presenterObject->getConcept()->getShortName();
         }
         return null;
     }
@@ -45,7 +45,7 @@ class ValuePresenter extends BasePresenter
             }
         }
         // last resort, return raw value
-        if (!$value) {
+        if ($value === null) {
             return '-';
         }
         return $value;
