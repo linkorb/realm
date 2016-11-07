@@ -140,7 +140,8 @@ class XmlRealmLoader
                 (string)$importNode['id'],
                 (string)$importNode['value'],
                 (string)$importNode['name'],
-                (string)$importNode['language']
+                (string)$importNode['language'],
+                (string)$importNode['delimiter']
             );
         }
         

@@ -10,16 +10,31 @@ use RuntimeException;
 
 class CsvPropertyLoader
 {
-    public function loadFile($filename, Project $project, $type, $idColumn, $valueColumn, $propertyName, $propertyLanguage)
+    public function loadFile(
+        $filename,
+        Project $project,
+        $type,
+        $idColumn,
+        $valueColumn,
+        $propertyName,
+        $propertyLanguage,
+        $delimiter
+    )
     {
+        if ($delimiter == '') {
+            $delimiter = ';';
+        }
+        if ($delimiter == 'TAB') {
+            $delimiter = "\t";
+        }
         $filename = $project->getBasePath() . '/' . $filename;
         if (!file_exists($filename)) {
             throw new RuntimeException("File not found: " . $filename);
         }
         $handle = fopen($filename, "r");
-        $headers = $row = fgetcsv($handle, 1000, ";");
+        $headers = $row = fgetcsv($handle, 10000, $delimiter);
         
-        while (($row = fgetcsv($handle, 1000, ";")) !== false) {
+        while (($row = fgetcsv($handle, 10000, $delimiter)) !== false) {
             // map to assoc array by header names
             $row = array_combine($headers, $row);
             $id = $row[$idColumn];
