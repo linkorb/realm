@@ -5,7 +5,7 @@ Realm is a framework for defining domain models.
 
 It allows you to define:
 
-* Concepts: 
+* Concepts
 * Codelists
 * Mappings
 * Section Types
@@ -14,10 +14,12 @@ It allows you to define:
 
 ## Running the viewer
 
-  git clone git@github.com:linkorb/realm.git
-  cd realm
-  composer install
-  php -S 0.0.0.0:8080 -t web/
+Run the following commands in your console:
+
+    git clone git@github.com:linkorb/realm.git
+    cd realm
+    composer install
+    php -S 0.0.0.0:8080 -t web/
   
 The Realm viewer is now accessible using your browser by navigating to [http://127.0.0.1:8080](http://127.0.0.1:8080)
 
