@@ -36,22 +36,36 @@ class CsvPropertyLoader
         
         while (($row = fgetcsv($handle, 10000, $delimiter)) !== false) {
             // map to assoc array by header names
-            $row = array_combine($headers, $row);
-            $id = $row[$idColumn];
-            $value = $row[$valueColumn];
-            
-            switch ($type) {
-                case 'concept':
-                    $obj = $project->getConcept($id);
-                    break;
-                default:
-                    throw new RuntimeException("Unsupported type: " . $type);
+            while (count($row)<count($headers)) {
+                $row[] = '';
             }
-            $property = new Property();
-            $property->setName($propertyName);
-            $property->setLanguage($propertyLanguage);
-            $property->setValue($value);
-            $obj->addProperty($property);
+            if (count($row)!=count($headers)) {
+                throw new RuntimeException("Column / header count mismatch");
+                print_r($row);
+                exit();
+            }
+
+            $row = array_combine($headers, $row);
+            if (isset($row[$idColumn])) {
+                $id = $row[$idColumn];
+                if ($id!='') {
+                    $value = $row[$valueColumn];
+                    
+                    switch ($type) {
+                        case 'concept':
+                            $obj = $project->getConcept($id);
+                            break;
+                        default:
+                            throw new RuntimeException("Unsupported type: " . $type);
+                    }
+                    $property = new Property();
+                    $property->setName($propertyName);
+                    $property->setLanguage($propertyLanguage);
+                    $property->setValue($value);
+                    $obj->addProperty($property);
+                }
+                
+            }
         }
         fclose($handle);
         return $project;
