@@ -1,4 +1,11 @@
 <realm id="commerce">
   <property name="definition" language="en-US">Definitions for the commerce realm</property>
   <property name="notes" language="en-US">Some notes on this realm</property>
+  <import
+      type="concept"
+      filename="data/tooltips.tsv"
+      language="en-US"
+      name="tooltip"
+      id="concept"
+      value="value" />
 </realm>

@@ -19,6 +19,7 @@ use Realm\Model\SectionFieldType;
 use Realm\Loader\XmlResourceLoader;
 use Realm\Loader\XmlFusionLoader;
 use Realm\Loader\XmlViewLoader;
+use Realm\Loader\CsvPropertyLoader;
 use RuntimeException;
 
 class XmlRealmLoader
@@ -30,9 +31,9 @@ class XmlRealmLoader
         }
         $basePath = dirname($filename);
         $xml = file_get_contents($filename);
-        $root = simplexml_load_string($xml);
+        $realmRoot = simplexml_load_string($xml);
         
-        foreach ($root->dependency as $dependencyNode) {
+        foreach ($realmRoot->dependency as $dependencyNode) {
             $name = (string)$dependencyNode['name'];
             $filename = stream_resolve_include_path($name . '/realm.xml');
             if (!$filename) {
@@ -46,7 +47,7 @@ class XmlRealmLoader
             $this->loadFile($filename, $project);
         }
         $project->setBasePath($basePath);
-        $this->loadProject($root, $project);
+        $this->loadProject($realmRoot, $project);
 
         $files = glob($basePath . '/codelists/*.xml');
         foreach ($files as $filename) {
@@ -126,6 +127,23 @@ class XmlRealmLoader
             $view = $viewLoader->loadFile($filename, $project);
             $project->addView($view);
         }
+        
+        
+        
+        $csvPropertyLoader = new CsvPropertyLoader();
+        foreach ($realmRoot->import as $importNode) {
+            $filename = (string)$importNode['filename'];
+            $csvPropertyLoader->loadFile(
+                $filename,
+                $project,
+                'concept',
+                (string)$importNode['id'],
+                (string)$importNode['value'],
+                (string)$importNode['name'],
+                (string)$importNode['language']
+            );
+        }
+        
 
         return $project;
     }
