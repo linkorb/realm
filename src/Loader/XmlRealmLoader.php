@@ -187,6 +187,7 @@ class XmlRealmLoader
         $concept->setDataType((string)$root['dataType']);
         $concept->setLengthMax((string)$root['lengthMax']);
         $concept->setLengthMin((string)$root['lengthMin']);
+        $concept->setStatus((string)$root['status']);
         if (isset($root['codelist'])) {
             $codelistName = (string)$root['codelist'];
             $codelist = $project->getCodelist($codelistName);
