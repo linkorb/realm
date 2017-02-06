@@ -3,6 +3,7 @@
 namespace Realm\Presenter;
 
 use LinkORB\Presenter\BasePresenter;
+use RuntimeException;
 
 class ValuePresenter extends BasePresenter
 {
@@ -40,6 +41,13 @@ class ValuePresenter extends BasePresenter
                     break;
                 case 'code':
                     $codelist = $concept->getCodelist();
+                    if (!$codelist) {
+                        throw new RuntimeException("Type code with undefined codelist");
+                    }
+                    if (!$codelist->hasItem($value)) {
+                        //throw new RuntimeException("No such codelist item: " . $value);
+                        return '???';
+                    }
                     $item = $codelist->getItem($value);
                     if ($item) {
                         return $item->getDisplayName();
