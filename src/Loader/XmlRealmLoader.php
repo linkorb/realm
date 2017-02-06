@@ -245,6 +245,9 @@ class XmlRealmLoader
                 $mapping->setComment((string)$mappingNode['comment']);
                 if ($mappingNode->item) {
                     $codelist = $concept->getCodelist();
+                    if (!$codelist) {
+                        throw new RuntimeException("Mapping id " . $mapping->getId() . " for concept without codelist: " . $concept->getId());
+                    }
                     foreach ($mappingNode->item as $itemNode) {
                         $item = new ConceptMappingItem();
                         $item->setFrom((string)$itemNode['from']);
