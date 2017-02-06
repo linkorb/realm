@@ -26,8 +26,10 @@ class XmlRealmLoader
 {
     public function loadFile($filename, $project)
     {
+        $filenameOrg = $filename;
+        $filename = stream_resolve_include_path($filename);
         if (!file_exists($filename)) {
-            throw new RuntimeException("File not found: " . $filename);
+            throw new RuntimeException("File not found in REALM_PATH: " . $filenameOrg);
         }
         $basePath = dirname($filename);
         $xml = file_get_contents($filename);

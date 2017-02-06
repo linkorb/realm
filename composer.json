@@ -13,6 +13,7 @@
   ],
   "require": {
     "symfony/console": "~2.7",
+    "symfony/dotenv": "3.3.x-dev",
     "guzzlehttp/guzzle": "~6.0",
     "guzzlehttp/streams": "~3.0",
     "linkorb/presenter": "~1.0",
