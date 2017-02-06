@@ -78,6 +78,15 @@ class Codelist
         return $this->items;
     }
     
+    public function hasItem($code)
+    {
+        $item = $this->getItem($code);
+        if (!$item) {
+            return false;
+        }
+        return true;
+    }
+    
     public function getItem($code)
     {
         foreach ($this->items as $item) {
@@ -85,5 +94,6 @@ class Codelist
                 return $item;
             }
         }
+        return null;
     }
 }
