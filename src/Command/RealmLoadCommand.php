@@ -25,8 +25,8 @@ class RealmLoadCommand extends Command
             ->setName('realm:load')
             ->setDescription('Load realm, and output contents')
             ->addOption(
-                'filename',
-                'f',
+                'realm',
+                'r',
                 InputOption::VALUE_REQUIRED,
                 null
             )
@@ -38,14 +38,13 @@ class RealmLoadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filename = $input->getOption('filename');
-        if (!$filename) {
-            $filename = getcwd() . '/realm.xml';
+        $realmId = $input->getOption('realm');
+        if (!$realmId) {
+            throw new RuntimeException("Please pass a realm to load");
         }
-        $output->writeLn("Loading realm file: " . $filename);
-        $realm = new Project();
+        $output->writeLn("Loading realm: " . $realmId);
         $realmLoader = new XmlRealmLoader();
-        $realm = $realmLoader->loadFile($filename, $realm);
+        $realm = $realmLoader->load($realmId);
         var_dump($realm);
     }
 }
