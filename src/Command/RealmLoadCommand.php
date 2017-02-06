@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
 use Realm\Loader\XmlRealmLoader;
+use Realm\Model\Project;
 use RuntimeException;
 
 class RealmLoadCommand extends Command
@@ -42,8 +43,9 @@ class RealmLoadCommand extends Command
             $filename = getcwd() . '/realm.xml';
         }
         $output->writeLn("Loading realm file: " . $filename);
+        $realm = new Project();
         $realmLoader = new XmlRealmLoader();
-        $realm = $realmLoader->loadFile($filename);
+        $realm = $realmLoader->loadFile($filename, $realm);
         var_dump($realm);
     }
 }

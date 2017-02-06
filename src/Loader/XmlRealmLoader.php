@@ -24,7 +24,7 @@ use RuntimeException;
 
 class XmlRealmLoader
 {
-    public function loadFile($filename, $project)
+    public function loadFile($filename, Project $project)
     {
         $filenameOrg = $filename;
         $filename = stream_resolve_include_path($filename);
