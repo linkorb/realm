@@ -1,4 +1,5 @@
 .DS_Store
+.env
 output/
 app/config/projects.yml
 vendor/
