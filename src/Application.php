@@ -28,19 +28,16 @@ class Application extends SilexApplication
         $data = Yaml::parse($yaml);
         //print_r($data);
         
-        foreach ($data['include_paths'] as $path) {
-            set_include_path(get_include_path(). ':' . $path);
-        }
-        
         foreach ($data['projects'] as $projectData) {
             if (!isset($projectData['type'])) {
                 throw new RuntimeException("Project type not defined");
             }
-            if (!isset($projectData['filename'])) {
-                throw new RuntimeException("Project needs filename");
+            if (!isset($projectData['id'])) {
+                throw new RuntimeException("Project needs id");
             }
+            $projectId = $projectData['id'];
             $projectType = $projectData['type'];
-            $filename = $projectData['filename'];
+            //$filename = $projectData['filename'];
             switch ($projectType) {
                 case 'realm':
                     $projectLoader = new XmlRealmLoader();
@@ -52,7 +49,8 @@ class Application extends SilexApplication
                     throw new RuntimeException("Invalid project type: " . $projectType);
             }
             $project = new Project();
-            $projectLoader->loadFile($filename, $project);
+            $projectLoader->load($projectId, $project);
+            //$projectLoader->loadFile($filename, $project);
             if (isset($projectData['unlisted'])) {
                 $project->setListed(false);
             }

@@ -21,7 +21,6 @@ if (!file_exists($loader)) {
 require $loader;
 
 $envFilename = __DIR__ . '/../.env';
-
 if (file_exists($envFilename)) {
     $dotenv = new Dotenv();
     $dotenv->load($envFilename);
