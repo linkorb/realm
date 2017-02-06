@@ -24,6 +24,20 @@ use RuntimeException;
 
 class XmlRealmLoader
 {
+    public function load($realmId)
+    {
+        $filename = stream_resolve_include_path($realmId . '/realm.xml');
+        if (!$filename) {
+            $filename = stream_resolve_include_path('realm-' . $realmId . '/realm.xml');
+            
+            if (!$filename) {
+                throw new RuntimeException("Realm ID `$realmId` not in REALM_PATH");
+            }
+        }
+        $project = new Project();
+        return $this->loadFile($filename, $project);
+    }
+    
     public function loadFile($filename, Project $project)
     {
         $filenameOrg = $filename;

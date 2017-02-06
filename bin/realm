@@ -35,4 +35,5 @@ $application = new Application('Realm', '1.0.0');
 $application->setCatchExceptions(true);
 $application->add(new \Realm\Command\RealmLoadCommand());
 $application->add(new \Realm\Command\DecorConvertCommand());
+$application->add(new \Realm\Command\SpreadsheetExampleCommand());
 $application->run();
