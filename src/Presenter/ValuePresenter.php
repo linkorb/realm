@@ -12,7 +12,10 @@ class ValuePresenter extends BasePresenter
             return $this->presenterObject->getLabel();
         }
         if ($this->presenterObject->getConcept()) {
-            return $this->presenterObject->getConcept()->getShortName();
+            $label = $this->presenterObject->getConcept()->getShortName();
+            $label = str_replace('_', ' ', $label);
+            $label = ucfirst($label);
+            return $label;
         }
         return null;
     }
