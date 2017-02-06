@@ -13,6 +13,7 @@ class Value
     protected $sourceConceptId;
     protected $sourceValue;
     protected $section; // parent
+    protected $repeatId;
     
     use PresenterTrait;
     
@@ -95,5 +96,14 @@ class Value
         return $this;
     }
     
+    public function getRepeatId()
+    {
+        return $this->repeatId;
+    }
     
+    public function setRepeatId($repeatId)
+    {
+        $this->repeatId = $repeatId;
+        return $this;
+    }
 }
