@@ -89,13 +89,13 @@ $app->match(
 
 $app->match(
     '/{projectId}/fusions/{fusionId}/sections/{sectionId}',
-    'Realm\\Controller\\WebController::fusionViewAction'
+    'Realm\\Controller\\WebController::fusionSectionAction'
 )->method('GET|POST')->bind('fusion_section');
 
 $app->match(
     '/{projectId}/fusions/{fusionId}/views/{viewId}',
     'Realm\\Controller\\WebController::fusionViewViewAction'
-)->method('GET|POST');
+)->method('GET|POST')->bind('fusion_view');
 
 $app->before(function (Request $request, Application $app) {
     $urlGenerator = $app['url_generator'];

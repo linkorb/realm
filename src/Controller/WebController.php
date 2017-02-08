@@ -243,14 +243,40 @@ class WebController
             $data['section'] = $section;
         }
         */
-        
-        
-        $loader = new Twig_Loader_Filesystem($project->getBasePath() . '/views/');
-        $twig = new Twig_Environment($loader, array());
+
         $viewData = [];
         $viewData['fusion'] = $fusion;
         $viewData['baseUrl'] = '/' . $projectId . '/fusions/' . $fusionId;
         $viewHtml = $app['twig']->render('@Realm-' . $project->getId() . '/' . $viewId . '.html.twig', $viewData);
+        $data['viewHtml'] = $viewHtml;
+        $html = $app['twig']->render('fusions/viewview.html.twig', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+    
+    public function fusionSectionAction(Application $app, Request $request, $projectId, $fusionId, $sectionId)
+    {
+        $data = [];
+        $project = $app->getProject($projectId);
+        $data['project'] = $project;
+        $fusion = $data['project']->getFusion($fusionId);
+        $data['fusion'] = $fusion;
+        
+        $sectionTypeId = $fusion->getSection($sectionId)->getType()->getId();
+        $sectionType = $project->getSectionType($sectionTypeId);
+        $section = $fusion->getSection($sectionId);
+        
+        $viewData = [];
+        $viewData['fusion'] = $fusion;
+        $viewData['section'] = $section;
+        
+        $viewData['baseUrl'] = '/' . $projectId . '/fusions/' . $fusionId;
+        $viewHtml = $app['twig']->render('@Realm-' . $project->getId() . '/section-types/' . $sectionTypeId . '.html.twig', $viewData);
         $data['viewHtml'] = $viewHtml;
         $html = $app['twig']->render('fusions/viewview.html.twig', $data);
 
