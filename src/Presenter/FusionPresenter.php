@@ -19,30 +19,36 @@ class FusionPresenter extends BasePresenter
             }
         }
         $html = '';
+        $multiple = false;
         foreach ($uniqueValues as $value) {
             if ($html !='') {
                 $html .= ' / ';
+                $multiple = true;
             }
             $html .= $value->getPresenter()->getDisplayValue();
         }
         $visor = '<div class="realm-visor">';
         $visor .= '<table class="table">';
         $visor .= '<tr>';
-        $visor .= '<th colspan="2">Source</th>';
-        $visor .= '<th>Date/time</th>';
-        $visor .= '<th>Value</th>';
+        $visor .= '<th colspan="2">Bron</th>';
+        //$visor .= '<th>Datum</th>';
+        $visor .= '<th>Waarde</th>';
         $visor .= '</tr>';
         
         foreach ($values as $value) {
             $visor .= '<tr>';
             $visor .= '<td><img src="' . $value->getSection()->getResource()->getSource()->getLogoUrl() . '" /></td>';
-            $visor .= '<td style="white-space: nowrap;">' . $value->getSection()->getResource()->getSource()->getDisplayName() . '</td>';
-            $visor .= '<td style="white-space: nowrap;">' . $value->getSection()->getPresenter()->getEffectiveAt() . '</td>';
+            $visor .= '<td style="white-space: nowrap;">' . $value->getSection()->getResource()->getSource()->getDisplayName();
+            $visor .= '<br /><span class="date">' . $value->getSection()->getPresenter()->getEffectiveAt() . '</span>';
+            $visor .= '</td>';
             $visor .= '<td><b>' . $value->getPresenter()->getDisplayValue() . '</b></td>';
             $visor .= '</tr>';
         }
         $visor .= '</table>';
         $visor .= '</div>';
+        if ($multiple) {
+            $html = '<span class="err">' . $html . '</span>';
+        }
         $html = '<span class="realm-value">' . $html . $visor . '</span>';
         return $html;
     }
@@ -75,7 +81,7 @@ class FusionPresenter extends BasePresenter
         $html .= htmlentities($property->getValue());
         $html .= "</div>";
 
-        $html .= "<a href=\"#\" onclick=\"$('#tooltip_" . $conceptId . "').toggle(); return false;\">";
+        $html .= "<a class=\"realm-tooltip-link\" href=\"#\" onclick=\"$('#tooltip_" . $conceptId . "').toggle(); return false;\">";
         $html .= "<i class=\"fa fa-question-circle\"></i>";
         $html .= "</a>";
         return $html;
