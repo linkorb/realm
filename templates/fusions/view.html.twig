@@ -1,14 +1,14 @@
-{% extends "layout.html.twig" %}
+{% extends "@Theme/layout.html.twig" %}
 
 {% block content %}
 <div class="row">
   <div class="col-md-3">
-    {% include 'navbar-fusion.html.twig' %}
+    {% include '@Realm/navbar-fusion.html.twig' %}
   </div>
   
   <div class="col-md-6">
     {% if section %}
-      {% include 'section.html.twig' %}
+      {% include '@Realm/section.html.twig' %}
     {% endif %}
   </div>
   <div class="col-md-3">

@@ -1,0 +1,33 @@
+.buttonbox {
+    margin-top: 10px;
+    text-align: right;
+    background-color: #f0f0f0;
+    border-color: #808080;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.meta {
+  background-color: #F1C40F;
+  border-radius: 5px;
+  padding: 0 5px 0 5px;
+  margin-bottom: 5px;
+  font-size: 75%;
+}
+
+fieldset {
+  border: 2px solid #e0e0e0 !important;
+  padding: 0 20px 0px 20px !important;
+  margin: 0px !important;
+}
+
+legend {
+  width:inherit; /* Or auto */
+  padding: 0 10px 0 10px;
+  border-bottom:none;
+  margin: 0px;
+}
+
+dt .fa {
+  margin-left: 5px;
+}

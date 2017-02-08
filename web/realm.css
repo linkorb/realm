@@ -1,0 +1,42 @@
+.realm-visor {
+  position: absolute;
+  border: 1px solid;
+  background-color: #f0f0f0;
+  padding: 0px 4px 0px 4px;
+  margin-left: 50px;
+  z-index: 100;
+}
+.realm-visor img {
+  width: 32px;
+}
+.realm-value {
+  cursor: pointer;
+}
+.realm-value .realm-visor {
+  display: none;
+  
+}
+.realm-value-hover .realm-visor {
+  display: block;
+}
+
+span.realm-value {
+  border: 2px solid #f0f0f0;
+  display: block;
+  padding: 0px 5px 0px 5px;
+  border-radius: 5px;
+}
+
+.realm-tooltip {
+  position: absolute;
+  display: block;
+  width: 250px;
+  margin-left: 50px;
+  background-color: #fffff0;
+  border: 2px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 5px;
+  z-index: 100;
+  font-weight: normal;
+  font-size: 75%;
+}

@@ -266,6 +266,14 @@ class WebController
     private function render($templatename, $data = array())
     {
         $loader = new Twig_Loader_Filesystem(__DIR__ . '/../../templates/');
+        $loader->addPath(
+            __DIR__ . '/../../templates',
+            'Realm'
+        );
+        $loader->addPath(
+            __DIR__ . '/../../themes/default',
+            'Theme'
+        );
         $twig = new Twig_Environment($loader, array());
         return $twig->render($templatename . '.twig', $data);
     }
