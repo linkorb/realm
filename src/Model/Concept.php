@@ -2,6 +2,8 @@
 
 namespace Realm\Model;
 
+use LinkORB\Presenter\PresenterTrait;
+
 class Concept
 {
     protected $id;
@@ -16,6 +18,7 @@ class Concept
     protected $parent;
 
     use PropertyTrait;
+    use PresenterTrait;
     
     public function getId()
     {

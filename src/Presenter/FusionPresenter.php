@@ -65,28 +65,6 @@ class FusionPresenter extends BasePresenter
         return null;
     }
     
-    public function getTooltip($conceptId)
-    {
-        $concept = $this->getConcept($conceptId);
-        if (!$concept) {
-            return '';
-        }
-        if (!$concept->hasProperty('tooltip')) {
-            return '';
-        }
-        
-        $html = '';
-        $property = $concept->getProperty('tooltip');
-        $html .= "<div class=\"realm-tooltip\" id=\"tooltip_" . $conceptId . "\" style=\"display: none;\">";
-        $html .= htmlentities($property->getValue());
-        $html .= "</div>";
-
-        $html .= "<a class=\"realm-tooltip-link\" href=\"#\" onclick=\"$('#tooltip_" . $conceptId . "').toggle(); return false;\">";
-        $html .= "<i class=\"fa fa-question-circle\"></i>";
-        $html .= "</a>";
-        return $html;
-    }
-    
     public function presentConcept($conceptId, $label = '')
     {
         $concept = $this->getConcept($conceptId);
@@ -95,7 +73,9 @@ class FusionPresenter extends BasePresenter
         }
         $html = '';
         $html .= '<dt>' . $label;
-        $html .= $this->getTooltip($conceptId);
+        if ($concept) {
+            $html .= $concept->getPresenter()->presentTooltip();
+        }
         $html .= '</dt>';
         $html .= '<dd>' . $this->presentValueByConceptId($conceptId) . '</dd>';
         return $html;

@@ -53,4 +53,28 @@ class ResourceSectionPresenter extends BasePresenter
         }
         return '-';
     }
+    
+    public function presentConcept($conceptId, $label = '')
+    {
+        if (!$this->presenterObject->hasValue($conceptId)) {
+            return '---';
+        }
+        $value = $this->presenterObject->getValue($conceptId);
+            
+
+        $concept = $value->getConcept();
+        if ($label == '') {
+            $label = $concept->getShortName();
+        }
+        $html = '';
+        $html .= '<dt>' . $label;
+        $html .= $concept->getPresenter()->presentTooltip();
+        $html .= '</dt>';
+        $valueText = $value->getPresenter()->getValue();
+        if (!$valueText) {
+            $valueText = '-';
+        }
+        $html .= '<dd><span class="realm-value">' . $valueText . '</span></dd>';
+        return $html;
+    }
 }
