@@ -19,7 +19,7 @@ class WebController
     {
         $data = [];
         $data['projects'] = $app->getProjects();
-        $html = $this->render('index.html', $data);
+        $html = $app['twig']->render('index.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -33,7 +33,7 @@ class WebController
     {
         $data = [];
         $data['project'] = $app->getProject($projectId);
-        $html = $this->render('project.html', $data);
+        $html = $app['twig']->render('project.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -47,7 +47,7 @@ class WebController
     {
         $data = [];
         $data['project'] = $app->getProject($projectId);
-        $html = $this->render('concepts/index.html', $data);
+        $html = $app['twig']->render('concepts/index.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -62,7 +62,7 @@ class WebController
         $data = [];
         $data['project'] = $app->getProject($projectId);
         $data['concept'] = $data['project']->getConcept($conceptId);
-        $html = $this->render('concepts/view.html', $data);
+        $html = $app['twig']->render('concepts/view.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -77,7 +77,7 @@ class WebController
     {
         $data = [];
         $data['project'] = $app->getProject($projectId);
-        $html = $this->render('codelists/index.html', $data);
+        $html = $app['twig']->render('codelists/index.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -92,7 +92,7 @@ class WebController
         $data = [];
         $data['project'] = $app->getProject($projectId);
         $data['codelist'] = $data['project']->getCodelist($codelistId);
-        $html = $this->render('codelists/view.html', $data);
+        $html = $app['twig']->render('codelists/view.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -106,7 +106,7 @@ class WebController
     {
         $data = [];
         $data['project'] = $app->getProject($projectId);
-        $html = $this->render('mappings/index.html', $data);
+        $html = $app['twig']->render('mappings/index.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -121,7 +121,7 @@ class WebController
         $data = [];
         $data['project'] = $app->getProject($projectId);
         $data['mapping'] = $data['project']->getMapping($mappingId);
-        $html = $this->render('mappings/view.html', $data);
+        $html = $app['twig']->render('mappings/view.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -135,7 +135,7 @@ class WebController
     {
         $data = [];
         $data['project'] = $app->getProject($projectId);
-        $html = $this->render('sectionTypes/index.html', $data);
+        $html = $app['twig']->render('sectionTypes/index.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -150,7 +150,7 @@ class WebController
         $data = [];
         $data['project'] = $app->getProject($projectId);
         $data['sectionType'] = $data['project']->getSectionType($sectionTypeId);
-        $html = $this->render('sectionTypes/view.html', $data);
+        $html = $app['twig']->render('sectionTypes/view.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -164,7 +164,7 @@ class WebController
     {
         $data = [];
         $data['project'] = $app->getProject($projectId);
-        $html = $this->render('resources/index.html', $data);
+        $html = $app['twig']->render('resources/index.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -184,7 +184,7 @@ class WebController
             $section = $resource->getSection($sectionId);
             $data['section'] = $section;
         }
-        $html = $this->render('resources/view.html', $data);
+        $html = $app['twig']->render('resources/view.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -198,7 +198,7 @@ class WebController
     {
         $data = [];
         $data['project'] = $app->getProject($projectId);
-        $html = $this->render('fusions/index.html', $data);
+        $html = $app['twig']->render('fusions/index.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -218,7 +218,7 @@ class WebController
             $section = $fusion->getSection($sectionId);
             $data['section'] = $section;
         }
-        $html = $this->render('fusions/view.html', $data);
+        $html = $app['twig']->render('fusions/view.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -250,10 +250,9 @@ class WebController
         $viewData = [];
         $viewData['fusion'] = $fusion;
         $viewData['baseUrl'] = '/' . $projectId . '/fusions/' . $fusionId;
-        $viewHtml = $twig->render($viewId . '.html.twig', $viewData);
+        $viewHtml = $app['twig']->render('@Realm-' . $project->getId() . '/' . $viewId . '.html.twig', $viewData);
         $data['viewHtml'] = $viewHtml;
-        
-        $html = $this->render('fusions/viewview.html', $data);
+        $html = $app['twig']->render('fusions/viewview.html.twig', $data);
 
         $response = new Response(
             $html,
@@ -261,20 +260,5 @@ class WebController
             array('content-type' => 'text/html')
         );
         return $response;
-    }
-    
-    private function render($templatename, $data = array())
-    {
-        $loader = new Twig_Loader_Filesystem(__DIR__ . '/../../templates/');
-        $loader->addPath(
-            __DIR__ . '/../../templates',
-            'Realm'
-        );
-        $loader->addPath(
-            __DIR__ . '/../../themes/default',
-            'Theme'
-        );
-        $twig = new Twig_Environment($loader, array());
-        return $twig->render($templatename . '.twig', $data);
     }
 }

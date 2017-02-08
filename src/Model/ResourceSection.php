@@ -68,6 +68,18 @@ class ResourceSection
         return $this->values;
     }
     
+    public function hasValue($id)
+    {
+        foreach ($this->values as $value) {
+            if ($value->getConcept()) {
+                if ($value->getConcept()->getId() == $id) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     public function getValue($id)
     {
         foreach ($this->values as $value) {

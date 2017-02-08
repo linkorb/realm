@@ -41,4 +41,16 @@ class ResourceSectionPresenter extends BasePresenter
         }
         return '-';
     }
+    
+    public function presentValueByConcept($conceptId)
+    {
+        if (!$this->presenterObject->hasValue($conceptId)) {
+            return '';
+        }
+        $value = $this->presenterObject->getValue($conceptId);
+        if ($value) {
+            return $value->getPresenter()->getDisplayValue();
+        }
+        return '-';
+    }
 }

@@ -13,15 +13,15 @@
   ],
   "require": {
     "symfony/console": "~2.7",
-    "symfony/dotenv": "3.3.x-dev",
     "guzzlehttp/guzzle": "~6.0",
     "guzzlehttp/streams": "~3.0",
-    "linkorb/presenter": "~1.0",
-    "twig/twig": "~1.0"
+    "linkorb/presenter": "~1.0"
   },
   "require-dev": {
-    "silex/silex": "2.0.*@dev",
-    "twig/twig": "1.16.*@dev",
+    "symfony/dotenv": "3.3.x-dev",
+    "silex/silex": "~2.0",
+    "twig/twig": ">=1.8,<2.0-dev",
+    "symfony/twig-bridge": "2.7.*",
     "symfony/yaml": "~2.7"
   },
   "autoload": {

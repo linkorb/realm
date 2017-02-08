@@ -1,6 +1,7 @@
 <?php
 
 use Realm\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 /** show all errors! */
 ini_set('display_errors', 1);
@@ -89,11 +90,22 @@ $app->match(
 $app->match(
     '/{projectId}/fusions/{fusionId}/sections/{sectionId}',
     'Realm\\Controller\\WebController::fusionViewAction'
-)->method('GET|POST');
+)->method('GET|POST')->bind('fusion_section');
 
 $app->match(
     '/{projectId}/fusions/{fusionId}/views/{viewId}',
     'Realm\\Controller\\WebController::fusionViewViewAction'
 )->method('GET|POST');
+
+$app->before(function (Request $request, Application $app) {
+    $urlGenerator = $app['url_generator'];
+    $urlGeneratorContext = $urlGenerator->getContext();
+
+    if ($request->attributes->has('projectId')) {
+        $projectId = $request->attributes->get('projectId');
+        $app['twig']->addGlobal('projectId', $projectId);
+        $urlGeneratorContext->setParameter('projectId', $projectId);
+    }
+});
 
 return $app;

@@ -20,6 +20,14 @@ class ValuePresenter extends BasePresenter
         }
         return null;
     }
+    
+    public function getLabelWithValue()
+    {
+        if (!$this->getDisplayValue()) {
+            return null;
+        }
+        return $this->getLabel() . ': ' . $this->getDisplayValue();
+    }
 
     public function getDisplayValue()
     {

@@ -7,7 +7,7 @@
   </div>
   
   <div class="col-md-6">
-    {% if section %}
+    {% if section is defined %}
       {% include '@Realm/section.html.twig' %}
     {% endif %}
   </div>

@@ -22,7 +22,7 @@
   </div>
   
   <div class="col-md-6">
-    {% if section %}
+    {% if section is defined %}
       {% include 'section.html.twig' %}
     {% endif %}
   </div>
