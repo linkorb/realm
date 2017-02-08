@@ -29,7 +29,7 @@ class ResourceSectionPresenter extends BasePresenter
         if (!$d) {
             return '-/-/-';
         }
-        return $d->format('d-m-Y H:i');
+        return $d->format('d-m-Y');
     }
     
     public function presentValueByField($field)
