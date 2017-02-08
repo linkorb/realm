@@ -39,6 +39,15 @@ class ValuePresenter extends BasePresenter
                     }
                     return $value;
                     break;
+                case 'boolean':
+                    switch ($value) {
+                        case 'TRUE':
+                            return 'Ja';
+                        case 'FALSE':
+                            return 'Nee';
+                    }
+                    return '???';
+                    break;
                 case 'code':
                     $codelist = $concept->getCodelist();
                     if (!$codelist) {
