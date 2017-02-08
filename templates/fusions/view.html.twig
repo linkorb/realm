@@ -13,9 +13,9 @@
   </div>
   <div class="col-md-3">
     <div style="border: 2px solid #f0f0f0; background-color: #f8f8f8; min-height: 200px; padding: 0px 10px 0px 10px">
-      <h4>Fusion</h4>
+      <h1>Fusion</h1>
       {% for resource in fusion.getResources() %}
-      <h5>Resource</h5>
+      <h2>Resource</h2>
       {{ resource.getId() }}
       
       <h5>Source</h5>
@@ -23,7 +23,7 @@
       <dl>
         <dt>ID</dt><dd>{{ resource.getSource().getId() }}</dd>
         <dt>DisplayName</dt><dd>{{ resource.getSource().getDisplayName() }}</dd>
-        <dt>Logo</dt><dd><img src="{{ resource.getSource().getLogoUrl() }}" style="width: 100%"/></dd>
+        <dt>Logo</dt><dd><img src="{{ resource.getSource().getLogoUrl() }}" style="width: 50%"/></dd>
       </dl>
       {% endif %}
       {% endfor %}

@@ -11,7 +11,6 @@ $app = new Application(
         'realm.datapath' => __DIR__ . '/example/realm.xml'
     )
 );
-
 $app->match(
     '/',
     'Realm\\Controller\\WebController::indexAction'
