@@ -34,6 +34,7 @@ class XmlResourceLoader
     public function loadResource(SimpleXMLElement $root, Project $project)
     {
         $resource = new Resource();
+        $resource->setProject($project);
         $resource->setId((string)$root['id']);
         //$this->loadProperties($root, $sectionType);
 
@@ -74,8 +75,8 @@ class XmlResourceLoader
             $value->setLabel((string)$valueNode['label']);
             $value->setValue((string)$valueNode['value']);
             if (isset($valueNode['concept'])) {
-                $concept = $project->getConcept((string)$valueNode['concept']);
-                $value->setConcept($concept);
+                //$concept = $project->getConcept();
+                $value->setConceptId((string)$valueNode['concept']);
             }
             $section->addValue($value);
         }

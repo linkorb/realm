@@ -3,15 +3,16 @@
 namespace Realm\Model;
 
 use LinkORB\Presenter\PresenterTrait;
+use RuntimeException;
 
 class Value
 {
     protected $displayValue;
     protected $value;
     protected $label;
-    protected $concept;
-    protected $sourceConceptId;
-    protected $sourceValue;
+    protected $conceptId;
+    //protected $sourceConceptId;
+    //protected $sourceValue;
     protected $section; // parent
     protected $repeatId;
     
@@ -28,16 +29,27 @@ class Value
         return $this;
     }
     
+    public function getConceptId()
+    {
+        return $this->conceptId;
+    }
+    
+    public function setConceptId($conceptId)
+    {
+        $this->conceptId = $conceptId;
+        return $this;
+    }
     
     public function getConcept()
     {
-        return $this->concept;
-    }
-    
-    public function setConcept($concept)
-    {
-        $this->concept = $concept;
-        return $this;
+        $section = $this->getSection();
+        $resource = $section->getResource();
+        $project = $resource->getProject();
+        if (!$project) {
+            throw new RuntimeException("This value's resource doesn't yet have a project defined");
+        }
+        $concept = $project->getConcept($this->conceptId);
+        return $concept;
     }
     
     public function getValue()
@@ -73,6 +85,7 @@ class Value
         return $this;
     }
     
+    /*
     
     public function getSourceConceptId()
     {
@@ -95,6 +108,7 @@ class Value
         $this->sourceValue = $sourceValue;
         return $this;
     }
+    */
     
     public function getRepeatId()
     {

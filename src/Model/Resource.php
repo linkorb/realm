@@ -9,6 +9,20 @@ class Resource
     protected $id;
     protected $sections = [];
     protected $source;
+    protected $project;
+    
+    
+    public function getProject()
+    {
+        return $this->project;
+    }
+    
+    public function setProject(Project $project)
+    {
+        $this->project = $project;
+        return $this;
+    }
+    
     
     public function getId()
     {

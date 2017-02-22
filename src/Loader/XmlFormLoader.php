@@ -70,18 +70,22 @@ class XmlFormLoader
         }
         foreach ($valueNodes as $valueNode) {
             $value = new Value();
-            $value->setLabel((string)$valueNode['label']);
+            if (isset($valueNode['label'])) {
+                $value->setLabel((string)$valueNode['label']);
+            }
             
             $value->setValue((string)$valueNode['value']);
-            $value->setSourceValue((string)$valueNode['value']);
+            //$value->setSourceValue((string)$valueNode['value']);
             
             if ($valueNode['type'] == 'date') {
-                $value->setDisplayValue(date('d-M-Y', (int)$value->getValue()));
+                //$value->setDisplayValue(date('d-M-Y', (int)$value->getValue()));
             }
             $conceptId = null;
             if (isset($valueNode['keyid'])) {
-                $keyId = (string)'keyid-' . $valueNode['keyid'];
-                $value->setSourceConceptId($keyId);
+                $conceptId = (string)'keyid-' . $valueNode['keyid'];
+                //$value->setSourceConceptId($keyId);
+                
+                /*
                 $mappings = $project->getMappings();
                 if ($project->hasMapping($keyId)) {
                     $mapping = $project->getMapping($keyId);
@@ -109,14 +113,15 @@ class XmlFormLoader
                         $value->setValue($mapping->mapValue($value->getValue()));
                     }
                 }
+                */
             }
             if (isset($valueNode['concept'])) {
                 $conceptId = (string)$valueNode['concept'];
-                $value->setSourceConceptId($conceptId);
+                //$value->setConceptId($conceptId);
             }
             if ($conceptId) {
-                $concept = $project->getConcept($conceptId);
-                $value->setConcept($concept);
+                //$concept = $project->getConcept($conceptId);
+                $value->setConceptId($conceptId);
             }
             $section->addValue($value);
         }

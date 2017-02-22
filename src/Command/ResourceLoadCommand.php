@@ -9,10 +9,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
 use Realm\Loader\XmlRealmLoader;
+use Realm\Loader\XmlResourceLoader;
 use Realm\Model\Project;
 use RuntimeException;
 
-class RealmLoadCommand extends Command
+class ResourceLoadCommand extends Command
 {
     /**
      * {@inheritdoc}
@@ -22,13 +23,18 @@ class RealmLoadCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('realm:load')
+            ->setName('resource:load')
             ->setDescription('Load realm, and output contents')
             ->addOption(
                 'realm',
                 'r',
                 InputOption::VALUE_REQUIRED,
                 null
+            )
+            ->addArgument(
+                'filename',
+                InputArgument::REQUIRED,
+                'resource.xml filename'
             )
         ;
     }
@@ -38,6 +44,10 @@ class RealmLoadCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $filename = $input->getArgument('filename');
+        if (!file_exists($filename)) {
+            throw new RuntimeException("File not found: " . $filename);
+        }
         $realmId = $input->getOption('realm');
         if (!$realmId) {
             throw new RuntimeException("Please pass a realm to load");
@@ -46,6 +56,11 @@ class RealmLoadCommand extends Command
         $project = new Project();
         $realmLoader = new XmlRealmLoader();
         $realm = $realmLoader->load($realmId, $project);
-        var_dump($realm);
+        
+        $resourceLoader = new XmlResourceLoader();
+        $resource = $resourceLoader->loadFile($filename, $realm);
+        
+        print_r($resource);
+        //var_dump($realm);
     }
 }
