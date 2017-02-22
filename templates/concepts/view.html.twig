@@ -13,7 +13,9 @@
   {% if concept.getLengthMin %}
   <dt>Length</dt><dd>{{ concept.getLengthMin }} {{ concept.getLengthMax }}</dd>
   {% endif %}
+  {% if concept.getCodelist %}
   <dt>Codelist</dt><dd><a href="/{{ project.getId}}/codelists/{{ concept.getCodelist.getId }}">{{ concept.getCodelist.getId }}</a></dd>
+  {% endif %}
 </dl>
 
 <h3>Properties</h3>

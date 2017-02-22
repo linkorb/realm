@@ -20,15 +20,15 @@
     <div class="meta"  style="margin-top: 5px">
       <strong>Concept: </strong>
     {% if value.getConcept() %}
-      {% if value.getSourceConceptId() != value.getConcept().getId() %}
+      {#% if value.getSourceConceptId() != value.getConcept().getId() %}
         <a href="/{{ project.getId() }}/mappings/{{ value.getSourceConceptId() }}" style="text-decoration: line-through;">{{ value.getSourceConceptId() }}</a>
         mapped to 
-      {% endif %}
+      {% endif %#}
       <a href="/{{ project.getId() }}/concepts/{{value.getConcept().getId()}}">{{ value.getConcept().getId() }}</a>
       ({{ value.getConcept().getShortName() }})
     {% else %}
         <span style="color: red;">
-          <i>{{ value.getSourceConceptId() }} (undefined)</i>
+          <i>{{ value.getConceptId() }} (undefined)</i>
         </span>
     {% endif %}
     </div>
