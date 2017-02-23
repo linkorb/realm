@@ -12,15 +12,25 @@ class ValuePresenter extends BasePresenter
         if ($this->presenterObject->getLabel()) {
             return $this->presenterObject->getLabel();
         }
+        $resource = $this->getResource();
+        if (!$resource) {
+            throw new RuntimeException("No resource");
+        }
+
         if ($this->presenterObject->getConcept()) {
-            $label = $this->presenterObject->getConcept()->getShortName();
-            $label = str_replace('_', ' ', $label);
-            $label = ucfirst($label);
+            $concept = $this->presenterObject->getConcept();
+            if ($concept->hasProperty($resource->getLanguage(), 'name')) {
+                $label = $concept->getPropertyValue($resource->getLanguage(), 'name');
+            } else {
+                $label = $concept->getShortName();
+                $label = str_replace('_', ' ', $label);
+                $label = ucfirst($label);
+            }
             return $label;
         }
         return null;
     }
-    
+
     public function getLabelWithValue()
     {
         if (!$this->getDisplayValue()) {
@@ -36,7 +46,12 @@ class ValuePresenter extends BasePresenter
         if ($this->presenterObject->getDisplayValue()) {
             return $this->presenterObject->getDisplayValue();
         }
-        
+
+        $resource = $this->getResource();
+        if (!$resource) {
+            throw new RuntimeException("No resource");
+        }
+
         // Logic for transforming value based on concept
         if ($this->presenterObject->getConcept()) {
             $concept = $this->presenterObject->getConcept();
@@ -67,7 +82,11 @@ class ValuePresenter extends BasePresenter
                     }
                     $item = $codelist->getItem($value);
                     if ($item) {
-                        return $item->getDisplayName();
+                        if ($item->hasProperty($resource->getLanguage(), 'name')) {
+                            return $item->getPropertyValue($resource->getLanguage(), 'name');
+                        } else {
+                            return $item->getDisplayName();
+                        }
                     }
                     break;
             }

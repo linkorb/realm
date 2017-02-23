@@ -4,12 +4,27 @@ namespace Realm\Writer;
 
 use Realm\Model\Resource;
 use DomDocument;
+use RuntimeException;
 
 class ResourceXmlWriter
 {
-    public function write(Resource $resource)
+    /**
+     * modes:
+     * - pure: export as-is
+     * - augment: enrich labels, displayValues etc
+     * - stripped: remove labels, displayValues etc
+     */
+    public function write(Resource $resource, $mode = 'pure')
     {
-        $issues = [];
+        switch ($mode) {
+            case 'pure':
+            case 'augmented':
+            case 'stripped':
+                break;
+            default:
+                throw new RuntimeException("Unsupported write mode: $mode");
+        }
+
         $doc = new DomDocument('1.0');
         $doc->preserveWhiteSpace = false;
         $doc->formatOutput = true;
@@ -17,61 +32,50 @@ class ResourceXmlWriter
         $doc->appendChild($resourceElement);
         $sectionsElement = $doc->createElement('sections');
         $resourceElement->appendChild($sectionsElement);
-        
+
         foreach ($resource->getSections() as $section) {
-            echo $section->getId() . "\n";
             $sectionElement = $doc->createElement('section');
-            if ($section->getId()) {
-                $sectionElement->setAttribute('id', $section->getId());
-            }
-            if ($section->getType()) {
-                $sectionElement->setAttribute('type', $section->getType()->getId());
-            }
+            $sectionElement->setAttribute('id', $section->getId());
+            $sectionElement->setAttribute('type', $section->getType()->getId());
+
             $sectionsElement->appendChild($sectionElement);
             $valuesElement = $doc->createElement('values');
             $sectionElement->appendChild($valuesElement);
-            
+
             foreach ($section->getValues() as $value) {
                 $valuePresenter = $value->getPresenter();
-                echo " - " . $value->getConcept()->getId() . ':' . $valuePresenter->getLabel() . "=";
-                $displayValue = '?';
-                $valueValue = '?';
-                $issue = false;
-                try {
-                    $displayValue = $valuePresenter->getDisplayValue();
-                    $valueValue = $value->getValue();
 
-                    echo "(" . $valueValue . ") `" . $displayValue . "`\n";
-
+                $valueValue = $value->getValue();
+                if ($valueValue) {
 
                     $valueElement = $doc->createElement('value');
                     $valueElement->setAttribute('concept', $value->getConcept()->getId());
-                    $valueElement->setAttribute('label', $valuePresenter->getLabel());
                     $valueElement->setAttribute('value', $valueValue);
-                    if ($displayValue && ($displayValue != $valueValue)) {
-                        $valueElement->setAttribute('displayValue', $displayValue);
-                    }
                     if ($value->getRepeatId()) {
                         $valueElement->setAttribute('repeatId', $value->getRepeatId());
                     }
+
+                    if ($mode != 'stripped') {
+                        $label = $value->getLabel();
+                        if (!$label && $mode=='augmented') {
+                            $label = $valuePresenter->getLabel();
+                        }
+                        if ($label) {
+                            $valueElement->setAttribute('label', $label);
+                        }
+
+                        $displayValue = $value->getDisplayValue();
+                        if (!$displayValue && $mode=='augmented') {
+                            $displayValue = $valuePresenter->getDisplayValue();
+                        }
+                        if ($displayValue && ($displayValue != $valueValue)) {
+                            $valueElement->setAttribute('displayValue', $displayValue);
+                        }
+                    }
                     $valuesElement->appendChild($valueElement);
-                } catch (\Exception $e) {
-                    $issue = true;
-                    $issues[] = $value;
-                    // probably missing codelist
                 }
             }
         }
-        
-        $xml = $doc->saveXML();
-        echo $xml;
-        if (count($issues)>0) {
-            echo "ISSUES: " . count($issues) . "\n";
-            foreach ($issues as $value) {
-                echo $value->getConcept()->getStatus() . ':';
-                echo $value->getConcept()->getId() . ' ' . $value->getPresenter()->getLabel() . "\n";
-            }
-        }
-        exit();
+        return $doc;
     }
 }

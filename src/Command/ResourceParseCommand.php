@@ -11,9 +11,10 @@ use Symfony\Component\Console\Command\Command;
 use Realm\Loader\XmlRealmLoader;
 use Realm\Loader\XmlResourceLoader;
 use Realm\Model\Project;
+use Realm\Writer\ResourceXmlWriter;
 use RuntimeException;
 
-class ResourceLoadCommand extends Command
+class ResourceParseCommand extends Command
 {
     /**
      * {@inheritdoc}
@@ -23,13 +24,25 @@ class ResourceLoadCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('resource:load')
+            ->setName('resource:parse')
             ->setDescription('Load realm, and output contents')
             ->addOption(
                 'realm',
                 'r',
                 InputOption::VALUE_REQUIRED,
                 null
+            )
+            ->addOption(
+                'mode',
+                'm',
+                InputOption::VALUE_REQUIRED,
+                'pure'
+            )
+            ->addOption(
+                'language',
+                'l',
+                InputOption::VALUE_REQUIRED,
+                'en-US'
             )
             ->addArgument(
                 'filename',
@@ -49,6 +62,8 @@ class ResourceLoadCommand extends Command
             throw new RuntimeException("File not found: " . $filename);
         }
         $realmId = $input->getOption('realm');
+        $mode = $input->getOption('mode');
+        $language = $input->getOption('language');
         if (!$realmId) {
             throw new RuntimeException("Please pass a realm to load");
         }
@@ -56,11 +71,14 @@ class ResourceLoadCommand extends Command
         $project = new Project();
         $realmLoader = new XmlRealmLoader();
         $realm = $realmLoader->load($realmId, $project);
-        
+
         $resourceLoader = new XmlResourceLoader();
         $resource = $resourceLoader->loadFile($filename, $realm);
-        
-        print_r($resource);
+        $resource->setLanguage($language);
+
+        $writer = new ResourceXmlWriter();
+        $doc = $writer->write($resource, $mode);
+        echo $doc->saveXml();
         //var_dump($realm);
     }
 }
