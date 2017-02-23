@@ -26,11 +26,18 @@ class XmlResourceLoader
         }
         $basePath = dirname($filename);
         $xml = file_get_contents($filename);
-        $root = simplexml_load_string($xml);
+        try {
+            $root = @simplexml_load_string($xml);
+        } catch (\Exception $e) {
+            throw new RuntimeException("Parsing XML file failed: " . $filename);
+        }
+        if (!$root) {
+            throw new RuntimeException("Parsing XML file failed: " . $filename);
+        }
         $resource = $this->loadResource($root, $project);
         return $resource;
     }
-    
+
     public function loadResource(SimpleXMLElement $root, Project $project)
     {
         $resource = new Resource();
@@ -46,17 +53,17 @@ class XmlResourceLoader
             $dt = new DateTime();
             $dt->setTimestamp((int)$sectionNode['effectiveStamp']);
             $section->setEffectiveAt($dt);
-            
+
             if (isset($sectionNode['type'])) {
                 $sectionType = $project->getSectionType((string)$sectionNode['type']);
                 $section->setType($sectionType);
             }
 
             $this->loadResourceSectionValues($project, $section, $sectionNode->values->value);
-            
+
             $resource->addSection($section);
         }
-        
+
         if ($root->source) {
             $source = new Source();
             $source->setId((string)$root->source['id']);
@@ -66,7 +73,7 @@ class XmlResourceLoader
         }
         return $resource;
     }
-    
+
     public function loadResourceSectionValues(Project $project, ResourceSection $section, $valueNodes)
     {
         foreach ($valueNodes as $valueNode) {
