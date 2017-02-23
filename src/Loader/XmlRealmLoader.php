@@ -29,7 +29,7 @@ class XmlRealmLoader
         $filename = stream_resolve_include_path($realmId . '/realm.xml');
         if (!$filename) {
             $filename = stream_resolve_include_path('realm-' . $realmId . '/realm.xml');
-            
+
             if (!$filename) {
                 throw new RuntimeException("Realm ID `$realmId` not in REALM_PATH");
             }
@@ -39,7 +39,7 @@ class XmlRealmLoader
         }
         return $this->loadFile($filename, $project);
     }
-    
+
     public function loadFile($filename, Project $project)
     {
         $filenameOrg = $filename;
@@ -50,7 +50,7 @@ class XmlRealmLoader
         $basePath = dirname($filename);
         $xml = file_get_contents($filename);
         $realmRoot = simplexml_load_string($xml);
-        
+
         foreach ($realmRoot->dependency as $dependencyNode) {
             $name = (string)$dependencyNode['name'];
             $filename = stream_resolve_include_path($name . '/realm.xml');
@@ -90,14 +90,14 @@ class XmlRealmLoader
                 }
             }
         }
-        
+
         $files = glob($basePath . '/mappings/*.xml');
         foreach ($files as $filename) {
             $xml = file_get_contents($filename);
             $root = simplexml_load_string($xml);
             $this->loadMappings($root, $project);
         }
-        
+
         $files = glob($basePath . '/sectionTypes/*.xml');
         foreach ($files as $filename) {
             $xml = file_get_contents($filename);
@@ -114,7 +114,7 @@ class XmlRealmLoader
                 }
             }
         }
-        
+
         $resourceLoader = new XmlFormLoader();
         $files = glob($basePath . '/forms/*.xml');
         $id = 1;
@@ -124,7 +124,7 @@ class XmlRealmLoader
             $project->addResource($resource);
             $id++;
         }
-        
+
         $resourceLoader = new XmlResourceLoader();
         $files = glob($basePath . '/resources/*.xml');
         foreach ($files as $filename) {
@@ -145,9 +145,9 @@ class XmlRealmLoader
             $view = $viewLoader->loadFile($filename, $project);
             $project->addView($view);
         }
-        
-        
-        
+
+
+
         $csvPropertyLoader = new CsvPropertyLoader();
         foreach ($realmRoot->import as $importNode) {
             $filename = (string)$importNode['filename'];
@@ -162,18 +162,18 @@ class XmlRealmLoader
                 (string)$importNode['delimiter']
             );
         }
-        
+
 
         return $project;
     }
-    
+
     public function loadProject(SimpleXMLElement $root, $project)
     {
         $project->setId((string)$root['id']);
         $this->loadProperties($root, $project);
         return $project;
     }
-    
+
     public function loadCodelist(SimpleXMLElement $root, Project $project)
     {
         $codelist = new Codelist();
@@ -186,13 +186,15 @@ class XmlRealmLoader
             $item->setDisplayName((string)$iNode['displayName']);
             $item->setLevel((string)$iNode['level']);
             $item->setType((string)$iNode['type']);
-            
+
+            $this->loadProperties($iNode, $item);
+
             $codelist->addItem($item);
         }
         //print_r($sectionType); exit();
         return $codelist;
     }
-    
+
     public function loadConcept(SimpleXMLElement $root, Project $project)
     {
         $concept = new Concept();
@@ -209,12 +211,12 @@ class XmlRealmLoader
             $codelist = $project->getCodelist($codelistName);
             $concept->setCodelist($codelist);
         }
-        
-        
+
+
         $this->loadProperties($root, $concept);
         return $concept;
     }
-    
+
     public function loadSectionType(SimpleXMLElement $root, Project $project)
     {
         $sectionType = new SectionType();
@@ -232,7 +234,7 @@ class XmlRealmLoader
         //print_r($sectionType); exit();
         return $sectionType;
     }
-    
+
     protected function loadProperties(SimpleXMLElement $root, $obj)
     {
         foreach ($root->property as $pNode) {
@@ -243,7 +245,7 @@ class XmlRealmLoader
             $obj->addProperty($property);
         }
     }
-    
+
     public function loadMappings($root, $project)
     {
         foreach ($root->mapping as $mappingNode) {
