@@ -36,12 +36,14 @@ class ResourceParseCommand extends Command
                 'mode',
                 'm',
                 InputOption::VALUE_REQUIRED,
+                'Mode',
                 'pure'
             )
             ->addOption(
                 'language',
                 'l',
                 InputOption::VALUE_REQUIRED,
+                'Output language',
                 'en-US'
             )
             ->addArgument(
@@ -63,11 +65,11 @@ class ResourceParseCommand extends Command
         }
         $realmId = $input->getOption('realm');
         $mode = $input->getOption('mode');
+
         $language = $input->getOption('language');
         if (!$realmId) {
             throw new RuntimeException("Please pass a realm to load");
         }
-        $output->writeLn("Loading realm: " . $realmId);
         $project = new Project();
         $realmLoader = new XmlRealmLoader();
         $realm = $realmLoader->load($realmId, $project);
