@@ -19,8 +19,8 @@ class ValuePresenter extends BasePresenter
 
         if ($this->presenterObject->getConcept()) {
             $concept = $this->presenterObject->getConcept();
-            if ($concept->hasProperty($resource->getLanguage(), 'name')) {
-                $label = $concept->getPropertyValue($resource->getLanguage(), 'name');
+            if ($concept->hasProperty('name', $resource->getLanguage())) {
+                $label = $concept->getPropertyValue('name', $resource->getLanguage());
             } else {
                 $label = $concept->getShortName();
                 $label = str_replace('_', ' ', $label);
@@ -82,8 +82,8 @@ class ValuePresenter extends BasePresenter
                     }
                     $item = $codelist->getItem($value);
                     if ($item) {
-                        if ($item->hasProperty($resource->getLanguage(), 'name')) {
-                            return $item->getPropertyValue($resource->getLanguage(), 'name');
+                        if ($item->hasProperty('name', $resource->getLanguage())) {
+                            return $item->getPropertyValue('name', $resource->getLanguage());
                         } else {
                             return $item->getDisplayName();
                         }

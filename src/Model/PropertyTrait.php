@@ -19,7 +19,7 @@ trait PropertyTrait
         return $this->properties;
     }
 
-    public function hasProperty($language, $name)
+    public function hasProperty($name, $language = null)
     {
         foreach ($this->properties as $property) {
             if (($property->getLanguage()==$language) && ($property->getName()==$name)) {
@@ -29,7 +29,7 @@ trait PropertyTrait
         return false;
     }
 
-    public function getProperty($language, $name)
+    public function getProperty($name, $language = null)
     {
         foreach ($this->properties as $property) {
             if (($property->getLanguage()==$language) && ($property->getName()==$name)) {
