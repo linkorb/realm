@@ -19,23 +19,29 @@ use DateTime;
 
 class XmlResourceLoader
 {
+    public function loadString($string, $project)
+    {
+        try {
+            $root = @simplexml_load_string($string);
+        } catch (\Exception $e) {
+            throw new RuntimeException("Parsing XML failed (exception) " . $e->getMessage());
+        }
+        if (!$root) {
+            throw new RuntimeException("Parsing XML failed (no root)");
+        }
+        $resource = $this->loadResource($root, $project);
+        return $resource;
+    }
+
     public function loadFile($filename, $project)
     {
         if (!file_exists($filename)) {
             throw new RuntimeException("File not found: " . $filename);
         }
         $basePath = dirname($filename);
-        $xml = file_get_contents($filename);
-        try {
-            $root = @simplexml_load_string($xml);
-        } catch (\Exception $e) {
-            throw new RuntimeException("Parsing XML file failed: " . $filename);
-        }
-        if (!$root) {
-            throw new RuntimeException("Parsing XML file failed: " . $filename);
-        }
-        $resource = $this->loadResource($root, $project);
-        return $resource;
+        $string = file_get_contents($filename);
+        return $this->loadString($string, $project);
+
     }
 
     public function loadResource(SimpleXMLElement $root, Project $project)

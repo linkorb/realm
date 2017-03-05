@@ -60,8 +60,16 @@ class ResourceParseCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $filename = $input->getArgument('filename');
-        if (!file_exists($filename)) {
-            throw new RuntimeException("File not found: " . $filename);
+        if ($filename == '-') {
+            $string = '';
+            while (!feof(STDIN)) {
+                $string .= fread(STDIN, 1024);
+            }
+        } else {
+            if (!file_exists($filename)) {
+                throw new RuntimeException("File not found: " . $filename);
+            }
+            $string = file_get_contents($filename);
         }
         $realmId = $input->getOption('realm');
         $mode = $input->getOption('mode');
@@ -75,7 +83,7 @@ class ResourceParseCommand extends Command
         $realm = $realmLoader->load($realmId, $project);
 
         $resourceLoader = new XmlResourceLoader();
-        $resource = $resourceLoader->loadFile($filename, $realm);
+        $resource = $resourceLoader->loadString($string, $realm);
         $resource->setLanguage($language);
 
         $writer = new ResourceXmlWriter();
