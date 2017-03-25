@@ -1,8 +1,0 @@
-<h4>Sections</h4>
-{% for section in resource.getSections() %}
-  <a href="/{{project.getId()}}/resources/{{resource.getId()}}/sections/{{ section.getId() }}">{{ section.getLabel() }}</a>
-  <small>
-    {{ section.getPresenter().getEffectiveAt()}}
-  </small>
-  <br />
-{% endfor %}

@@ -21,3 +21,11 @@ $( document ).ready(function() {
   });
 
 });
+
+function selectDetail(detailId) {
+  console.log("selecting " + detailId);
+  $(".detail").each(function(index) {
+    $(this).removeClass('detail-active')
+  })
+  $('#' + detailId).addClass('detail-active');
+}

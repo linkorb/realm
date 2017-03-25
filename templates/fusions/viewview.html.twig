@@ -5,7 +5,7 @@
   <div class="col-md-3">
     {% include '@Realm/navbar-fusion.html.twig' %}
   </div>
-  
+
   <div class="col-md-6">
     {{ viewHtml|raw }}
   </div>
@@ -13,16 +13,13 @@
     <div style="border: 2px solid #f0f0f0; background-color: #f8f8f8; min-height: 200px; padding: 0px 10px 0px 10px">
       <h4>Fusion</h4>
       {% for resource in fusion.getResources() %}
-      <h5>Resource</h5>
+      {#<h5>Resource</h5>#}
       {{ resource.getId() }}
-      
-      <h5>Source</h5>
       {% if resource.getSource() %}
-      <dl>
-        <dt>ID</dt><dd>{{ resource.getSource().getId() }}</dd>
-        <dt>DisplayName</dt><dd>{{ resource.getSource().getDisplayName() }}</dd>
-        <dt>Logo</dt><dd><img src="{{ resource.getSource().getLogoUrl() }}" style="width: 50%"/></dd>
-      </dl>
+      {{ resource.getSource().getDisplayName() }}<br /><small>@{{ resource.getSource().getId() }}</small><br />
+      <img src="{{ resource.getSource().getLogoUrl() }}" style="width: 20%"/>
+      <img src="{{ resource.getSource().getAppLogoUrl() }}" style="width: 20%"/><br />
+      <hr />
       {% endif %}
       {% endfor %}
 

@@ -28,7 +28,7 @@ class WebController
         );
         return $response;
     }
-    
+
     public function projectAction(Application $app, Request $request, $projectId)
     {
         $data = [];
@@ -42,7 +42,7 @@ class WebController
         );
         return $response;
     }
-    
+
     public function conceptIndexAction(Application $app, Request $request, $projectId)
     {
         $data = [];
@@ -56,7 +56,7 @@ class WebController
         );
         return $response;
     }
-    
+
     public function conceptViewAction(Application $app, Request $request, $projectId, $conceptId)
     {
         $data = [];
@@ -71,8 +71,8 @@ class WebController
         );
         return $response;
     }
-    
-    
+
+
     public function codelistIndexAction(Application $app, Request $request, $projectId)
     {
         $data = [];
@@ -86,7 +86,7 @@ class WebController
         );
         return $response;
     }
-    
+
     public function codelistViewAction(Application $app, Request $request, $projectId, $codelistId)
     {
         $data = [];
@@ -101,7 +101,7 @@ class WebController
         );
         return $response;
     }
-    
+
     public function mappingIndexAction(Application $app, Request $request, $projectId)
     {
         $data = [];
@@ -115,7 +115,7 @@ class WebController
         );
         return $response;
     }
-    
+
     public function mappingViewAction(Application $app, Request $request, $projectId, $mappingId)
     {
         $data = [];
@@ -130,7 +130,7 @@ class WebController
         );
         return $response;
     }
-    
+
     public function sectionTypeIndexAction(Application $app, Request $request, $projectId)
     {
         $data = [];
@@ -144,7 +144,7 @@ class WebController
         );
         return $response;
     }
-    
+
     public function sectionTypeViewAction(Application $app, Request $request, $projectId, $sectionTypeId)
     {
         $data = [];
@@ -159,7 +159,7 @@ class WebController
         );
         return $response;
     }
-    
+
     public function resourceIndexAction(Application $app, Request $request, $projectId)
     {
         $data = [];
@@ -173,17 +173,13 @@ class WebController
         );
         return $response;
     }
-    
-    public function resourceViewAction(Application $app, Request $request, $projectId, $resourceId, $sectionId = null)
+
+    public function resourceViewAction(Application $app, Request $request, $projectId, $resourceId)
     {
         $data = [];
         $data['project'] = $app->getProject($projectId);
         $resource = $data['project']->getResource($resourceId);
         $data['resource'] = $resource;
-        if ($sectionId) {
-            $section = $resource->getSection($sectionId);
-            $data['section'] = $section;
-        }
         $html = $app['twig']->render('resources/view.html.twig', $data);
 
         $response = new Response(
@@ -193,7 +189,7 @@ class WebController
         );
         return $response;
     }
-    
+
     public function fusionIndexAction(Application $app, Request $request, $projectId)
     {
         $data = [];
@@ -207,7 +203,8 @@ class WebController
         );
         return $response;
     }
-    
+
+    /*
     public function fusionViewAction(Application $app, Request $request, $projectId, $fusionId, $sectionId = null)
     {
         $data = [];
@@ -227,28 +224,43 @@ class WebController
         );
         return $response;
     }
-    
-    
-    public function fusionViewViewAction(Application $app, Request $request, $projectId, $fusionId, $viewId)
+    */
+
+    public function fusionViewAction(Application $app, Request $request, $projectId, $fusionId)
     {
         $data = [];
         $project = $app->getProject($projectId);
         $data['project'] = $project;
         $fusion = $data['project']->getFusion($fusionId);
         $data['fusion'] = $fusion;
-        
-        /*
-        if ($sectionId) {
-            $section = $fusion->getSection($sectionId);
-            $data['section'] = $section;
-        }
-        */
 
-        $viewData = [];
-        $viewData['fusion'] = $fusion;
-        $viewData['baseUrl'] = '/' . $projectId . '/fusions/' . $fusionId;
-        $viewHtml = $app['twig']->render('@Realm-' . $project->getId() . '/' . $viewId . '.html.twig', $viewData);
-        $data['viewHtml'] = $viewHtml;
+        $html = '';
+        foreach ($project->getViewsByType('fusion') as $view) {
+            $viewData = [];
+            $viewData['fusion'] = $fusion;
+            $viewHtml = $app['twig']->render('@Realm-' . $project->getId() . '/' . $view->getId() . '.html.twig', $viewData);
+            $html .= '<div class="detail" id="detail-view-' . $view->getId() . '">' . $viewHtml . '</div>';
+        }
+
+        foreach ($fusion->getSections() as $section) {
+
+            $sectionTypeId = $fusion->getSection($section->getId())->getType()->getId();
+            $sectionType = $project->getSectionType($sectionTypeId);
+
+            $viewData = [];
+            $viewData['fusion'] = $fusion;
+            $viewData['section'] = $section;
+
+            try {
+                $viewHtml = $app['twig']->render('@Realm-' . $project->getId() . '/section-types/' . $sectionTypeId . '.html.twig', $viewData);
+            } catch (\Exception $e){
+                $viewHtml = 'Failed to render section (template missing or incomplete?) sectionType: ' . $sectionTypeId;
+            }
+
+            $html .= '<div class="detail" id="detail-section-' . $section->getId() . '">' . $viewHtml . '</div>';
+        }
+        // Wrap
+        $data['viewHtml'] = $html;
         $html = $app['twig']->render('fusions/viewview.html.twig', $data);
 
         $response = new Response(
@@ -258,7 +270,8 @@ class WebController
         );
         return $response;
     }
-    
+
+    /*
     public function fusionSectionAction(Application $app, Request $request, $projectId, $fusionId, $sectionId)
     {
         $data = [];
@@ -266,15 +279,15 @@ class WebController
         $data['project'] = $project;
         $fusion = $data['project']->getFusion($fusionId);
         $data['fusion'] = $fusion;
-        
+
         $sectionTypeId = $fusion->getSection($sectionId)->getType()->getId();
         $sectionType = $project->getSectionType($sectionTypeId);
         $section = $fusion->getSection($sectionId);
-        
+
         $viewData = [];
         $viewData['fusion'] = $fusion;
         $viewData['section'] = $section;
-        
+
         $viewData['baseUrl'] = '/' . $projectId . '/fusions/' . $fusionId;
         $viewHtml = $app['twig']->render('@Realm-' . $project->getId() . '/section-types/' . $sectionTypeId . '.html.twig', $viewData);
         $data['viewHtml'] = $viewHtml;
@@ -287,4 +300,5 @@ class WebController
         );
         return $response;
     }
+    */
 }

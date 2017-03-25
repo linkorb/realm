@@ -10,12 +10,12 @@ class ResourceSectionPresenter extends BasePresenter
     {
         return $this->presentDate($this->presenterObject->getCreatedAt());
     }
-    
+
     public function getUpdatedAt()
     {
         return $this->presentDate($this->presenterObject->getUpdatedAt());
     }
-    
+
     public function getEffectiveAt()
     {
         if ($this->presenterObject->getEffectiveAt()) {
@@ -23,7 +23,25 @@ class ResourceSectionPresenter extends BasePresenter
         }
         return $this->presentDate($this->presenterObject->getCreatedAt());
     }
-    
+
+    public function presentLabel()
+    {
+        if ($this->presenterObject->getLabel()) {
+            return $this->presenterObject->getLabel();
+        }
+        $type = $this->presenterObject->getType();
+        if ($type) {
+            if ($type->getLabel()) {
+                return $type->getLabel();
+            }
+            if ($type->getId()) {
+                return $type->getId();
+            }
+        }
+        // last resort
+        return 'section-' . $this->presenterObject->getId();
+    }
+
     protected function presentDate($d)
     {
         if (!$d) {
@@ -31,7 +49,7 @@ class ResourceSectionPresenter extends BasePresenter
         }
         return $d->format('d-m-Y');
     }
-    
+
     public function presentValueByField($field)
     {
         $conceptId = $field->getConcept()->getId();
@@ -41,7 +59,7 @@ class ResourceSectionPresenter extends BasePresenter
         }
         return '-';
     }
-    
+
     public function presentValueByConcept($conceptId)
     {
         if (!$this->presenterObject->hasValue($conceptId)) {
@@ -53,14 +71,14 @@ class ResourceSectionPresenter extends BasePresenter
         }
         return '-';
     }
-    
+
     public function presentConcept($conceptId, $label = '')
     {
         if (!$this->presenterObject->hasValue($conceptId)) {
             return '---';
         }
         $value = $this->presenterObject->getValue($conceptId);
-            
+
 
         $concept = $value->getConcept();
         if ($label == '') {

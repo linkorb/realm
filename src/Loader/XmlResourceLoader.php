@@ -61,8 +61,10 @@ class XmlResourceLoader
             $section->setEffectiveAt($dt);
 
             if (isset($sectionNode['type'])) {
-                $sectionType = $project->getSectionType((string)$sectionNode['type']);
-                $section->setType($sectionType);
+                if ($project->hasSectionType((string)$sectionNode['type'])) {
+                    $sectionType = $project->getSectionType((string)$sectionNode['type']);
+                    $section->setType($sectionType);
+                }
             }
 
             $this->loadResourceSectionValues($project, $section, $sectionNode->values->value);

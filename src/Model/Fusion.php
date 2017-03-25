@@ -9,35 +9,35 @@ class Fusion
     protected $id;
     protected $resources;
     use PresenterTrait;
-    
+
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function setId($id)
     {
         $this->id = $id;
         return $this;
     }
-    
-    
+
+
     public function getResource($id)
     {
         return $this->resources['id'];
     }
-    
+
     public function addResource(Resource $resource)
     {
-        $this->resources[$resource->getId()] = $resource;
+        $this->resources[] = $resource;
         return $this;
     }
-    
+
     public function getResources()
     {
         return $this->resources;
     }
-    
+
     public function getSection($sectionId)
     {
         foreach ($this->resources as $resource) {
@@ -46,22 +46,22 @@ class Fusion
             }
         }
     }
-    
+
     public function getSections()
     {
         $sections = [];
         foreach ($this->resources as $resource) {
             $sections = array_merge($resource->getSections(), $sections);
         }
-        
+
         usort($sections, function($a, $b)
         {
             return $a->getEffectiveAt() > $b->getEffectiveAt();
         });
-        
+
         return $sections;
     }
-    
+
     public function getSectionsByTypeId($typeId) {
         $sections = [];
         foreach ($this->getSections() as $section) {

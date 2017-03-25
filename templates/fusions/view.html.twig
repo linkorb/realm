@@ -3,9 +3,9 @@
 {% block content %}
 <div class="row">
   <div class="col-md-3">
-    {% include '@Realm/navbar-fusion.html.twig' %}
+    {#% include '@Realm/navbar-fusion.html.twig' %#}
   </div>
-  
+
   <div class="col-md-6">
     {% if section is defined %}
       {% include '@Realm/section.html.twig' %}
@@ -17,7 +17,7 @@
       {% for resource in fusion.getResources() %}
       <h2>Resource</h2>
       {{ resource.getId() }}
-      
+
       <h5>Source</h5>
       {% if resource.getSource() %}
       <dl>

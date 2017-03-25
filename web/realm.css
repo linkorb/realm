@@ -14,7 +14,7 @@
 }
 .realm-value .realm-visor {
   display: none;
-  
+
 }
 .realm-value-hover .realm-visor {
   display: block;
@@ -25,6 +25,7 @@ span.realm-value {
   display: block;
   padding: 0px 5px 0px 5px;
   border-radius: 5px;
+  min-height: 34px;
 }
 
 .realm-tooltip {
@@ -39,4 +40,11 @@ span.realm-value {
   z-index: 100;
   font-weight: normal;
   font-size: 75%;
+}
+
+.detail {
+  display: none;
+}
+.detail-active {
+  display: block !important;
 }
