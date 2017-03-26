@@ -16,7 +16,7 @@
 #}
 
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-sm-3">
     <h4>Sections</h4>
     {% for section in resource.getSections() %}
       <a href="#" onclick="selectDetail('detail-section-{{ section.getId() }}'); return false;">{{ section.getPresenter().presentLabel() }}</a>
@@ -26,9 +26,21 @@
       <br />
     {% endfor %}
 
+    {% if resource.getSource() %}
+    <div style="border: 2px solid #f0f0f0; background-color: #f8f8f8; min-height: 200px; padding: 0px 10px 0px 10px">
+      <h4>Resource</h4>
+      <h5>Source</h5>
+
+      <dl>
+        <dt>ID</dt><dd>{{ resource.getSource().getId() }}</dd>
+        <dt>DisplayName</dt><dd>{{ resource.getSource().getDisplayName() }}</dd>
+        <dt>Logo</dt><dd><img src="{{ resource.getSource().getLogoUrl() }}" style="width: 100%"/></dd>
+      </dl>
+    </div>
+    {% endif %}
   </div>
 
-  <div class="col-md-6">
+  <div class="col-sm-9">
     {% for section in resource.getSections() %}
       <div class="detail" id="detail-section-{{ section.getId() }}">
         <h4>{{ section.getPresenter().presentLabel() }}</h4>
@@ -69,19 +81,6 @@
         {% endfor %}
       </div>
     {% endfor %}
-  </div>
-  <div class="col-md-3">
-    <div style="border: 2px solid #f0f0f0; background-color: #f8f8f8; min-height: 200px; padding: 0px 10px 0px 10px">
-      <h4>Resource</h4>
-      <h5>Source</h5>
-      {% if resource.getSource() %}
-      <dl>
-        <dt>ID</dt><dd>{{ resource.getSource().getId() }}</dd>
-        <dt>DisplayName</dt><dd>{{ resource.getSource().getDisplayName() }}</dd>
-        <dt>Logo</dt><dd><img src="{{ resource.getSource().getLogoUrl() }}" style="width: 100%"/></dd>
-      </dl>
-      {% endif %}
-    </div>
   </div>
 
 </div>

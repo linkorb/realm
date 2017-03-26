@@ -2,14 +2,9 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-sm-3">
     {% include '@Realm/navbar-fusion.html.twig' %}
-  </div>
 
-  <div class="col-md-6">
-    {{ viewHtml|raw }}
-  </div>
-  <div class="col-md-3">
     <div style="border: 2px solid #f0f0f0; background-color: #f8f8f8; min-height: 200px; padding: 0px 10px 0px 10px">
       <h4>Fusion</h4>
       {% for resource in fusion.getResources() %}
@@ -22,10 +17,11 @@
       <hr />
       {% endif %}
       {% endfor %}
-
-
-
     </div>
+  </div>
+
+  <div class="col-sm-9">
+    {{ viewHtml|raw }}
   </div>
 
 </div>
