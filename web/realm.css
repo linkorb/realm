@@ -48,3 +48,6 @@ span.realm-value {
 .detail-active {
   display: block !important;
 }
+.nav-detail-active li {
+  background-color: #f0f0f0 !important;
+}

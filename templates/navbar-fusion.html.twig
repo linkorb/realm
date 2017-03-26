@@ -2,7 +2,7 @@
 <ul class="list-unstyled">
   {% for view in project.getViewsByType('fusion') %}
   {#<a style="line-height: 1;" href="{{ path('fusion_view', { 'fusionId': fusion.getId(), 'viewId': view.getId() } )}}">#}
-  <a style="line-height: 1;" href="#" onclick="selectDetail('detail-view-{{ view.getId()}}'); return false;">
+  <a class="nav-detail nav-detail-view-{{ view.getId()}}" style="line-height: 1;" href="#" onclick="selectDetail('detail-view-{{ view.getId()}}'); return false;">
     <li style="margin-bottom: 5px; line-height: 1; border: 1px solid #e0e0e0; padding: 10px 10px 10px 10px;">
       <b>{{ view.getLabel() }} {#<small>{{view.getId()}}</small>#}</b><br />
     </li>
@@ -14,7 +14,7 @@
 <ul class="list-unstyled">
 {% for section in fusion.getSections() %}
 {#<a style="line-height: 1;" href="{{ path('fusion_section', {'fusionId': fusion.getId(), 'sectionId': section.getId() }) }}">#}
-<a style="line-height: 1;" href="#" onclick="selectDetail('detail-section-{{ section.getId()}}'); return false;">
+<a class="nav-detail nav-detail-section-{{ section.getId()}}" style="line-height: 1;" href="#" onclick="selectDetail('detail-section-{{ section.getId()}}'); return false;">
 <li style="margin-bottom: 5px; line-height: 1; border: 1px solid #e0e0e0; padding: 3px;">
   <img src="{{ section.getResource().getSource().getLogoUrl() }}" style="width: 32px; float: left; margin-right: 5px;" />
   <b>{{ section.getPresenter().presentLabel() }}</b>
