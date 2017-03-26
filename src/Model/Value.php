@@ -60,6 +60,9 @@ class Value
         if (!$project) {
             throw new RuntimeException("This value's resource doesn't yet have a project defined");
         }
+        if (!$project->hasConcept($this->conceptId)) {
+            return null;
+        }
         $concept = $project->getConcept($this->conceptId);
         return $concept;
     }
