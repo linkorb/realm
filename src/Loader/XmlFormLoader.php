@@ -29,10 +29,11 @@ class XmlFormLoader
         $resource = $this->loadResource($root, $project);
         return $resource;
     }
-    
+
     public function loadResource(SimpleXMLElement $root, Project $project)
     {
         $resource = new Resource();
+        $resource->setProject($project);
         //$resource->setId((string)$root['id']);
         //$this->loadProperties($root, $sectionType);
         $forms = $root->xpath('.//form');
@@ -41,7 +42,8 @@ class XmlFormLoader
             $section = new ResourceSection();
             $section->setId((string)$sectionNode['uuid']);
             $section->setLabel((string)$sectionNode['label']);
-            
+            $section->setResource($resource);
+
             $groupSection = null;
             if (isset($sectionNode['keyid'])) {
                 $keyId = (string)$sectionNode['keyid'];
@@ -56,13 +58,13 @@ class XmlFormLoader
             $section->setCreatedAt($dt);
 
             $this->loadResourceSectionValues($project, $section, $sectionNode->values->value);
-            
+
             $resource->addSection($section);
         }
         //print_r($sectionType); exit();
         return $resource;
     }
-    
+
     public function loadResourceSectionValues(Project $project, ResourceSection $section, $valueNodes)
     {
         if (!$valueNodes) {
@@ -70,13 +72,14 @@ class XmlFormLoader
         }
         foreach ($valueNodes as $valueNode) {
             $value = new Value();
+            $value->setSection($section);
             if (isset($valueNode['label'])) {
                 $value->setLabel((string)$valueNode['label']);
             }
-            
+
             $value->setValue((string)$valueNode['value']);
             //$value->setSourceValue((string)$valueNode['value']);
-            
+
             if ($valueNode['type'] == 'date') {
                 //$value->setDisplayValue(date('d-M-Y', (int)$value->getValue()));
             }
@@ -84,7 +87,7 @@ class XmlFormLoader
             if (isset($valueNode['keyid'])) {
                 $conceptId = (string)'keyid-' . $valueNode['keyid'];
                 //$value->setSourceConceptId($keyId);
-                
+
                 /*
                 $mappings = $project->getMappings();
                 if ($project->hasMapping($keyId)) {
