@@ -11,7 +11,7 @@ class ConceptPresenter extends BasePresenter
         $concept = $this->presenterObject;
         $lang = 'nl-NL';
         if (!$concept->hasProperty('tooltip', $lang)) {
-            return $concept->getId();
+            return null;
         }
         $property = $concept->getProperty('tooltip', $lang);
 
