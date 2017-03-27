@@ -16,34 +16,46 @@
 #}
 
 <div class="row">
-  <div class="col-sm-3">
-    <h4>Sections</h4>
-    {% for section in resource.getSections() %}
-      <a href="#" onclick="selectDetail('detail-section-{{ section.getId() }}'); return false;">{{ section.getPresenter().presentLabel() }}</a>
-      <small>
-        {{ section.getPresenter().getEffectiveAt()}}
-      </small>
-      <br />
-    {% endfor %}
+  <div class="col-sm-3 sidebar">
+    <fieldset>
+      <h1>Sections</h1>
+      <ul class="nav nav-pills nav-stacked"">
+      {% for section in resource.getSections() %}
+        <li class="nav-detail nav-detail-section-{{ section.getId() }}">
+          <a href="#" onclick="selectDetail('detail-section-{{ section.getId() }}'); return false;">
+          {{ section.getPresenter().presentLabel() }}
+          <small>
+            {{ section.getPresenter().getEffectiveAt()}}
+          </small>
+          </a>
+
+        </li>
+      {% endfor %}
+      </ul>
+    </fieldset>
 
     {% if resource.getSource() %}
-    <div style="border: 2px solid #f0f0f0; background-color: #f8f8f8; min-height: 200px; padding: 0px 10px 0px 10px">
-      <h4>Resource</h4>
-      <h5>Source</h5>
-
+    <fieldset>
+      <h1>Resource</h1>
       <dl>
-        <dt>ID</dt><dd>{{ resource.getSource().getId() }}</dd>
-        <dt>DisplayName</dt><dd>{{ resource.getSource().getDisplayName() }}</dd>
-        <dt>Logo</dt><dd><img src="{{ resource.getSource().getLogoUrl() }}" style="width: 100%"/></dd>
+        <dt>Provider</dt><dd>
+          <img class="logo logo-provider" src="{{ resource.getSource().getLogoUrl() }}"/>
+          {{ resource.getSource().getDisplayName() }} <small>@{{ resource.getSource().getId() }}</small>
+        </dd>
+        <dt>Application</dt><dd>
+          <img class="logo logo-provider" src="{{ resource.getSource().getAppLogoUrl() }}"/>
+          {{ resource.getSource().getAppId() }}
+        </dd>
+
       </dl>
-    </div>
+    </fieldset>
     {% endif %}
   </div>
 
   <div class="col-sm-9">
     {% for section in resource.getSections() %}
       <div class="detail" id="detail-section-{{ section.getId() }}">
-        <h4>{{ section.getPresenter().presentLabel() }}</h4>
+        <h1>{{ section.getPresenter().presentLabel() }}</h1>
         <div class="meta">
           <b>TypeID</b>: <i>{{ section.getSourceTypeId() }}</i>
           <b>Type:</b>
@@ -58,24 +70,27 @@
           <b>Effective:</b> {{ section.getPresenter().getEffectiveAt()}}
         </div>
         {% for value in section.getValues() %}
-          <div style="border: 2px solid #f0f0f0; margin-bottom: 20px; padding: 0 5px 0px; ">
+          <div class="realm-widget">
             <label>{{ value.getPresenter().getLabel()}}</label><br />
 
-            <input style="margin-bottom: 0px; color: #202020; font-weight: bold;" disabled class="form-control" value="{{ value.getPresenter().getDisplayValue() }}" />
-            <div class="meta"  style="margin-top: 5px">
-              <strong>Concept: </strong>
-            {% if value.getConcept() %}
-              {#% if value.getSourceConceptId() != value.getConcept().getId() %}
-                <a href="/{{ project.getId() }}/mappings/{{ value.getSourceConceptId() }}" style="text-decoration: line-through;">{{ value.getSourceConceptId() }}</a>
-                mapped to
-              {% endif %#}
-              <a href="/{{ project.getId() }}/concepts/{{value.getConcept().getId()}}">{{ value.getConcept().getId() }}</a>
-              ({{ value.getConcept().getShortName() }})
-            {% else %}
-                <span style="color: red;">
-                  <i>{{ value.getConceptId() }} (undefined)</i>
-                </span>
-            {% endif %}
+            <div class="realm-value">{{ value.getPresenter().getDisplayValue()|trim }}&#8203;</div>
+            <div class="meta">
+              <dd>
+                <dt>Concept: </dt>
+                <dl>
+                {% if value.getConcept() %}
+                  {#% if value.getSourceConceptId() != value.getConcept().getId() %}
+                    <a href="/{{ project.getId() }}/mappings/{{ value.getSourceConceptId() }}" style="text-decoration: line-through;">{{ value.getSourceConceptId() }}</a>
+                    mapped to
+                  {% endif %#}
+                  <a href="/{{ project.getId() }}/concepts/{{value.getConcept().getId()}}">{{ value.getConcept().getId() }}</a>
+                  ({{ value.getConcept().getShortName() }})
+                {% else %}
+                    <span class="warning">
+                      <i>{{ value.getConceptId() }} (undefined)</i>
+                    </span>
+                {% endif %}
+              </dl>
             </div>
           </div>
         {% endfor %}

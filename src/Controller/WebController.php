@@ -261,7 +261,7 @@ class WebController
         }
         // Wrap
         $data['viewHtml'] = $html;
-        $html = $app['twig']->render('fusions/viewview.html.twig', $data);
+        $html = $app['twig']->render('fusions/view.html.twig', $data);
 
         $response = new Response(
             $html,

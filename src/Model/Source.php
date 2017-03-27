@@ -2,6 +2,8 @@
 
 namespace Realm\Model;
 
+use LinkORB\Presenter\PresenterTrait;
+
 class Source
 {
     protected $id;
@@ -10,6 +12,7 @@ class Source
     protected $appId;
     protected $appLogoUrl;
 
+    use PresenterTrait;
 
     public function getId()
     {

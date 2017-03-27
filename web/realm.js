@@ -35,8 +35,11 @@ function selectDetail(detailId) {
     $(this).removeClass('detail-active')
   })
   $(".nav-detail").each(function(index) {
-    $(this).removeClass('nav-detail-active')
+    $(this).removeClass('nav-detail-active');
+    $(this).removeClass('active');
   })
   $('#' + detailId).addClass('detail-active');
   $('.nav-' + detailId).addClass('nav-detail-active');
+  $('.nav-' + detailId).addClass('active');
+
 }

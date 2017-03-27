@@ -9,6 +9,7 @@
 .realm-visor img {
   width: 32px;
 }
+
 .realm-value {
   cursor: pointer;
 }
@@ -19,13 +20,11 @@
 .realm-value-hover .realm-visor {
   display: block;
 }
-
-span.realm-value {
+.realm-value {
   border: 2px solid #f0f0f0;
   display: block;
   padding: 0px 5px 0px 5px;
   border-radius: 5px;
-  min-height: 34px;
 }
 
 .realm-tooltip {
@@ -50,4 +49,26 @@ span.realm-value {
 }
 .nav-detail-active li {
   background-color: #f0f0f0 !important;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+  border: 1px solid #c0c0c0;
+  border-radius: 4px;
+  padding: 2px;
+}
+.logo-group {
+  display: inline-block;
+}
+.logo-group .logo-app {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin-top: 22px;
+  margin-left: -20px;
+  border-radius: 2px;
+  border: 1px solid #c0c0c0;
+
 }

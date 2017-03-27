@@ -2,35 +2,63 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-3">
-    {#% include '@Realm/navbar-fusion.html.twig' %#}
-  </div>
+  <div class="col-sm-3 sidebar">
+  <fieldset class="views-navigation">
+    <h1>Views <small>{{ project.getViewsByType('fusion')|length }}</small></h1>
+    <ul class="nav nav-pills nav-stacked">
+      {% for view in project.getViewsByType('fusion') %}
+      <li class="nav-detail nav-detail-view-{{ view.getId()}}">
+        <a  style="line-height: 1;" href="#" onclick="selectDetail('detail-view-{{ view.getId()}}'); return false;">
+          {{ view.getLabel() }} {#<small>{{view.getId()}}</small>#}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </fieldset>
 
-  <div class="col-md-6">
-    {% if section is defined %}
-      {% include '@Realm/section.html.twig' %}
-    {% endif %}
-  </div>
-  <div class="col-md-3">
-    <div style="border: 2px solid #f0f0f0; background-color: #f8f8f8; min-height: 200px; padding: 0px 10px 0px 10px">
-      <h1>Fusion</h1>
+  <fieldset class="section-navigation">
+    <h1>Sections <small>{{ fusion.getSections()|length }}</small></h1>
+    <ul class="nav nav-pills nav-stacked">
+    {% for section in fusion.getSections() %}
+      <li class="nav-detail nav-detail-section-{{ section.getId()}}">
+        <a href="#" onclick="selectDetail('detail-section-{{ section.getId()}}'); return false;">
+          <img src="{{ section.getResource().getSource().getPresenter().getLogoUrl() }}" class="logo logo-provider" />
+          <b>{{ section.getPresenter().presentLabel() }}</b>
+          <br />
+          <small>
+            <i>{{ section.getPresenter().getEffectiveAt() }}</i>
+          </small>
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+  </fieldset>
+
+    <fieldset class="fusion-navigation">
+      <h1>Resources</h1>
+      <ul class="nav nav-pills nav-stacked">
       {% for resource in fusion.getResources() %}
-      <h2>Resource</h2>
-      {{ resource.getId() }}
 
-      <h5>Source</h5>
-      {% if resource.getSource() %}
-      <dl>
-        <dt>ID</dt><dd>{{ resource.getSource().getId() }}</dd>
-        <dt>DisplayName</dt><dd>{{ resource.getSource().getDisplayName() }}</dd>
-        <dt>Logo</dt><dd><img src="{{ resource.getSource().getLogoUrl() }}" style="width: 50%"/></dd>
-      </dl>
+        <li class="nav-detail nav-detail-resource-{{ resource.getId()}}">
+          <a href="#" onclick="selectDetail('detail-resource-{{ resource.getId()}}'); return false;">
+            <div class="logo-group">
+              <img src="{{ resource.getSource().getLogoUrl() }}" class="logo logo-provider"/>
+              <img src="{{ resource.getSource().getAppLogoUrl() }}" class="logo logo-app"/><br />
+            </div>
+            {#<h2>Resource</h2>#}
+            {#{ resource.getId() }#}
+            {% if resource.getSource() %}
+            {{ resource.getSource().getDisplayName() }}<br /><small>@{{ resource.getSource().getId() }}</small><br />
+          </a>
+        </li>
       {% endif %}
       {% endfor %}
+      </ul>
+    </fieldset>
+  </div>
 
-
-
-    </div>
+  <div class="col-sm-9">
+    {{ viewHtml|raw }}
   </div>
 
 </div>

@@ -55,6 +55,9 @@ class FusionPresenter extends BasePresenter
         if ($multiple) {
             $html = '<span class="err">' . $html . '</span>';
         }
+        if (!$html) {
+            $html = '&#8203;'; // way to enforce minimum 1 character hight spans
+        }
         $html = '<span class="realm-value">' . $html . $visor . '</span>';
         return $html;
     }

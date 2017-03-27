@@ -16,11 +16,18 @@
 }
 
 fieldset {
-  border: 2px solid #e0e0e0 !important;
-  padding: 0 20px 0px 20px !important;
-  margin: 0px !important;
+  border: 2px solid #e0e0e0;
+  padding: 0 20px 20px 20px !important;
+  margin: 20px !important;
 }
 
+fieldset h1 {
+  font-size: 120%;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+  background-color: #16a085;
+}
 legend {
   width:inherit; /* Or auto */
   padding: 0 10px 0 10px;
@@ -30,4 +37,19 @@ legend {
 
 dt .fa {
   margin-left: 5px;
+}
+
+.realm-widget {
+  margin-bottom: 10px;
+}
+
+.realm-widget .realm-value {
+  margin-bottom: 5px;
+  color: #202020;
+  font-weight: bold;
+}
+
+.realm-widget label {
+  font-weight: bold;
+  line-height: 1;
 }
