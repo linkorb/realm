@@ -9,11 +9,12 @@ class ConceptPresenter extends BasePresenter
     public function presentTooltip()
     {
         $concept = $this->presenterObject;
-        if (!$concept->hasProperty('tooltip')) {
-            return '';
+        $lang = 'nl-NL';
+        if (!$concept->hasProperty('tooltip', $lang)) {
+            return $concept->getId();
         }
-        $property = $concept->getProperty('tooltip');
-        
+        $property = $concept->getProperty('tooltip', $lang);
+
         $html = '';
         $html .= "<div class=\"realm-tooltip\" id=\"tooltip_" . $concept->getId() . "\" style=\"display: none;\">";
         $html .= htmlentities($property->getValue());
