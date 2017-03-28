@@ -15,12 +15,14 @@ class ConceptPresenter extends BasePresenter
         }
         $property = $concept->getProperty('tooltip', $lang);
 
+        $tooltipId = $concept->getId();
+        $tooltipId .= '-' . rand(10000, 99999); // deal with multiple presentations of the same concept in one page
         $html = '';
-        $html .= "<div class=\"realm-tooltip\" id=\"tooltip_" . $concept->getId() . "\" style=\"display: none;\">";
+        $html .= "<div class=\"realm-tooltip\" id=\"tooltip_" . $tooltipId . "\" style=\"display: none;\">";
         $html .= htmlentities($property->getValue());
         $html .= "</div>";
 
-        $html .= "<a class=\"realm-tooltip-link\" href=\"#\" onclick=\"$('#tooltip_" . $concept->getId() . "').toggle(); return false;\">";
+        $html .= "<a class=\"realm-tooltip-link\" href=\"#\" onclick=\"$('#tooltip_" . $tooltipId . "').toggle(); return false;\">";
         $html .= "<i class=\"fa fa-question-circle\"></i>";
         $html .= "</a>";
         return $html;
