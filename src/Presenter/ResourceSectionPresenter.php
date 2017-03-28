@@ -88,7 +88,7 @@ class ResourceSectionPresenter extends BasePresenter
         $html .= '<dt>' . $label;
         $html .= $concept->getPresenter()->presentTooltip();
         $html .= '</dt>';
-        $valueText = $value->getPresenter()->getValue();
+        $valueText = $value->getPresenter()->getDisplayValue();
         if (!$valueText) {
             $valueText = '-';
         }
