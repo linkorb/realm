@@ -6,6 +6,22 @@ use LinkORB\Presenter\BasePresenter;
 
 class ConceptPresenter extends BasePresenter
 {
+    public function presentLabel()
+    {
+        $label = null;
+        // TODO: Try fetching from a property first?
+        if (!$label) {
+            $label = $this->getShortName();
+            $label = str_replace('_', ' ', $label);
+            $label = ucfirst($label);
+            if (substr($label, -1, 1)=='q') {
+                $label = substr($label, 0, -1);
+                $label .= ' (aantal)';
+            }
+        }
+        return $label;
+    }
+
     public function presentTooltip()
     {
         $concept = $this->presenterObject;

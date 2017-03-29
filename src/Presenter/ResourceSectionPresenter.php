@@ -74,21 +74,25 @@ class ResourceSectionPresenter extends BasePresenter
 
     public function presentConcept($conceptId, $label = '')
     {
-        if (!$this->presenterObject->hasValue($conceptId)) {
-            return '---';
+        $value = null;
+        if ($this->presenterObject->hasValue($conceptId)) {
+            $value = $this->presenterObject->getValue($conceptId);
         }
-        $value = $this->presenterObject->getValue($conceptId);
 
-
-        $concept = $value->getConcept();
+        $concept = $this->presenterObject->getResource()->getProject()->getConcept($conceptId);
+        //$concept = $value->getConcept();
         if ($label == '') {
-            $label = $concept->getShortName();
+            $label = $concept->getPresenter()->presentLabel();
         }
         $html = '';
         $html .= '<dt>' . $label;
         $html .= $concept->getPresenter()->presentTooltip();
         $html .= '</dt>';
-        $valueText = $value->getPresenter()->getDisplayValue();
+
+        $valueText = null;
+        if ($value) {
+            $valueText = $value->getPresenter()->getDisplayValue();
+        }
         if (!$valueText) {
             $valueText = '-';
         }
