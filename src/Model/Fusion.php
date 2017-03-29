@@ -38,6 +38,14 @@ class Fusion
         return $this->resources;
     }
 
+    public function getKeyList()
+    {
+        $res = '';
+        foreach ($this->resources as $resource) {
+            $res .= $resource->getId() . ',';
+        }
+        return trim($res, ',');
+    }
     public function getSection($sectionId)
     {
         foreach ($this->resources as $resource) {
