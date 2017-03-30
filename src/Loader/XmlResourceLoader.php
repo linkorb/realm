@@ -56,8 +56,8 @@ class XmlResourceLoader
             $section->setResource($resource);
             $section->setId((string)$sectionNode['id']);
             $section->setLabel((string)$sectionNode['label']);
-            $dt = new DateTime();
-            $dt->setTimestamp((int)$sectionNode['effectiveStamp']);
+
+            $dt = DateTime::createFromFormat('Y-m-d', $sectionNode['effectiveStamp']);
             $section->setEffectiveAt($dt);
 
             if (isset($sectionNode['type'])) {

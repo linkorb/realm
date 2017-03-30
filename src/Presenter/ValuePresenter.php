@@ -4,6 +4,7 @@ namespace Realm\Presenter;
 
 use LinkORB\Presenter\BasePresenter;
 use RuntimeException;
+use DateTime;
 
 class ValuePresenter extends BasePresenter
 {
@@ -56,9 +57,16 @@ class ValuePresenter extends BasePresenter
         if ($this->presenterObject->getConcept()) {
             $concept = $this->presenterObject->getConcept();
             switch ($concept->getDataType()) {
+                case 'date':
                 case 'datetime':
                     if (!$value) {
                         return '-';
+                    }
+                    try {
+                        $date = DateTime::createFromFormat('Y-m-d', $value);
+                        $value = (string)$date->format('d-m-Y');
+                    } catch (\Exception $e) {
+                        $value = '?';
                     }
                     return $value;
                     break;
