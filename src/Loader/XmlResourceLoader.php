@@ -58,7 +58,7 @@ class XmlResourceLoader
             $section->setLabel((string)$sectionNode['label']);
 
             if (isset($sectionNode['effectStamp'])) {
-                $dt = DateTime::createFromFormat('Y-m-d H:i:s', $sectionNode['effectStamp']);
+                $dt = DateTime::createFromFormat('Y-m-d', substr($sectionNode['effectStamp'], 0, 10));
                 $section->setEffectiveAt($dt);
             }
 
