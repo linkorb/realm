@@ -64,7 +64,11 @@ class ValuePresenter extends BasePresenter
                     }
                     try {
                         $date = DateTime::createFromFormat('Y-m-d', $value);
-                        $value = (string)$date->format('d-m-Y');
+
+                        $value = '??';
+                        if ($date) {
+                            $value = (string)$date->format('d-m-Y');
+                        }
                     } catch (\Exception $e) {
                         $value = '?';
                     }
