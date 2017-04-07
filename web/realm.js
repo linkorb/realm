@@ -41,5 +41,19 @@ function selectDetail(detailId) {
   $('#' + detailId).addClass('detail-active');
   $('.nav-' + detailId).addClass('nav-detail-active');
   $('.nav-' + detailId).addClass('active');
-
 }
+
+
+window.setInterval(function(){
+  $('img').each(function(index) {
+    if ($(this).data('src')) { // only do it once per img
+        if ($(this).is(':visible')) {
+          console.log("Loading: " + $(this).data('src'));
+          $(this).prop('src', $(this).data('src'));
+          $(this).data('src', null);
+        } else {
+          //console.log("Not visible...");
+        }
+    }
+  });
+}, 1000);
