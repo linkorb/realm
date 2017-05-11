@@ -13,7 +13,7 @@ use Realm\Writer\RealmWriter;
 use Realm\Model\Project;
 use RuntimeException;
 
-class RealmExportCommand extends Command
+class RealmBuildCommand extends Command
 {
     /**
      * {@inheritdoc}
@@ -23,8 +23,8 @@ class RealmExportCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('realm:export')
-            ->setDescription('Load realm, and export contents')
+            ->setName('realm:build')
+            ->setDescription('Load realm, and export build.xml')
             ->addOption(
                 'realm',
                 'r',
