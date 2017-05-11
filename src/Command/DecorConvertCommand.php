@@ -54,13 +54,13 @@ class DecorConvertCommand extends Command
 
         $realmLoader = new DecorLoader();
         $realmLoader->loadFile($filename, $project);
-        
-        $output = $input->getOption('output');
-        if (!$output) {
-            $output = 'output/';
+
+        $path = $input->getOption('output');
+        if (!$path) {
+            $path = 'output/';
         }
-        
+
         $realWriter = new RealmWriter();
-        $realWriter->write($project, $output);
+        $realWriter->writeFiles($project, $path);
     }
 }
