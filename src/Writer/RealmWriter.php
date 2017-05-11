@@ -26,11 +26,9 @@ class RealmWriter
             $dom = new DOMDocument('1.0', 'utf-8');
             $dom->preserveWhiteSpace = false;
             $dom->formatOutput = true;
-            $root = $dom->createElement('concept');
 
-            $this->writeConcept($project, $concept, $root);
+            $this->writeConcept($project, $concept, $dom);
 
-            $dom->appendChild($root);
             $xml = $dom->saveXML();
 
             $filename = $basePath . '/concepts/' . $concept->getId() . '.xml';
@@ -41,11 +39,9 @@ class RealmWriter
             $dom = new DOMDocument('1.0', 'utf-8');
             $dom->preserveWhiteSpace = false;
             $dom->formatOutput = true;
-            $root = $dom->createElement('codelist');
 
-            $this->writeCodelist($project, $codelist, $root);
+            $this->writeCodelist($project, $codelist, $dom);
 
-            $dom->appendChild($root);
             $xml = $dom->saveXML();
 
             $filename = $basePath . '/codelists/' . $codelist->getId() . '.xml';
@@ -80,6 +76,9 @@ class RealmWriter
         }
 
         $dom = $parentNode->ownerDocument;
+        if (!$dom) {
+            $dom = $parentNode;
+        }
 
         $root = $dom->createElement('concept');
         $root->setAttribute('id', $concept->getId());
@@ -131,6 +130,9 @@ class RealmWriter
         }
 
         $dom = $parentNode->ownerDocument;
+        if (!$dom) {
+            $dom = $parentNode;
+        }
         $root = $dom->createElement('codelist');
         $root->setAttribute('id', $codelist->getId());
         if ($codelist->getOid()) {
