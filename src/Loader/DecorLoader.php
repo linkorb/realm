@@ -43,7 +43,7 @@ class DecorLoader
             $concept->setStatus((string)$conceptNode['statusCode']);
             $project->addConcept($concept);
             //echo (string)$conceptNode['iddisplay'] . "\n";
-            
+
             foreach ($conceptNode->name as $propertyNode) {
                 $property = new Property();
                 $property->setName($propertyNode->getName());
@@ -67,9 +67,12 @@ class DecorLoader
                     if (isset($conceptNode->valueDomain->property['maxLength'])) {
                         $concept->setLengthMax((string)$conceptNode->valueDomain->property['maxLength']);
                     }
+                    if (isset($conceptNode->valueDomain->property['unit'])) {
+                        $concept->setUnit((string)$conceptNode->valueDomain->property['unit']);
+                    }
                 }
             }
-            
+
             if (isset($conceptNode->valueSet)) {
                 $this->loadCodelist($project, $conceptNode->valueSet);
                 $name = (string)$conceptNode->valueSet['name'];
@@ -82,7 +85,7 @@ class DecorLoader
         }
         return $project;
     }
-    
+
     public function loadPropertyNodes($obj, $nodes, $name)
     {
         foreach ($nodes as $propertyNode) {
@@ -93,7 +96,7 @@ class DecorLoader
             $obj->addProperty($property);
         }
     }
-    
+
     protected function loadCodelist($project, $valueSetNode)
     {
         $codelist = new Codelist();
@@ -106,7 +109,7 @@ class DecorLoader
         $codelist->setShortName((string)$valueSetNode['name']);
         $codelist->setDisplayName((string)$valueSetNode['displayName']);
         $codelist->setStatus((string)$valueSetNode['statusCode']);
-        
+
         // load both regular + exception concepts
         foreach ($valueSetNode->conceptList->concept as $itemNode) {
             $item = new CodelistItem();
@@ -115,10 +118,10 @@ class DecorLoader
             $item->setDisplayName((string)$itemNode['displayName']);
             $item->setLevel((string)$itemNode['level']);
             $item->setType((string)$itemNode['type']);
-            
+
             $this->loadPropertyNodes($item, $itemNode->name, 'name');
             $this->loadPropertyNodes($item, $itemNode->desc, 'description');
-            
+
             $codelist->addItem($item);
         }
         foreach ($valueSetNode->conceptList->exception as $itemNode) {
@@ -131,16 +134,16 @@ class DecorLoader
 
             $this->loadPropertyNodes($item, $itemNode->name, 'name');
             $this->loadPropertyNodes($item, $itemNode->desc, 'description');
-            
+
             $codelist->addItem($item);
         }
-        
+
         //print_r($codelist); exit();
         //print_r($valueSetNode); exit();
         $project->addCodelist($codelist);
         return $codelist;
     }
-    
+
     protected function loadProperties(SimpleXMLElement $root, $obj)
     {
         foreach ($root->property as $pNode) {
