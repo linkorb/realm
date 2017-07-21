@@ -84,6 +84,25 @@ class ResourceSectionPresenter extends BasePresenter
         if ($label == '') {
             $label = $concept->getPresenter()->presentLabel();
         }
+
+        $visor = '<div class="realm-visor">';
+
+        $visor .= '<div class="realm-debug">';
+        $visor .= 'Concept: ' . $conceptId;
+        $visor .= " (" . $concept->getShortName() . ")<br />";
+        if ($value) {
+            $visor .= "Value: " . $value->getValue() . "<br />";
+            $visor .= "Display: " . $value->getPresenter()->getDisplayValue() . "<br />";
+
+        } else {
+            $visor .= "Value: null<br />";
+        }
+        $visor .= '</div>';
+
+        $visor .= $concept->getPresenter()->presentLabel() . "<br />";
+
+        $visor .= '</div>';
+
         $html = '';
         $html .= '<dt>' . $label;
         $html .= $concept->getPresenter()->presentTooltip();
@@ -96,7 +115,7 @@ class ResourceSectionPresenter extends BasePresenter
         if (!$valueText) {
             $valueText = '-';
         }
-        $html .= '<dd><span class="realm-value">' . $valueText . '</span></dd>';
+        $html .= '<dd><span class="realm-value">' . $visor . $valueText . '</span></dd>';
         return $html;
     }
 }

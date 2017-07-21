@@ -28,6 +28,28 @@ class FusionPresenter extends BasePresenter
             $html .= $value->getPresenter()->getDisplayValue();
         }
         $visor = '<div class="realm-visor">';
+
+        $visor .= '<div class="realm-debug">';
+        $visor .= 'Concept: ' . $conceptId;
+        $concept = $this->getConcept($conceptId);
+        if ($concept) {
+            $visor .= " (" . $concept->getShortName() . ")";
+        }
+
+        $visor .= "<br />";
+        foreach ($values as $value) {
+            if ($value) {
+                $visor .= "Value: " . $value->getValue() . "<br />";
+                $visor .= "Display: " . $value->getPresenter()->getDisplayValue() . "<br />";
+
+            } else {
+                $visor .= "Value: null<br />";
+            }
+            $visor .= "<hr />";
+        }
+
+        $visor .= '</div>';
+
         $visor .= '<table class="table" style="width: 400px;">';
         $visor .= '<tr>';
         $visor .= '<th colspan="2">Bron</th>';
@@ -58,12 +80,15 @@ class FusionPresenter extends BasePresenter
         if (!$html) {
             $html = '&#8203;'; // way to enforce minimum 1 character hight spans
         }
+
         $html = '<span class="realm-value">' . $html . $visor . '</span>';
         return $html;
     }
 
     protected function getConcept($conceptId)
     {
+        // TODO: when no values of this conceptId are in a resource (none of the sections)
+        // then this method can't resolve the concept.
         foreach ($this->presenterObject->getSections() as $section) {
             foreach ($section->getValues() as $value) {
                 if ($value->getConcept() && ($value->getConcept()->getId() == $conceptId)) {
