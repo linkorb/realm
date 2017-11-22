@@ -28,7 +28,7 @@ class Application extends SilexApplication
         $yaml = file_get_contents($filename);
         $data = Yaml::parse($yaml);
         //print_r($data);
-        
+
         $this->register(new RoutingServiceProvider());
 
         $this->register(
@@ -37,7 +37,7 @@ class Application extends SilexApplication
                 'twig.path' => __DIR__ . '/../templates',
             )
         );
-        
+
         $this['twig.loader.filesystem']->addPath(
             __DIR__ . '/../templates',
             'Realm'
@@ -46,7 +46,7 @@ class Application extends SilexApplication
             __DIR__ . '/../themes/default',
             'Theme'
         );
-        
+
         foreach ($data['projects'] as $projectData) {
             if (!isset($projectData['type'])) {
                 throw new RuntimeException("Project type not defined");
@@ -74,31 +74,31 @@ class Application extends SilexApplication
                 $project->setListed(false);
             }
             $this->addProject($project);
-            
+
             if (file_exists($project->getBasePath() . '/views')) {
                 $this['twig.loader.filesystem']->addPath(
                     $project->getBasePath() . '/views',
                     'Realm-' . $project->getId()
                 );
             }
-            
+
         }
     }
-    
-    
-    
+
+
+
     protected $projects = [];
-    
+
     public function addProject(Project $project)
     {
         $this->projects[$project->getId()] = $project;
     }
-    
+
     public function getProject($id)
     {
         return $this->projects[$id];
     }
-    
+
     public function getProjects()
     {
         return $this->projects;

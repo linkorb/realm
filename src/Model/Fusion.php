@@ -46,6 +46,7 @@ class Fusion
         }
         return trim($res, ',');
     }
+
     public function getSection($sectionId)
     {
         foreach ($this->resources as $resource) {
@@ -78,5 +79,25 @@ class Fusion
             }
         }
         return $sections;
+    }
+
+    public function getAttachments()
+    {
+        $attachments = [];
+        foreach ($this->resources as $resource) {
+            $attachments = array_merge($resource->getAttachments(), $attachments);
+        }
+
+        // usort($sections, function($a, $b)
+        // {
+        //     return $a->getEffectiveAt() > $b->getEffectiveAt();
+        // });
+
+        return $attachments;
+    }
+
+    public function getFusionUrl($curveKey)
+    {
+
     }
 }

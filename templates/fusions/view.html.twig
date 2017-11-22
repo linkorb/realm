@@ -16,6 +16,26 @@
     </ul>
   </fieldset>
 
+
+  <fieldset>
+    <h1>Attachments: {{ fusion.getAttachments()|length }}</h1>
+    <ul class="nav nav-pills nav-stacked"">
+    {% for resource in fusion.getResources() %}
+      {% for attachment in resource.getAttachments() %}
+        <li class="nav-detail nav-detail-section-{{ fusion.getId() }}">
+          <a href="../resources/{{ attachment.getId() }}@{{ resource.getId()  }}">
+          {{ attachment.getId() }}@{{resource.getId() }}
+          <small>
+            {{ attachment.getMimeType()}}
+          </small>
+          </a>
+
+        </li>
+      {% endfor %}
+    {% endfor %}
+    </ul>
+  </fieldset>
+
   <fieldset class="section-navigation">
     <h1>Sections <small>{{ fusion.getSections()|length }}</small></h1>
     <ul class="nav nav-pills nav-stacked">

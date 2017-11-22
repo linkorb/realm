@@ -7,6 +7,7 @@ use Realm\Model\Value;
 use Realm\Model\Concept;
 use Realm\Model\Resource;
 use Realm\Model\ResourceSection;
+use Realm\Model\ResourceAttachment;
 use Realm\Model\Project;
 use Realm\Model\Property;
 use Realm\Model\Codelist;
@@ -72,6 +73,16 @@ class XmlResourceLoader
             $this->loadResourceSectionValues($project, $section, $sectionNode->values->value);
 
             $resource->addSection($section);
+        }
+
+        if ($root->attachments) {
+            foreach ($root->attachments->attachment as $attachmentNode) {
+                $attachment = new ResourceAttachment();
+                $attachment->setResource($resource);
+                $attachment->setId((string)$attachmentNode['id']);
+                $attachment->setMimeType((string)$attachmentNode['mimeType']);
+                $resource->addAttachment($attachment);
+            }
         }
 
         if ($root->source) {

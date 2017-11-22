@@ -18,7 +18,7 @@
 <div class="row">
   <div class="col-sm-3 sidebar">
     <fieldset>
-      <h1>Sections</h1>
+      <h1>Sections: {{ resource.getSections()|length }}</h1>
       <ul class="nav nav-pills nav-stacked"">
       {% for section in resource.getSections() %}
         <li class="nav-detail nav-detail-section-{{ section.getId() }}">
@@ -26,6 +26,23 @@
           {{ section.getPresenter().presentLabel() }}
           <small>
             {{ section.getPresenter().getEffectiveAt()}}
+          </small>
+          </a>
+
+        </li>
+      {% endfor %}
+      </ul>
+    </fieldset>
+
+    <fieldset>
+      <h1>Attachments: {{ resource.getAttachments()|length }}</h1>
+      <ul class="nav nav-pills nav-stacked"">
+      {% for attachment in resource.getAttachments() %}
+        <li class="nav-detail nav-detail-section-{{ attachment.getId() }}">
+          <a href="./{{ attachment.getId() }}@{{ resourceKey }}">
+          {{ attachment.getId() }}@{{resourceKey}}
+          <small>
+            {{ attachment.getMimeType()}}
           </small>
           </a>
 

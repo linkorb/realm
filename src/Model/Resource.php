@@ -8,6 +8,7 @@ class Resource
 {
     protected $id;
     protected $sections = [];
+    protected $attachments = [];
     protected $source;
     protected $project;
     protected $language = 'en-US';
@@ -57,6 +58,30 @@ class Resource
             throw new RuntimeException("No such sectionId: " . $id);
         }
         return $this->sections[$id];
+    }
+
+
+    public function addAttachment(ResourceAttachment $attachment)
+    {
+        $this->attachments[$attachment->getId()] = $attachment;
+        return $this;
+    }
+
+    public function getAttachments()
+    {
+        return $this->attachments;
+    }
+
+    public function hasAttachment($id)
+    {
+        return isset($this->attachments[$id]);
+    }
+    public function getAttachment($id)
+    {
+        if (!$this->hasAttachment($id)) {
+            throw new RuntimeException("No such attachmentId: " . $id);
+        }
+        return $this->attachments[$id];
     }
 
 
