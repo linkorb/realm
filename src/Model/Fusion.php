@@ -21,7 +21,6 @@ class Fusion
         return $this;
     }
 
-
     public function getResource($id)
     {
         return $this->resources['id'];
@@ -63,15 +62,15 @@ class Fusion
             $sections = array_merge($resource->getSections(), $sections);
         }
 
-        usort($sections, function($a, $b)
-        {
+        usort($sections, function ($a, $b) {
             return $a->getEffectiveAt() > $b->getEffectiveAt();
         });
 
         return $sections;
     }
 
-    public function getSectionsByTypeId($typeId) {
+    public function getSectionsByTypeId($typeId)
+    {
         $sections = [];
         foreach ($this->getSections() as $section) {
             if ($section->getType() && $section->getType()->getId() == $typeId) {
@@ -98,6 +97,5 @@ class Fusion
 
     public function getFusionUrl($curveKey)
     {
-
     }
 }

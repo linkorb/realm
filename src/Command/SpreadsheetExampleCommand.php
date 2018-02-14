@@ -2,15 +2,12 @@
 
 namespace Realm\Command;
 
-use Symfony\Component\Console\Helper\DescriptorHelper;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
 use Realm\Loader\XmlRealmLoader;
 use Realm\Loader\SpreadsheetLoader;
-use Realm\Model\Project;
 use Realm\Model\Resource;
 use Realm\Model\ResourceSection;
 use Realm\Model\Value;
@@ -52,28 +49,28 @@ class SpreadsheetExampleCommand extends Command
     {
         $filename = $input->getOption('filename');
         if (!$filename) {
-            throw new RuntimeException("Please specify import .tsv");
+            throw new RuntimeException('Please specify import .tsv');
         }
 
         $realmId = $input->getOption('realm');
         if (!$realmId) {
-            throw new RuntimeException("Please pass a realm as context for this spreadsheet");
+            throw new RuntimeException('Please pass a realm as context for this spreadsheet');
         }
         $realmLoader = new XmlRealmLoader();
         $realm = $realmLoader->load($realmId);
-        
-        $output->writeLn("Loading spreadsheet tsv file: " . $filename);
+
+        $output->writeLn('Loading spreadsheet tsv file: ' . $filename);
         $loader = new SpreadsheetLoader();
         $rows = $loader->load($filename);
         //print_r($rows);
-        
+
         $resource = new Resource();
         foreach ($rows as $row) {
-            if (($row['concept']!='') && ($row['concept'][0]!='_')) {
+            if (($row['concept'] != '') && ($row['concept'][0] != '_')) {
                 $sectionId = $row['section_id'];
                 $conceptId = trim(strtolower($row['concept']));
                 if (!$realm->hasConcept($conceptId)) {
-                    throw new RuntimeException("Unknown conceptId: " . $conceptId);
+                    throw new RuntimeException('Unknown conceptId: ' . $conceptId);
                 }
                 $concept = $realm->getConcept($conceptId);
                 $exampleValue = trim($row['example_value']);
@@ -83,10 +80,10 @@ class SpreadsheetExampleCommand extends Command
                     $section = new ResourceSection();
                     $section->setId($sectionId);
                     $resource->addSection($section);
-                    
+
                     $sectionTypeId = trim(strtolower($row['section_type']));
                     if (!$realm->hasSectionType($sectionTypeId)) {
-                        throw new RuntimeException("Unknown sectionTypeId: " . $sectionTypeId);
+                        throw new RuntimeException('Unknown sectionTypeId: ' . $sectionTypeId);
                     }
                     $sectionType = $realm->getSectionType($sectionTypeId);
                     $section->setType($sectionType);

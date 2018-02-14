@@ -12,7 +12,7 @@ class ResourceXmlWriter
      * modes:
      * - pure: export as-is
      * - augment: enrich labels, displayValues etc
-     * - stripped: remove labels, displayValues etc
+     * - stripped: remove labels, displayValues etc.
      */
     public function write(Resource $resource, $mode = 'pure')
     {
@@ -47,7 +47,6 @@ class ResourceXmlWriter
 
                 $valueValue = $value->getValue();
                 if ($valueValue) {
-
                     $valueElement = $doc->createElement('value');
                     $valueElement->setAttribute('concept', $value->getConcept()->getId());
                     $valueElement->setAttribute('value', $valueValue);
@@ -57,7 +56,7 @@ class ResourceXmlWriter
 
                     if ($mode != 'stripped') {
                         $label = $value->getLabel();
-                        if (!$label && $mode=='augmented') {
+                        if (!$label && $mode == 'augmented') {
                             $label = $valuePresenter->getLabel();
                         }
                         if ($label) {
@@ -65,7 +64,7 @@ class ResourceXmlWriter
                         }
 
                         $displayValue = $value->getDisplayValue();
-                        if (!$displayValue && $mode=='augmented') {
+                        if (!$displayValue && $mode == 'augmented') {
                             $displayValue = $valuePresenter->getDisplayValue();
                         }
                         if ($displayValue && ($displayValue != $valueValue)) {

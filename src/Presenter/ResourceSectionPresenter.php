@@ -89,17 +89,16 @@ class ResourceSectionPresenter extends BasePresenter
 
         $visor .= '<div class="realm-debug">';
         $visor .= 'Concept: ' . $conceptId;
-        $visor .= " (" . $concept->getShortName() . ")<br />";
+        $visor .= ' (' . $concept->getShortName() . ')<br />';
         if ($value) {
-            $visor .= "Value: " . $value->getValue() . "<br />";
-            $visor .= "Display: " . $value->getPresenter()->getDisplayValue() . "<br />";
-
+            $visor .= 'Value: ' . $value->getValue() . '<br />';
+            $visor .= 'Display: ' . $value->getPresenter()->getDisplayValue() . '<br />';
         } else {
-            $visor .= "Value: null<br />";
+            $visor .= 'Value: null<br />';
         }
         $visor .= '</div>';
 
-        $visor .= $concept->getPresenter()->presentLabel() . "<br />";
+        $visor .= $concept->getPresenter()->presentLabel() . '<br />';
 
         $visor .= '</div>';
 

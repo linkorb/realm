@@ -8,11 +8,6 @@ use Realm\Model\Concept;
 use Realm\Model\Resource;
 use Realm\Model\ResourceSection;
 use Realm\Model\Project;
-use Realm\Model\Property;
-use Realm\Model\Codelist;
-use Realm\Model\CodelistItem;
-use Realm\Model\SectionType;
-use Realm\Model\SectionFieldType;
 use DateTime;
 use RuntimeException;
 
@@ -21,7 +16,7 @@ class XmlFormLoader
     public function loadFile($filename, $project)
     {
         if (!file_exists($filename)) {
-            throw new RuntimeException("File not found: " . $filename);
+            throw new RuntimeException('File not found: ' . $filename);
         }
         $basePath = dirname($filename);
         $xml = file_get_contents($filename);
@@ -40,13 +35,13 @@ class XmlFormLoader
         foreach ($forms as $sectionNode) {
             $parent = $resource;
             $section = new ResourceSection();
-            $section->setId((string)$sectionNode['uuid']);
-            $section->setLabel((string)$sectionNode['label']);
+            $section->setId((string) $sectionNode['uuid']);
+            $section->setLabel((string) $sectionNode['label']);
             $section->setResource($resource);
 
             $groupSection = null;
             if (isset($sectionNode['keyid'])) {
-                $keyId = (string)$sectionNode['keyid'];
+                $keyId = (string) $sectionNode['keyid'];
                 $section->setSourceTypeId($keyId);
                 if ($project->hasSectionType($keyId)) {
                     $sectionType = $project->getSectionType($keyId);
@@ -54,7 +49,7 @@ class XmlFormLoader
                 }
             }
             $dt = new DateTime();
-            $dt->setTimestamp((string)$sectionNode['createstamp']);
+            $dt->setTimestamp((string) $sectionNode['createstamp']);
             $section->setCreatedAt($dt);
 
             $this->loadResourceSectionValues($project, $section, $sectionNode->values->value);
@@ -74,10 +69,10 @@ class XmlFormLoader
             $value = new Value();
             $value->setSection($section);
             if (isset($valueNode['label'])) {
-                $value->setLabel((string)$valueNode['label']);
+                $value->setLabel((string) $valueNode['label']);
             }
 
-            $value->setValue((string)$valueNode['value']);
+            $value->setValue((string) $valueNode['value']);
             //$value->setSourceValue((string)$valueNode['value']);
 
             if ($valueNode['type'] == 'date') {
@@ -85,7 +80,7 @@ class XmlFormLoader
             }
             $conceptId = null;
             if (isset($valueNode['keyid'])) {
-                $conceptId = (string)'keyid-' . $valueNode['keyid'];
+                $conceptId = (string) 'keyid-' . $valueNode['keyid'];
                 //$value->setSourceConceptId($keyId);
 
                 /*
@@ -119,7 +114,7 @@ class XmlFormLoader
                 */
             }
             if (isset($valueNode['concept'])) {
-                $conceptId = (string)$valueNode['concept'];
+                $conceptId = (string) $valueNode['concept'];
                 //$value->setConceptId($conceptId);
             }
             if ($conceptId) {

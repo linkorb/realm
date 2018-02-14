@@ -12,7 +12,7 @@ class RealmWriter
     public function writeFiles(Project $project, $basePath)
     {
         if (!file_exists($basePath)) {
-            throw new RuntimeException("basepath does not exist: " . $basePath);
+            throw new RuntimeException('basepath does not exist: ' . $basePath);
         }
 
         if (!file_exists($basePath . '/concepts')) {
@@ -121,10 +121,8 @@ class RealmWriter
         }
     }
 
-
     public function writeCodelist(Project $project, $codelist, $parentNode)
     {
-
         if (!$codelist->getId()) {
             throw new RuntimeException("Codelist doesn't have a required ID");
         }

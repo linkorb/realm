@@ -2,8 +2,6 @@
 
 namespace Realm\Command;
 
-use Symfony\Component\Console\Helper\DescriptorHelper;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,9 +38,9 @@ class RealmLoadCommand extends Command
     {
         $realmId = $input->getOption('realm');
         if (!$realmId) {
-            throw new RuntimeException("Please pass a realm to load");
+            throw new RuntimeException('Please pass a realm to load');
         }
-        $output->writeLn("Loading realm: " . $realmId);
+        $output->writeLn('Loading realm: ' . $realmId);
         $project = new Project();
         $realmLoader = new XmlRealmLoader();
         $realm = $realmLoader->load($realmId, $project);

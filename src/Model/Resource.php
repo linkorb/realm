@@ -13,7 +13,6 @@ class Resource
     protected $project;
     protected $language = 'en-US';
 
-
     public function getProject()
     {
         return $this->project;
@@ -24,7 +23,6 @@ class Resource
         $this->project = $project;
         return $this;
     }
-
 
     public function getId()
     {
@@ -52,14 +50,14 @@ class Resource
     {
         return isset($this->sections[$id]);
     }
+
     public function getSection($id)
     {
         if (!$this->hasSection($id)) {
-            throw new RuntimeException("No such sectionId: " . $id);
+            throw new RuntimeException('No such sectionId: ' . $id);
         }
         return $this->sections[$id];
     }
-
 
     public function addAttachment(ResourceAttachment $attachment)
     {
@@ -76,14 +74,14 @@ class Resource
     {
         return isset($this->attachments[$id]);
     }
+
     public function getAttachment($id)
     {
         if (!$this->hasAttachment($id)) {
-            throw new RuntimeException("No such attachmentId: " . $id);
+            throw new RuntimeException('No such attachmentId: ' . $id);
         }
         return $this->attachments[$id];
     }
-
 
     public function getSource()
     {
@@ -106,5 +104,4 @@ class Resource
         $this->language = $language;
         return $this;
     }
-
 }
