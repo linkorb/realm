@@ -39,8 +39,8 @@ trait PropertyTrait
         throw new RuntimeException("No such property: $language/$name");
     }
 
-    public function getPropertyValue($language, $name)
+    public function getPropertyValue($name, $language)
     {
-        return $this->getProperty($language, $name)->getValue();
+        return $this->getProperty($name, $language)->getValue();
     }
 }
