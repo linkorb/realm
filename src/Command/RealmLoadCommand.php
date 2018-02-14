@@ -12,6 +12,8 @@ use RuntimeException;
 
 class RealmLoadCommand extends Command
 {
+    protected static $defaultName = 'realm:load';
+
     /**
      * {@inheritdoc}
      */
@@ -20,7 +22,6 @@ class RealmLoadCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('realm:load')
             ->setDescription('Load realm, and output contents')
             ->addOption(
                 'realm',

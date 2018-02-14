@@ -15,6 +15,8 @@ use RuntimeException;
 
 class ResourceParseCommand extends Command
 {
+    protected static $defaultName = 'resource:parse';
+
     /**
      * {@inheritdoc}
      */
@@ -23,7 +25,6 @@ class ResourceParseCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('resource:parse')
             ->setDescription('Load realm, and output contents')
             ->addOption(
                 'realm',

@@ -17,6 +17,8 @@ use RuntimeException;
 
 class SpreadsheetExampleCommand extends Command
 {
+    protected static $defaultName = 'spreadsheet:example';
+
     /**
      * {@inheritdoc}
      */
@@ -25,7 +27,6 @@ class SpreadsheetExampleCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('spreadsheet:example')
             ->setDescription('Parse spreadsheet and output resource example')
             ->addOption(
                 'filename',

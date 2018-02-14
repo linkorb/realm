@@ -12,6 +12,8 @@ use Realm\Model\Project;
 
 class DecorConvertCommand extends Command
 {
+    protected static $defaultName = 'decor:convert';
+
     /**
      * {@inheritdoc}
      */
@@ -20,7 +22,6 @@ class DecorConvertCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('decor:convert')
             ->setDescription('Load decor xml file and output contents')
             ->addOption(
                 'filename',

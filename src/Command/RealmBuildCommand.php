@@ -13,6 +13,8 @@ use RuntimeException;
 
 class RealmBuildCommand extends Command
 {
+    protected static $defaultName = 'realm:build';
+
     /**
      * {@inheritdoc}
      */
@@ -21,7 +23,6 @@ class RealmBuildCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('realm:build')
             ->setDescription('Load realm, and export build.xml')
             ->addOption(
                 'realm',

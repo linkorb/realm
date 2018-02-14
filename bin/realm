@@ -1,8 +1,18 @@
 #!/usr/bin/env php
 <?php
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Dotenv\Dotenv;
+
+use Realm\Command\RealmLoadCommand;
+use Realm\Command\RealmBuildCommand;
+use Realm\Command\ResourceParseCommand;
+use Realm\Command\DecorConvertCommand;
+use Realm\Command\SpreadsheetExampleCommand;
 
 $loader = __DIR__ . '/../vendor/autoload.php';
 
@@ -30,11 +40,28 @@ if (getenv('REALM_PATH')) {
     set_include_path(get_include_path(). ':' . getenv('REALM_PATH'));
 }
 
+// configure services
+$container = new ContainerBuilder();
+$phpFileLoader = new PhpFileLoader(
+    $container,
+    new FileLocator(dirname(__DIR__).'/app/config')
+);
+$phpFileLoader->load('cli-services.php');
+$container->compile();
+
+//configure the appplication
 $application = new Application('Realm', '1.0.0');
 $application->setCatchExceptions(true);
-$application->add(new \Realm\Command\RealmLoadCommand());
-$application->add(new \Realm\Command\RealmBuildCommand());
-$application->add(new \Realm\Command\ResourceParseCommand());
-$application->add(new \Realm\Command\DecorConvertCommand());
-$application->add(new \Realm\Command\SpreadsheetExampleCommand());
+$application->setCommandLoader(
+    new ContainerCommandLoader(
+        $container,
+        [
+            RealmLoadCommand::getDefaultName() => RealmLoadCommand::class,
+            RealmBuildCommand::getDefaultName() => RealmBuildCommand::class,
+            ResourceParseCommand::getDefaultName() => ResourceParseCommand::class,
+            DecorConvertCommand::getDefaultName() => DecorConvertCommand::class,
+            SpreadsheetExampleCommand::getDefaultName() => SpreadsheetExampleCommand::class,
+        ]
+    )
+);
 $application->run();
