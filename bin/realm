@@ -13,6 +13,7 @@ use Realm\Command\RealmBuildCommand;
 use Realm\Command\ResourceParseCommand;
 use Realm\Command\DecorConvertCommand;
 use Realm\Command\SpreadsheetExampleCommand;
+use Realm\Command\TerminologyEditorCommand;
 
 $loader = __DIR__ . '/../vendor/autoload.php';
 
@@ -61,6 +62,7 @@ $application->setCommandLoader(
             ResourceParseCommand::getDefaultName() => ResourceParseCommand::class,
             DecorConvertCommand::getDefaultName() => DecorConvertCommand::class,
             SpreadsheetExampleCommand::getDefaultName() => SpreadsheetExampleCommand::class,
+            TerminologyEditorCommand::getDefaultName() => TerminologyEditorCommand::class,
         ]
     )
 );
