@@ -5,11 +5,6 @@ namespace Realm\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Realm\Application;
-use RuntimeException;
-use Exception;
-
-use Twig_Loader_Filesystem;
-use Twig_Environment;
 
 class WebController
 {
@@ -71,7 +66,6 @@ class WebController
         );
         return $response;
     }
-
 
     public function codelistIndexAction(Application $app, Request $request, $projectId)
     {
@@ -243,7 +237,6 @@ class WebController
         }
 
         foreach ($fusion->getSections() as $section) {
-
             $sectionTypeId = $fusion->getSection($section->getId())->getType()->getId();
             $sectionType = $project->getSectionType($sectionTypeId);
 
@@ -253,7 +246,7 @@ class WebController
 
             try {
                 $viewHtml = $app['twig']->render('@Realm-' . $project->getId() . '/section-types/' . $sectionTypeId . '.html.twig', $viewData);
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 $viewHtml = 'Failed to render section (template missing or incomplete?) sectionType: ' . $sectionTypeId;
             }
 

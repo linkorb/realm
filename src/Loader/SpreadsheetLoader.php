@@ -6,7 +6,7 @@ class SpreadsheetLoader
 {
     public function load($filename)
     {
-        $fhandle = fopen($filename, "r");
+        $fhandle = fopen($filename, 'r');
         $rows = [];
         $header = null;
         while ($row = fgetcsv($fhandle, 0, "\t")) {

@@ -15,13 +15,13 @@ class ValuePresenter extends BasePresenter
         }
         $resource = $this->getResource();
         if (!$resource) {
-            throw new RuntimeException("No resource");
+            throw new RuntimeException('No resource');
         }
 
         if ($this->presenterObject->getConcept()) {
             $concept = $this->presenterObject->getConcept();
             if ($concept->hasProperty('name', $resource->getLanguage())) {
-                $label = $concept->getPropertyValue('name', $resource->getLanguage());
+                $label = $concept->getPropertyValue($resource->getLanguage(), 'name');
             } else {
                 $label = $concept->getShortName();
                 $label = str_replace('_', ' ', $label);
@@ -50,7 +50,7 @@ class ValuePresenter extends BasePresenter
 
         $resource = $this->getResource();
         if (!$resource) {
-            throw new RuntimeException("No resource");
+            throw new RuntimeException('No resource');
         }
 
         // Logic for transforming value based on concept
@@ -67,7 +67,7 @@ class ValuePresenter extends BasePresenter
 
                         $value = '??';
                         if ($date) {
-                            $value = (string)$date->format('d-m-Y');
+                            $value = (string) $date->format('d-m-Y');
                         }
                     } catch (\Exception $e) {
                         $value = '?';
@@ -86,7 +86,7 @@ class ValuePresenter extends BasePresenter
                 case 'code':
                     $codelist = $concept->getCodelist();
                     if (!$codelist) {
-                        throw new RuntimeException("Type code with undefined codelist");
+                        throw new RuntimeException('Type code with undefined codelist');
                     }
                     if (!$codelist->hasItem($value)) {
                         //throw new RuntimeException("No such codelist item: " . $value);
@@ -95,7 +95,7 @@ class ValuePresenter extends BasePresenter
                     $item = $codelist->getItem($value);
                     if ($item) {
                         if ($item->hasProperty('name', $resource->getLanguage())) {
-                            return $item->getPropertyValue('name', $resource->getLanguage());
+                            return $item->getPropertyValue($resource->getLanguage(), 'name');
                         } else {
                             return $item->getDisplayName();
                         }

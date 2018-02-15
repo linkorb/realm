@@ -3,11 +3,8 @@
 namespace Realm;
 
 use Silex\Application as SilexApplication;
-use Symfony\Component\HttpFoundation\Request;
 use Silex\Provider\RoutingServiceProvider;
 use Silex\Provider\TwigServiceProvider;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Yaml\Yaml;
 use Realm\Model\Project;
 use Realm\Loader\DecorLoader;
@@ -23,7 +20,7 @@ class Application extends SilexApplication
         $this['debug'] = true;
         $filename = __DIR__ . '/../app/config/projects.yml';
         if (!file_exists($filename)) {
-            throw new RuntimeException("Missing required file: " . $filename);
+            throw new RuntimeException('Missing required file: ' . $filename);
         }
         $yaml = file_get_contents($filename);
         $data = Yaml::parse($yaml);
@@ -49,10 +46,10 @@ class Application extends SilexApplication
 
         foreach ($data['projects'] as $projectData) {
             if (!isset($projectData['type'])) {
-                throw new RuntimeException("Project type not defined");
+                throw new RuntimeException('Project type not defined');
             }
             if (!isset($projectData['id'])) {
-                throw new RuntimeException("Project needs id");
+                throw new RuntimeException('Project needs id');
             }
             $projectId = $projectData['id'];
             $projectType = $projectData['type'];
@@ -65,7 +62,7 @@ class Application extends SilexApplication
                     $projectLoader = new DecorLoader();
                     break;
                 default:
-                    throw new RuntimeException("Invalid project type: " . $projectType);
+                    throw new RuntimeException('Invalid project type: ' . $projectType);
             }
             $project = new Project();
             $projectLoader->load($projectId, $project);
@@ -81,11 +78,8 @@ class Application extends SilexApplication
                     'Realm-' . $project->getId()
                 );
             }
-
         }
     }
-
-
 
     protected $projects = [];
 

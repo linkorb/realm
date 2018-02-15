@@ -14,7 +14,7 @@ class ConceptPresenter extends BasePresenter
             $label = $this->getShortName();
             $label = str_replace('_', ' ', $label);
             $label = ucfirst($label);
-            if (substr($label, -1, 1)=='q') {
+            if (substr($label, -1, 1) == 'q') {
                 $label = substr($label, 0, -1);
                 $label .= ' (aantal)';
             }
@@ -34,13 +34,13 @@ class ConceptPresenter extends BasePresenter
         $tooltipId = $concept->getId();
         $tooltipId .= '-' . rand(10000, 99999); // deal with multiple presentations of the same concept in one page
         $html = '';
-        $html .= "<div class=\"realm-tooltip\" id=\"tooltip_" . $tooltipId . "\" style=\"display: none;\">";
+        $html .= '<div class="realm-tooltip" id="tooltip_' . $tooltipId . '" style="display: none;">';
         $html .= htmlentities($property->getValue());
-        $html .= "</div>";
+        $html .= '</div>';
 
         $html .= "<a class=\"realm-tooltip-link\" href=\"#\" onclick=\"$('#tooltip_" . $tooltipId . "').toggle(); return false;\">";
-        $html .= "<i class=\"fa fa-question-circle\"></i>";
-        $html .= "</a>";
+        $html .= '<i class="fa fa-question-circle"></i>';
+        $html .= '</a>';
         return $html;
     }
 }

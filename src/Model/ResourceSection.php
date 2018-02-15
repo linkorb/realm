@@ -145,5 +145,4 @@ class ResourceSection
         $this->resource = $resource;
         return $this;
     }
-
 }

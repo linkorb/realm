@@ -21,7 +21,7 @@ class FusionPresenter extends BasePresenter
         $html = '';
         $multiple = false;
         foreach ($uniqueValues as $value) {
-            if ($html !='') {
+            if ($html != '') {
                 $html .= ' / ';
                 $multiple = true;
             }
@@ -33,19 +33,18 @@ class FusionPresenter extends BasePresenter
         $visor .= 'Concept: ' . $conceptId;
         $concept = $this->getConcept($conceptId);
         if ($concept) {
-            $visor .= " (" . $concept->getShortName() . ")";
+            $visor .= ' (' . $concept->getShortName() . ')';
         }
 
-        $visor .= "<br />";
+        $visor .= '<br />';
         foreach ($values as $value) {
             if ($value) {
-                $visor .= "Value: " . $value->getValue() . "<br />";
-                $visor .= "Display: " . $value->getPresenter()->getDisplayValue() . "<br />";
-
+                $visor .= 'Value: ' . $value->getValue() . '<br />';
+                $visor .= 'Display: ' . $value->getPresenter()->getDisplayValue() . '<br />';
             } else {
-                $visor .= "Value: null<br />";
+                $visor .= 'Value: null<br />';
             }
-            $visor .= "<hr />";
+            $visor .= '<hr />';
         }
 
         $visor .= '</div>';

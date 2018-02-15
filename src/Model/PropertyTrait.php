@@ -10,37 +10,48 @@ trait PropertyTrait
 
     public function addProperty(Property $property)
     {
-        $this->properties[$property->getName()] = $property;
+        $languageCode = $this->normaliseLanguageCode($property->getLanguage());
+        $this->properties[$languageCode][$property->getName()] = $property;
         return $this;
     }
 
     public function getProperties()
     {
-        return $this->properties;
-    }
-
-    public function hasProperty($name, $language = null)
-    {
-        foreach ($this->properties as $property) {
-            if (($property->getLanguage()==$language) && ($property->getName()==$name)) {
-                return true;
+        $p = [];
+        array_walk_recursive(
+            $this->properties,
+            function ($x) use (&$p) {
+                $p[] = $x;
             }
-        }
-        return false;
+        );
+        return $p;
     }
 
-    public function getProperty($name, $language = null)
+    public function hasProperty($name, $languageCode)
     {
-        foreach ($this->properties as $property) {
-            if (($property->getLanguage()==$language) && ($property->getName()==$name)) {
-                return $property;
-            }
-        }
-        throw new RuntimeException("No such property: $language/$name");
+        return isset(
+            $this->properties[$this->normaliseLanguageCode($languageCode)][$name]
+        );
     }
 
-    public function getPropertyValue($language, $name)
+    public function getProperty($name, $languageCode)
     {
-        return $this->getProperty($language, $name)->getValue();
+        if (!$this->hasProperty($name, $languageCode)) {
+            throw new RuntimeException("No such property: $languageCode/$name");
+        }
+        return $this->properties[$this->normaliseLanguageCode($languageCode)][$name];
+    }
+
+    public function getPropertyValue($name, $languageCode)
+    {
+        return $this->getProperty($name, $languageCode)->getValue();
+    }
+
+    private function normaliseLanguageCode($languageCode)
+    {
+        if (null === $languageCode || '' === $languageCode) {
+            return '';
+        }
+        return str_replace('-', '_', $languageCode);
     }
 }

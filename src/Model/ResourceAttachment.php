@@ -34,7 +34,6 @@ class ResourceAttachment
         return $this;
     }
 
-
     public function getResource()
     {
         return $this->resource;
@@ -45,5 +44,4 @@ class ResourceAttachment
         $this->resource = $resource;
         return $this;
     }
-
 }

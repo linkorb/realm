@@ -7,19 +7,12 @@ use Realm\Model\Value;
 use Realm\Model\Concept;
 use Realm\Model\ConceptMapping;
 use Realm\Model\ConceptMappingItem;
-use Realm\Model\Resource;
-use Realm\Model\ResourceSection;
 use Realm\Model\Project;
-use Realm\Model\Fusion;
 use Realm\Model\Property;
 use Realm\Model\Codelist;
 use Realm\Model\CodelistItem;
 use Realm\Model\SectionType;
 use Realm\Model\SectionFieldType;
-use Realm\Loader\XmlResourceLoader;
-use Realm\Loader\XmlFusionLoader;
-use Realm\Loader\XmlViewLoader;
-use Realm\Loader\CsvPropertyLoader;
 use RuntimeException;
 
 class XmlRealmLoader
@@ -45,21 +38,21 @@ class XmlRealmLoader
         $filenameOrg = $filename;
         $filename = stream_resolve_include_path($filename);
         if (!file_exists($filename)) {
-            throw new RuntimeException("File not found in REALM_PATH: " . $filenameOrg);
+            throw new RuntimeException('File not found in REALM_PATH: ' . $filenameOrg);
         }
         $basePath = dirname($filename);
         $xml = file_get_contents($filename);
         $realmRoot = simplexml_load_string($xml);
 
         foreach ($realmRoot->dependency as $dependencyNode) {
-            $name = (string)$dependencyNode['name'];
+            $name = (string) $dependencyNode['name'];
             $filename = stream_resolve_include_path($name . '/realm.xml');
             if (!$filename) {
                 $filename = stream_resolve_include_path('realm-' . $name . '/realm.xml');
             }
             if (!$filename) {
                 throw new RuntimeException(
-                    "Dependency not found in include paths: " . $name
+                    'Dependency not found in include paths: ' . $name
                 );
             }
             $this->loadFile($filename, $project);
@@ -79,11 +72,11 @@ class XmlRealmLoader
         foreach ($files as $filename) {
             $xml = file_get_contents($filename);
             $root = simplexml_load_string($xml);
-            if ($root->getName()=='concept') {
+            if ($root->getName() == 'concept') {
                 $concept = $this->loadConcept($root, $project);
                 $project->addConcept($concept);
             }
-            if ($root->getName()=='concepts') {
+            if ($root->getName() == 'concepts') {
                 foreach ($root->concept as $conceptNode) {
                     $concept = $this->loadConcept($conceptNode, $project);
                     $project->addConcept($concept);
@@ -103,11 +96,11 @@ class XmlRealmLoader
             $xml = file_get_contents($filename);
             $root = simplexml_load_string($xml);
             //print_r($root);
-            if ($root->getName()=='sectionType') {
+            if ($root->getName() == 'sectionType') {
                 $sectionType = $this->loadSectionType($root, $project);
                 $project->addSectionType($sectionType);
             }
-            if ($root->getName()=='sectionTypes') {
+            if ($root->getName() == 'sectionTypes') {
                 foreach ($root->sectionType as $sectionType) {
                     $sectionType = $this->loadSectionType($sectionType, $project);
                     $project->addSectionType($sectionType);
@@ -122,7 +115,7 @@ class XmlRealmLoader
             $resource = $resourceLoader->loadFile($filename, $project);
             $resource->setId($id);
             $project->addResource($resource);
-            $id++;
+            ++$id;
         }
 
         $resourceLoader = new XmlResourceLoader();
@@ -150,16 +143,16 @@ class XmlRealmLoader
 
         $csvPropertyLoader = new CsvPropertyLoader();
         foreach ($realmRoot->import as $importNode) {
-            $filename = (string)$importNode['filename'];
+            $filename = (string) $importNode['filename'];
             $csvPropertyLoader->loadFile(
                 $filename,
                 $project,
                 'concept',
-                (string)$importNode['id'],
-                (string)$importNode['value'],
-                (string)$importNode['name'],
-                (string)$importNode['language'],
-                (string)$importNode['delimiter']
+                (string) $importNode['id'],
+                (string) $importNode['value'],
+                (string) $importNode['name'],
+                (string) $importNode['language'],
+                (string) $importNode['delimiter']
             );
         }
 
@@ -169,7 +162,7 @@ class XmlRealmLoader
 
     public function loadProject(SimpleXMLElement $root, $project)
     {
-        $project->setId((string)$root['id']);
+        $project->setId((string) $root['id']);
         $this->loadProperties($root, $project);
         return $project;
     }
@@ -177,15 +170,15 @@ class XmlRealmLoader
     public function loadCodelist(SimpleXMLElement $root, Project $project)
     {
         $codelist = new Codelist();
-        $codelist->setId((string)$root['id']);
+        $codelist->setId((string) $root['id']);
         $this->loadProperties($root, $codelist);
         foreach ($root->item as $iNode) {
             $item = new CodelistItem();
-            $item->setCode((string)$iNode['code']);
-            $item->setCodeSystem((string)$iNode['codeSystem']);
-            $item->setDisplayName((string)$iNode['displayName']);
-            $item->setLevel((string)$iNode['level']);
-            $item->setType((string)$iNode['type']);
+            $item->setCode((string) $iNode['code']);
+            $item->setCodeSystem((string) $iNode['codeSystem']);
+            $item->setDisplayName((string) $iNode['displayName']);
+            $item->setLevel((string) $iNode['level']);
+            $item->setType((string) $iNode['type']);
 
             $this->loadProperties($iNode, $item);
 
@@ -198,16 +191,16 @@ class XmlRealmLoader
     public function loadConcept(SimpleXMLElement $root, Project $project)
     {
         $concept = new Concept();
-        $concept->setId((string)$root['id']);
-        $concept->setShortName((string)$root['shortName']);
-        $concept->setOid((string)$root['oid']);
-        $concept->setType((string)$root['type']);
-        $concept->setDataType((string)$root['dataType']);
-        $concept->setLengthMax((string)$root['lengthMax']);
-        $concept->setLengthMin((string)$root['lengthMin']);
-        $concept->setStatus((string)$root['status']);
+        $concept->setId((string) $root['id']);
+        $concept->setShortName((string) $root['shortName']);
+        $concept->setOid((string) $root['oid']);
+        $concept->setType((string) $root['type']);
+        $concept->setDataType((string) $root['dataType']);
+        $concept->setLengthMax((string) $root['lengthMax']);
+        $concept->setLengthMin((string) $root['lengthMin']);
+        $concept->setStatus((string) $root['status']);
         if (isset($root['codelist'])) {
-            $codelistName = (string)$root['codelist'];
+            $codelistName = (string) $root['codelist'];
             $codelist = $project->getCodelist($codelistName);
             $concept->setCodelist($codelist);
         }
@@ -220,15 +213,15 @@ class XmlRealmLoader
     public function loadSectionType(SimpleXMLElement $root, Project $project)
     {
         $sectionType = new SectionType();
-        $sectionType->setId((string)$root['id']);
-        $sectionType->setLabel((string)$root['label']);
+        $sectionType->setId((string) $root['id']);
+        $sectionType->setLabel((string) $root['label']);
         $this->loadProperties($root, $sectionType);
         foreach ($root->field as $fNode) {
             $field = new SectionFieldType();
             $concept = $project->getConcept($fNode['concept']);
             $field->setConcept($concept);
-            $field->setMin((string)$fNode['min']);
-            $field->setMax((string)$fNode['max']);
+            $field->setMin((string) $fNode['min']);
+            $field->setMax((string) $fNode['max']);
             $sectionType->addField($field);
         }
         //print_r($sectionType); exit();
@@ -239,9 +232,9 @@ class XmlRealmLoader
     {
         foreach ($root->property as $pNode) {
             $property = new Property();
-            $property->setName((string)$pNode['name']);
-            $property->setLanguage((string)$pNode['language']);
-            $property->setValue((string)$pNode);
+            $property->setName((string) $pNode['name']);
+            $property->setLanguage((string) $pNode['language']);
+            $property->setValue((string) $pNode);
             $obj->addProperty($property);
         }
     }
@@ -250,27 +243,27 @@ class XmlRealmLoader
     {
         foreach ($root->mapping as $mappingNode) {
             $mapping = new ConceptMapping();
-            $mapping->setId((string)$mappingNode['id']);
-            $mapping->setStatus((string)$mappingNode['status']);
-            $mapping->setTransformer((string)$mappingNode['transformer']);
+            $mapping->setId((string) $mappingNode['id']);
+            $mapping->setStatus((string) $mappingNode['status']);
+            $mapping->setTransformer((string) $mappingNode['transformer']);
             if (!$mapping->getStatus()) {
                 $mapping->setStatus('?');
             }
-            $conceptId = (string)$mappingNode['concept'];
+            $conceptId = (string) $mappingNode['concept'];
             if ($conceptId) {
                 $concept = $project->getConcept($conceptId);
                 $mapping->setConcept($concept);
-                $mapping->setComment((string)$mappingNode['comment']);
+                $mapping->setComment((string) $mappingNode['comment']);
                 if ($mappingNode->item) {
                     $codelist = $concept->getCodelist();
                     if (!$codelist) {
-                        throw new RuntimeException("Mapping id " . $mapping->getId() . " for concept without codelist: " . $concept->getId());
+                        throw new RuntimeException('Mapping id ' . $mapping->getId() . ' for concept without codelist: ' . $concept->getId());
                     }
                     foreach ($mappingNode->item as $itemNode) {
                         $item = new ConceptMappingItem();
-                        $item->setFrom((string)$itemNode['from']);
-                        $item->setLabel((string)$itemNode['label']);
-                        $i = $codelist->getItem((string)$itemNode['to']);
+                        $item->setFrom((string) $itemNode['from']);
+                        $item->setLabel((string) $itemNode['label']);
+                        $i = $codelist->getItem((string) $itemNode['to']);
                         $item->setTo($i);
                         $mapping->addItem($item);
                     }

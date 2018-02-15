@@ -153,7 +153,7 @@ class Concept
         $concept = $this;
         while ($concept) {
             $concept = $concept->getParent();
-            $depth ++;
+            ++$depth;
         }
         return $depth;
     }
@@ -171,8 +171,4 @@ class Concept
         $o = rtrim($o, ' /');
         return $o;
     }
-
-
-
-
 }

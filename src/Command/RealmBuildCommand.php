@@ -2,8 +2,6 @@
 
 namespace Realm\Command;
 
-use Symfony\Component\Console\Helper\DescriptorHelper;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,6 +13,8 @@ use RuntimeException;
 
 class RealmBuildCommand extends Command
 {
+    protected static $defaultName = 'realm:build';
+
     /**
      * {@inheritdoc}
      */
@@ -23,7 +23,6 @@ class RealmBuildCommand extends Command
         $this->ignoreValidationErrors();
 
         $this
-            ->setName('realm:build')
             ->setDescription('Load realm, and export build.xml')
             ->addOption(
                 'realm',
@@ -41,9 +40,9 @@ class RealmBuildCommand extends Command
     {
         $realmId = $input->getOption('realm');
         if (!$realmId) {
-            throw new RuntimeException("Please pass a realm to load");
+            throw new RuntimeException('Please pass a realm to load');
         }
-        $output->writeLn("Loading realm: " . $realmId);
+        $output->writeLn('Loading realm: ' . $realmId);
         $project = new Project();
         $realmLoader = new XmlRealmLoader();
         $realm = $realmLoader->load($realmId, $project);
@@ -53,11 +52,11 @@ class RealmBuildCommand extends Command
 
         if ($single) {
             $filename = 'build.xml';
-            $output->writeLn("Writing to file: " . $filename);
+            $output->writeLn('Writing to file: ' . $filename);
             $writer->writeFile($project, $filename);
         } else {
             $path = 'build/';
-            $output->writeLn("Writing to directory: " . $path);
+            $output->writeLn('Writing to directory: ' . $path);
             $writer->writeFiles($project, $path);
         }
     }
