@@ -19,7 +19,7 @@
   <div class="col-sm-3 sidebar">
     <fieldset>
       <h1>Sections: {{ resource.getSections()|length }}</h1>
-      <ul class="nav nav-pills nav-stacked"">
+      <ul class="nav nav-pills nav-stacked">
       {% for section in resource.getSections() %}
         <li class="nav-detail nav-detail-section-{{ section.getId() }}">
           <a href="#" onclick="selectDetail('detail-section-{{ section.getId() }}'); return false;">
@@ -35,8 +35,17 @@
     </fieldset>
 
     <fieldset>
+      <h1>Sharing</h1>
+      <ul class="nav nav-pills nav-stacked">
+        <li class="nav-detail">
+          <a href="/resources/{{ resourceKey }}/share">Edit</a>
+        </li>
+      </ul>
+    </fieldset>
+
+    <fieldset>
       <h1>Attachments: {{ resource.getAttachments()|length }}</h1>
-      <ul class="nav nav-pills nav-stacked"">
+      <ul class="nav nav-pills nav-stacked">
       {% for attachment in resource.getAttachments() %}
         <li class="nav-detail nav-detail-section-{{ attachment.getId() }}">
           <a href="./{{ attachment.getId() }}@{{ resourceKey }}">
