@@ -19,7 +19,7 @@
 
   <fieldset>
     <h1>Attachments: <small>{{ fusion.getAttachments()|length }}</small></h1>
-    <ul class="nav nav-pills nav-stacked"">
+    <ul class="nav nav-pills nav-stacked">
     {% for resource in fusion.getResources() %}
       {% for attachment in resource.getAttachments() %}
         <li class="nav-detail nav-detail-section-{{ fusion.getId() }}">
@@ -55,12 +55,12 @@
   </fieldset>
 
     <fieldset class="fusion-navigation">
-      <h1>Resources</h1>
+      <h1>Resources &amp; sharing</h1>
       <ul class="nav nav-pills nav-stacked">
       {% for resource in fusion.getResources() %}
 
         <li class="nav-detail nav-detail-resource-{{ resource.getId()}}">
-          <a href="#" onclick="selectDetail('detail-resource-{{ resource.getId()}}'); return false;">
+          <a href="/resources/{{ resource.getId() }}/share">
             <div class="logo-group">
               <img src="{{ resource.getSource().getLogoUrl() }}" class="logo logo-provider"/>
               <img src="{{ resource.getSource().getAppLogoUrl() }}" class="logo logo-app"/><br />
@@ -69,9 +69,9 @@
             {#{ resource.getId() }#}
             {% if resource.getSource() %}
             {{ resource.getSource().getDisplayName() }}<br /><small>@{{ resource.getSource().getId() }}</small><br />
+            {% endif %}
           </a>
         </li>
-      {% endif %}
       {% endfor %}
       </ul>
     </fieldset>
