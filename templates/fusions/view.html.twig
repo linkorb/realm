@@ -36,6 +36,28 @@
     </ul>
   </fieldset>
 
+  <fieldset class="fusion-navigation">
+    <h1>Resources</h1>
+    <ul class="nav nav-pills nav-stacked">
+    {% for resource in fusion.getResources() %}
+
+      <li class="nav-detail nav-detail-resource-{{ resource.getId()}}">
+        <a href="#">
+          <div class="logo-group">
+            <img src="{{ resource.getSource().getLogoUrl() }}" class="logo logo-provider"/>
+            <img src="{{ resource.getSource().getAppLogoUrl() }}" class="logo logo-app"/><br />
+          </div>
+          {#<h2>Resource</h2>#}
+          {#{ resource.getId() }#}
+          {% if resource.getSource() %}
+          {{ resource.getSource().getDisplayName() }}<br /><small>@{{ resource.getSource().getId() }}</small><br />
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+  </fieldset>
+
   <fieldset class="section-navigation">
     <h1>Sections <small>{{ fusion.getSections()|length }}</small></h1>
     <ul class="nav nav-pills nav-stacked">
@@ -54,27 +76,7 @@
     </ul>
   </fieldset>
 
-    <fieldset class="fusion-navigation">
-      <h1>Resources &amp; sharing</h1>
-      <ul class="nav nav-pills nav-stacked">
-      {% for resource in fusion.getResources() %}
 
-        <li class="nav-detail nav-detail-resource-{{ resource.getId()}}">
-          <a href="/resources/{{ resource.getId() }}/share">
-            <div class="logo-group">
-              <img src="{{ resource.getSource().getLogoUrl() }}" class="logo logo-provider"/>
-              <img src="{{ resource.getSource().getAppLogoUrl() }}" class="logo logo-app"/><br />
-            </div>
-            {#<h2>Resource</h2>#}
-            {#{ resource.getId() }#}
-            {% if resource.getSource() %}
-            {{ resource.getSource().getDisplayName() }}<br /><small>@{{ resource.getSource().getId() }}</small><br />
-            {% endif %}
-          </a>
-        </li>
-      {% endfor %}
-      </ul>
-    </fieldset>
   </div>
 
   <div class="col-sm-9">
