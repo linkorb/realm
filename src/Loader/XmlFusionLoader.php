@@ -26,6 +26,7 @@ class XmlFusionLoader
     {
         $fusion = new Fusion();
         $fusion->setId((string) $root['id']);
+        $fusion->setProject($project);
 
         foreach ($root->resources->resource as $resourceNode) {
             $resourceId = (string) $resourceNode['id'];

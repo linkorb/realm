@@ -8,6 +8,7 @@ class Fusion
 {
     protected $id;
     protected $resources;
+    protected $project;
     use PresenterTrait;
 
     public function getId()
@@ -18,6 +19,17 @@ class Fusion
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    public function getProject()
+    {
+        return $this->project;
+    }
+
+    public function setProject(Project $project)
+    {
+        $this->project = $project;
         return $this;
     }
 

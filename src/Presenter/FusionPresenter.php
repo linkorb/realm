@@ -3,6 +3,7 @@
 namespace Realm\Presenter;
 
 use LinkORB\Presenter\BasePresenter;
+use RuntimeException;
 
 class FusionPresenter extends BasePresenter
 {
@@ -86,21 +87,20 @@ class FusionPresenter extends BasePresenter
 
     protected function getConcept($conceptId)
     {
-        // TODO: when no values of this conceptId are in a resource (none of the sections)
-        // then this method can't resolve the concept.
-        foreach ($this->presenterObject->getSections() as $section) {
-            foreach ($section->getValues() as $value) {
-                if ($value->getConcept() && ($value->getConcept()->getId() == $conceptId)) {
-                    return $value->getConcept();
-                }
-            }
+        $project = $this->getProject();
+        if (!$project) {
+            throw new RuntimeException('Project not defined for this fusion. Can\'t resolve concepts');
         }
-        return null;
+        $concept = $project->getConcept($conceptId);
+        return $concept;
     }
 
     public function presentConcept($conceptId, $label = '')
     {
         $concept = $this->getConcept($conceptId);
+        if (!$concept) {
+            return '<dt>?' . $conceptId . '?</dt><dd>' . $this->presentValueByConceptId($conceptId) . '</dd>';
+        }
         if ($label == '') {
             $label = $concept->getShortName();
         }
