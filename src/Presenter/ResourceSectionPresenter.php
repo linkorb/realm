@@ -60,19 +60,19 @@ class ResourceSectionPresenter extends BasePresenter
         return '-';
     }
 
-    public function presentValueByConcept($conceptId)
+    public function presentValueByConcept($conceptId, $modifier = null)
     {
         if (!$this->presenterObject->hasValue($conceptId)) {
             return '';
         }
         $value = $this->presenterObject->getValue($conceptId);
         if ($value) {
-            return $value->getPresenter()->getDisplayValue();
+            return $value->getPresenter()->getDisplayValue($modifier);
         }
         return '-';
     }
 
-    public function presentConcept($conceptId, $label = '')
+    public function presentConcept($conceptId, $label = null, $modifier = null)
     {
         $value = null;
         if ($this->presenterObject->hasValue($conceptId)) {
@@ -109,7 +109,7 @@ class ResourceSectionPresenter extends BasePresenter
 
         $valueText = null;
         if ($value) {
-            $valueText = $value->getPresenter()->getDisplayValue();
+            $valueText = $value->getPresenter()->getDisplayValue($modifier);
         }
         if (!$valueText) {
             $valueText = '-';

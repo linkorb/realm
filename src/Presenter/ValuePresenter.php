@@ -40,7 +40,7 @@ class ValuePresenter extends BasePresenter
         return $this->getLabel() . ': ' . $this->getDisplayValue();
     }
 
-    public function getDisplayValue()
+    public function getDisplayValue($modifier = null)
     {
         $value = $this->presenterObject->getValue();
         // Prefer explicitly defined displayValue
@@ -106,6 +106,20 @@ class ValuePresenter extends BasePresenter
         // last resort, return raw value
         if ($value === null) {
             return '-';
+        }
+        switch ($modifier) {
+            case 'amenorrhea':
+                if (is_numeric($value)) {
+                    $weeks = $value / 7;
+                    $days = round(($weeks - (floor($weeks))) * 7);
+                    $weeks = floor($weeks);
+                    if ($days == 7) {
+                        $weeks += 1;
+                        $days = 0;
+                    }
+                    return $weeks . '+' . $days;
+                }
+                break;
         }
         return $value;
     }
