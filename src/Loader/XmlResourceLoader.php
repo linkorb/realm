@@ -95,7 +95,10 @@ class XmlResourceLoader
             $value = new Value();
             $value->setSection($section);
             $value->setLabel((string) $valueNode['label']);
-            $value->setValue((string) $valueNode['value']);
+            $value->setValue((string)$valueNode);
+            if (isset($valueNode['value'])) {
+                $value->setValue((string) $valueNode['value']);
+            }
             if (isset($valueNode['concept'])) {
                 //$concept = $project->getConcept();
                 $value->setConceptId((string) $valueNode['concept']);
