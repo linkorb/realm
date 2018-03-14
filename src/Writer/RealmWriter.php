@@ -106,6 +106,9 @@ class RealmWriter
         if ($concept->getCodelist()) {
             $root->setAttribute('codelist', $concept->getCodelist()->getId());
         }
+        if ($concept->getUnit()) {
+            $root->setAttribute('unit', $concept->getUnit());
+        }
         $this->addPropertyElements($dom, $concept, $root);
 
         $parentNode->appendChild($root);
