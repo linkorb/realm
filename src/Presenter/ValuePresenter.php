@@ -8,7 +8,7 @@ use DateTime;
 
 class ValuePresenter extends BasePresenter
 {
-    public function getLabel()
+    public function getLabel($modifier = null)
     {
         if ($this->presenterObject->getLabel()) {
             return $this->presenterObject->getLabel();
@@ -26,6 +26,10 @@ class ValuePresenter extends BasePresenter
                 $label = $concept->getShortName();
                 $label = str_replace('_', ' ', $label);
                 $label = ucfirst($label);
+            }
+            if ($concept->getUnit()) {
+                $unit = $concept->getUnit();
+                $label .= ' (' . $unit . ')';
             }
             return $label;
         }

@@ -6,7 +6,7 @@ use LinkORB\Presenter\BasePresenter;
 
 class ConceptPresenter extends BasePresenter
 {
-    public function presentLabel()
+    public function presentLabel($modifier = null)
     {
         $label = null;
         // TODO: Try fetching from a property first?
@@ -16,7 +16,17 @@ class ConceptPresenter extends BasePresenter
             $label = ucfirst($label);
             if (substr($label, -1, 1) == 'q') {
                 $label = substr($label, 0, -1);
-                $label .= ' (aantal)';
+                $label .= '?';
+            }
+
+            if ($this->getUnit()) {
+                $unit = $this->getUnit();
+                switch ($modifier) {
+                    case 'amenorrhea':
+                        $unit = 'd+w';
+                        break;
+                }
+                $label .= ' (' . $unit . ')';
             }
         }
         return $label;

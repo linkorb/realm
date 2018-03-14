@@ -82,7 +82,7 @@ class ResourceSectionPresenter extends BasePresenter
         $concept = $this->presenterObject->getResource()->getProject()->getConcept($conceptId);
         //$concept = $value->getConcept();
         if ($label == '') {
-            $label = $concept->getPresenter()->presentLabel();
+            $label = $concept->getPresenter()->presentLabel($modifier);
         }
 
         $visor = '<div class="realm-visor">';
