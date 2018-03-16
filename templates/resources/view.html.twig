@@ -49,7 +49,7 @@
       {% for attachment in resource.getAttachments() %}
         <li class="nav-detail nav-detail-section-{{ attachment.getId() }}">
           <a href="./{{ attachment.getId() }}@{{ resourceKey }}">
-          {{ attachment.getId() }}@{{resourceKey}}
+          {{ attachment.getFilename() }}<br />
           <small>
             {{ attachment.getMimeType()}}
           </small>

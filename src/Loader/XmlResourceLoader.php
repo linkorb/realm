@@ -75,6 +75,10 @@ class XmlResourceLoader
                 $attachment->setResource($resource);
                 $attachment->setId((string) $attachmentNode['id']);
                 $attachment->setMimeType((string) $attachmentNode['mimeType']);
+                $attachment->setFilename((string) $attachmentNode['id']);
+                if (isset($attachmentNode['filename'])) {
+                    $attachment->setFilename((string) $attachmentNode['filename']);
+                }
                 $resource->addAttachment($attachment);
             }
         }
