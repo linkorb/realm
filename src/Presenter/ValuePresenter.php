@@ -67,7 +67,8 @@ class ValuePresenter extends BasePresenter
                         return '-';
                     }
                     try {
-                        $date = DateTime::createFromFormat('Y-m-d', $value);
+                        $parts = explode(' ', $value);
+                        $date = DateTime::createFromFormat('Y-m-d', $parts[0]);
 
                         $value = '??';
                         if ($date) {
