@@ -64,7 +64,7 @@ class ValuePresenter extends BasePresenter
                 case 'date':
                 case 'datetime':
                     if (!$value) {
-                        return '-';
+                        return '...';
                     }
                     try {
                         $parts = explode(' ', $value);
@@ -110,7 +110,7 @@ class ValuePresenter extends BasePresenter
         }
         // last resort, return raw value
         if ($value === null) {
-            return '-';
+            return '...';
         }
         switch ($modifier) {
             case 'amenorrhea':

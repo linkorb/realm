@@ -57,7 +57,7 @@ class ResourceSectionPresenter extends BasePresenter
         if ($value) {
             return $value->getPresenter()->getDisplayValue();
         }
-        return '-';
+        return '...';
     }
 
     public function presentValueByConcept($conceptId, $modifier = null)
@@ -69,7 +69,7 @@ class ResourceSectionPresenter extends BasePresenter
         if ($value) {
             return $value->getPresenter()->getDisplayValue($modifier);
         }
-        return '-';
+        return '...';
     }
 
     public function presentConcept($conceptId, $label = null, $modifier = null)
@@ -112,7 +112,7 @@ class ResourceSectionPresenter extends BasePresenter
             $valueText = $value->getPresenter()->getDisplayValue($modifier);
         }
         if (!$valueText) {
-            $valueText = '-';
+            $valueText = 'null';
         }
         $html .= '<dd><span class="realm-value">' . $visor . $valueText . '</span></dd>';
         return $html;
