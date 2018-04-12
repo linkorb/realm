@@ -78,6 +78,11 @@ class Application extends SilexApplication
                     'Realm-' . $project->getId()
                 );
             }
+
+            $filter = new \Twig_SimpleFilter('dicom_images', function ($string) {
+                return '---';
+            });
+            $this['twig']->addFilter($filter);
         }
     }
 
