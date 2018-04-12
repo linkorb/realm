@@ -75,7 +75,7 @@ class Application extends SilexApplication
             if (file_exists($project->getBasePath() . '/views')) {
                 $this['twig.loader.filesystem']->addPath(
                     $project->getBasePath() . '/views',
-                    'Realm-' . $project->getId()
+                    'Views'
                 );
             }
 

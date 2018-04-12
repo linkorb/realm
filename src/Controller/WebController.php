@@ -232,7 +232,7 @@ class WebController
         foreach ($project->getViewsByType('fusion') as $view) {
             $viewData = [];
             $viewData['fusion'] = $fusion;
-            $viewHtml = $app['twig']->render('@Realm-' . $project->getId() . '/' . $view->getId() . '.html.twig', $viewData);
+            $viewHtml = $app['twig']->render('@Views/' . $view->getId() . '.html.twig', $viewData);
             $html .= '<div class="detail" id="detail-view-' . $view->getId() . '">' . $viewHtml . '</div>';
         }
 
@@ -245,7 +245,7 @@ class WebController
             $viewData['section'] = $section;
 
             try {
-                $viewHtml = $app['twig']->render('@Realm-' . $project->getId() . '/section-types/' . $sectionTypeId . '.html.twig', $viewData);
+                $viewHtml = $app['twig']->render('@Views/section-types/' . $sectionTypeId . '.html.twig', $viewData);
             } catch (\Exception $e) {
                 $viewHtml = 'Failed to render section (template missing or incomplete?) sectionType: ' . $sectionTypeId;
             }

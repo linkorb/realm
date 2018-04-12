@@ -3,6 +3,10 @@
 {% block content %}
 <div class="row">
   <div class="col-sm-3 sidebar">
+  <fieldset class="views-info">
+    <h1>Info</h1>
+    {% include "@Views/info.html.twig" %}
+  </fieldset>
   <fieldset class="views-navigation">
     <h1>Views <small>{{ project.getViewsByType('fusion')|length }}</small></h1>
     <ul class="nav nav-pills nav-stacked">
