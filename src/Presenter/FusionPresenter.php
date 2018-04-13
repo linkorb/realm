@@ -7,7 +7,7 @@ use RuntimeException;
 
 class FusionPresenter extends BasePresenter
 {
-    public function presentValueByConceptId($conceptId)
+    public function presentValueByConcept($conceptId, $modifier = null)
     {
         $values = [];
         $uniqueValues = [];
@@ -28,6 +28,18 @@ class FusionPresenter extends BasePresenter
             }
             $html .= $value->getPresenter()->getDisplayValue();
         }
+        if (!$html) {
+            $html = '&#8203;'; // way to enforce minimum 1 character hight spans
+        }
+        return $html;
+    }
+
+    public function presentValueByConceptId($conceptId)
+    {
+
+        $htmlValue = $this->presentValueByConcept($conceptId);
+        $values = $this->presenterObject->getValuesByConceptId($conceptId);
+
         $visor = '<div class="realm-visor">';
 
         $visor .= '<div class="realm-debug">';
@@ -74,14 +86,15 @@ class FusionPresenter extends BasePresenter
         }
         $visor .= '</table>';
         $visor .= '</div>';
-        if ($multiple) {
-            $html = '<span class="err">' . $html . '</span>';
-        }
-        if (!$html) {
-            $html = '&#8203;'; // way to enforce minimum 1 character hight spans
+        if (!$htmlValue) {
+            $htmlValue = '&#8203;'; // way to enforce minimum 1 character hight spans
         }
 
-        $html = '<span class="realm-value">' . $html . $visor . '</span>';
+        $html = '<span class="realm-value';
+        if ($this->presenterObject->hasConflictingValues($conceptId)) {
+            $html .= ' realm-conflict';
+        }
+        $html .= '">' . $htmlValue . $visor . '</span>';
         return $html;
     }
 

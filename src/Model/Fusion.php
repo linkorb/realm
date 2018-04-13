@@ -110,4 +110,36 @@ class Fusion
     public function getFusionUrl($curveKey)
     {
     }
+
+    public function getValuesByConceptId($conceptId)
+    {
+        $values = [];
+        foreach ($this->getSections() as $section) {
+            foreach ($section->getValues() as $value) {
+                if ($value->getConcept() && ($value->getConcept()->getId() == $conceptId)) {
+                    $values[] = $value;
+                }
+            }
+        }
+        return $values;
+    }
+
+    public function getUniqueValuesByConceptId($conceptId)
+    {
+        $values = $this->getValuesByConceptId($conceptId);
+
+        $uniqueValues = [];
+        foreach ($values as $value) {
+            $uniqueValues[(string)$value->getValue()] = $value;
+        }
+        return $uniqueValues;
+    }
+
+    public function hasConflictingValues($conceptId)
+    {
+        if (count($this->getUniqueValuesByConceptId($conceptId))>1) {
+            return true;
+        }
+        return false;
+    }
 }

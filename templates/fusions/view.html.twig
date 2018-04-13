@@ -4,11 +4,11 @@
 <div class="row">
   <div class="col-sm-3 sidebar">
   <fieldset class="views-info">
-    <h1>Info</h1>
+    <legend>Info</legend>
     {% include "@Views/info.html.twig" %}
   </fieldset>
   <fieldset class="views-navigation">
-    <h1>Views <small>{{ project.getViewsByType('fusion')|length }}</small></h1>
+    <legend>Views <small>{{ project.getViewsByType('fusion')|length }}</small></legend>
     <ul class="nav nav-pills nav-stacked">
       {% for view in project.getViewsByType('fusion') %}
       <li class="nav-detail nav-detail-view-{{ view.getId()}}">
@@ -20,9 +20,8 @@
     </ul>
   </fieldset>
 
-
   <fieldset>
-    <h1>Attachments: <small>{{ fusion.getAttachments()|length }}</small></h1>
+    <legend>Attachments: <small>{{ fusion.getAttachments()|length }}</small></legend>
     <ul class="nav nav-pills nav-stacked">
     {% for resource in fusion.getResources() %}
       {% for attachment in resource.getAttachments() %}
@@ -41,7 +40,7 @@
   </fieldset>
 
   <fieldset class="fusion-navigation">
-    <h1>Resources</h1>
+    <legend>Resources</legend>
     <ul class="nav nav-pills nav-stacked">
     {% for resource in fusion.getResources() %}
 
@@ -63,7 +62,7 @@
   </fieldset>
 
   <fieldset class="section-navigation">
-    <h1>Sections <small>{{ fusion.getSections()|length }}</small></h1>
+    <legend>Sections <small>{{ fusion.getSections()|length }}</small></legend>
     <ul class="nav nav-pills nav-stacked">
     {% for section in fusion.getSections() %}
       <li class="nav-detail nav-detail-section-{{ section.getId()}}">
