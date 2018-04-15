@@ -120,11 +120,13 @@ class Fusion
             // this method is called very often. sometimes multiple times per concept presenter
             foreach ($this->getSections() as $section) {
                 foreach ($section->getValues() as $value) {
-                    $cId = $value->getConcept()->getId();
-                    if (!isset($this->valuesCache[$cId])) {
-                        $this->valuesCache[$cId] = [];
+                    if ($value->getConcept()) {
+                        $cId = $value->getConcept()->getId();
+                        if (!isset($this->valuesCache[$cId])) {
+                            $this->valuesCache[$cId] = [];
+                        }
+                        $this->valuesCache[$cId][] = $value;
                     }
-                    $this->valuesCache[$cId][] = $value;
                 }
             }
         }
