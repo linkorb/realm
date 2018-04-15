@@ -32,11 +32,15 @@ class ResourceXmlWriter
         $doc->appendChild($resourceElement);
         $sectionsElement = $doc->createElement('sections');
         $resourceElement->appendChild($sectionsElement);
+        // $resourceElement->setAttribute('type', $resource->getType());
 
         foreach ($resource->getSections() as $section) {
             $sectionElement = $doc->createElement('section');
             $sectionElement->setAttribute('id', $section->getId());
             $sectionElement->setAttribute('type', $section->getType()->getId());
+            if ($section->getEffectiveAt()) {
+                $sectionElement->setAttribute('effectStamp', $section->getEffectiveAt()->format('Y-m-d H:i:s'));
+            }
 
             $sectionsElement->appendChild($sectionElement);
             $valuesElement = $doc->createElement('values');
