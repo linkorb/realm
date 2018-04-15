@@ -83,13 +83,21 @@ class XmlResourceLoader
             }
         }
 
+        $source = new Source();
         if ($root->source) {
-            $source = new Source();
             $source->setId((string) $root->source['id']);
             $source->setDisplayName((string) $root->source['displayName']);
             $source->setLogoUrl((string) $root->source['logoUrl']);
-            $resource->setSource($source);
+            $source->setAppId((string) $root->source['appId']);
+            $source->setAppLogoUrl((string) $root->source['appLogoUrl']);
+        } else {
+            $source->setId('x');
+            $source->setDisplayName('Noname');
+            $source->setLogoUrl('');
+            $source->setAppId('NoApp');
+            $source->setAppLogoUrl('');
         }
+        $resource->setSource($source);
         return $resource;
     }
 
