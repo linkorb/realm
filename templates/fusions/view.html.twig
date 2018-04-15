@@ -53,7 +53,7 @@
           {#<h2>Resource</h2>#}
           {#{ resource.getId() }#}
           {% if resource.getSource() %}
-          {{ resource.getSource().getDisplayName() }}<br /><small>@{{ resource.getSource().getId() }}</small><br />
+          {{ resource.getSource().getDisplayName() }}<br /><small>@{{ resource.getSource().getId() }} <i>{{ resource.getSource().getAppId() }}</i></small><br />
           {% endif %}
         </a>
       </li>
