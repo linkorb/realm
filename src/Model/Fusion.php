@@ -111,17 +111,28 @@ class Fusion
     {
     }
 
+    protected $valuesCache;
+
     public function getValuesByConceptId($conceptId)
     {
-        $values = [];
-        foreach ($this->getSections() as $section) {
-            foreach ($section->getValues() as $value) {
-                if ($value->getConcept() && ($value->getConcept()->getId() == $conceptId)) {
-                    $values[] = $value;
+        if (!isset($this->valuesCache)) {
+            // Build cache
+            // this method is called very often. sometimes multiple times per concept presenter
+            foreach ($this->getSections() as $section) {
+                foreach ($section->getValues() as $value) {
+                    $cId = $value->getConcept()->getId();
+                    if (!isset($this->valuesCache[$cId])) {
+                        $this->valuesCache[$cId] = [];
+                    }
+                    $this->valuesCache[$cId][] = $value;
                 }
             }
         }
-        return $values;
+        if (!isset($this->valuesCache[$conceptId])) {
+            return [];
+        }
+
+        return $this->valuesCache[$conceptId];
     }
 
     public function getUniqueValuesByConceptId($conceptId)

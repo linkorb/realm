@@ -9,16 +9,8 @@ class FusionPresenter extends BasePresenter
 {
     public function presentValueByConcept($conceptId, $modifier = null)
     {
-        $values = [];
-        $uniqueValues = [];
-        foreach ($this->presenterObject->getSections() as $section) {
-            foreach ($section->getValues() as $value) {
-                if ($value->getConcept() && ($value->getConcept()->getId() == $conceptId)) {
-                    $values[] = $value;
-                    $uniqueValues[$value->getValue()] = $value;
-                }
-            }
-        }
+        $uniqueValues = $this->presenterObject->getUniqueValuesByConceptId($conceptId);
+
         $html = '';
         $multiple = false;
         foreach ($uniqueValues as $value) {
@@ -36,7 +28,6 @@ class FusionPresenter extends BasePresenter
 
     public function presentValueByConceptId($conceptId)
     {
-
         $htmlValue = $this->presentValueByConcept($conceptId);
         $values = $this->presenterObject->getValuesByConceptId($conceptId);
 
