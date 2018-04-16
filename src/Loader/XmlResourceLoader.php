@@ -90,14 +90,8 @@ class XmlResourceLoader
             $source->setLogoUrl((string) $root->source['logoUrl']);
             $source->setAppId((string) $root->source['appId']);
             $source->setAppLogoUrl((string) $root->source['appLogoUrl']);
-        } else {
-            $source->setId('x');
-            $source->setDisplayName('Noname');
-            $source->setLogoUrl('');
-            $source->setAppId('NoApp');
-            $source->setAppLogoUrl('');
+            $resource->setSource($source);
         }
-        $resource->setSource($source);
         return $resource;
     }
 
