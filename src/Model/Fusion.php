@@ -89,6 +89,9 @@ class Fusion
                 $sections[] = $section;
             }
         }
+        usort($sections, function ($a, $b) {
+            return $b->getEffectiveAt() > $a->getEffectiveAt();
+        });
         return $sections;
     }
 
