@@ -30,6 +30,16 @@ class ResourceXmlWriter
         $doc->formatOutput = true;
         $resourceElement = $doc->createElement('resource');
         $doc->appendChild($resourceElement);
+        $source = $resource->getSource();
+        if ($source) {
+            $sourceElement = $doc->createElement('source');
+            $sourceElement->setAttribute('id', $source->getId());
+            $sourceElement->setAttribute('displayName', $source->getDisplayName());
+            $sourceElement->setAttribute('logoUrl', $source->getLogoUrl());
+            $sourceElement->setAttribute('appId', $source->getAppId());
+            $sourceElement->setAttribute('appLogoUrl', $source->getAppLogoUrl());
+            $resourceElement->appendChild($sourceElement);
+        }
         $sectionsElement = $doc->createElement('sections');
         $resourceElement->appendChild($sectionsElement);
         // $resourceElement->setAttribute('type', $resource->getType());
