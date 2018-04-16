@@ -46,13 +46,13 @@
 
       <li class="nav-detail nav-detail-resource-{{ resource.getId()}}">
         <a href="#">
+          {% if resource.getSource() %}
           <div class="logo-group">
             <img src="{{ resource.getSource().getLogoUrl() }}" class="logo logo-provider"/>
             <img src="{{ resource.getSource().getAppLogoUrl() }}" class="logo logo-app"/><br />
           </div>
           {#<h2>Resource</h2>#}
           {#{ resource.getId() }#}
-          {% if resource.getSource() %}
           {{ resource.getSource().getDisplayName() }}<br /><small>@{{ resource.getSource().getId() }} <i>{{ resource.getSource().getAppId() }}</i></small><br />
           {% endif %}
         </a>
