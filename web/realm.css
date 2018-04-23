@@ -84,3 +84,6 @@
   color: #c00000 !important;
 }
 
+.table th {
+  white-space: normal !important;
+}
