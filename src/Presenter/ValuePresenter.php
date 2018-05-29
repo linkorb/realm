@@ -110,7 +110,7 @@ class ValuePresenter extends BasePresenter
         }
         // last resort, return raw value
         if ($value === null) {
-            return '...';
+            return null;
         }
         switch ($modifier) {
             case 'amenorrhea':
