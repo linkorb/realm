@@ -112,7 +112,7 @@ class ResourceSectionPresenter extends BasePresenter
             $valueText = $value->getPresenter()->getDisplayValue($modifier);
         }
         if (!$valueText) {
-            $valueText = 'null';
+            $valueText = '...';
         }
         $html .= '<dd><span class="realm-value">' . $visor . $valueText . '</span></dd>';
         return $html;
