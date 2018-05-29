@@ -87,7 +87,6 @@ class ValuePresenter extends BasePresenter
                             return 'Nee';
                     }
                     return '???';
-                    break;
                 case 'code':
                     $codelist = $concept->getCodelist();
                     if (!$codelist) {
