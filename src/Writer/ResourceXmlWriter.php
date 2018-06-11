@@ -47,7 +47,10 @@ class ResourceXmlWriter
         foreach ($resource->getSections() as $section) {
             $sectionElement = $doc->createElement('section');
             $sectionElement->setAttribute('id', $section->getId());
-            $sectionElement->setAttribute('type', $section->getType()->getId());
+            $type = $section->getType();
+            if ($type) {
+                $sectionElement->setAttribute('type', $type->getId());
+            }
             if ($section->getEffectiveAt()) {
                 $sectionElement->setAttribute('effectStamp', $section->getEffectiveAt()->format('Y-m-d H:i:s'));
             }
@@ -62,7 +65,10 @@ class ResourceXmlWriter
                 $valueValue = $value->getValue();
                 if ($valueValue) {
                     $valueElement = $doc->createElement('value');
-                    $valueElement->setAttribute('concept', $value->getConcept()->getId());
+                    $concept = $value->getConcept();
+                    if ($concept) {
+                        $valueElement->setAttribute('concept', $concept->getId());
+                    }
                     $valueElement->setAttribute('value', $valueValue);
                     if ($value->getRepeatId()) {
                         $valueElement->setAttribute('repeatId', $value->getRepeatId());
