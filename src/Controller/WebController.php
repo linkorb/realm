@@ -5,6 +5,7 @@ namespace Realm\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Realm\Application;
+use RuntimeException;
 
 class WebController
 {
@@ -237,7 +238,15 @@ class WebController
         }
 
         foreach ($fusion->getSections() as $section) {
-            $sectionTypeId = $fusion->getSection($section->getId())->getType()->getId();
+            $s = $fusion->getSection($section->getId());
+            if (!$s) {
+                throw new RuntimeException("Problem in section: " . $section->getId());
+            }
+            $t = $s->getType();
+            if (!$t) {
+                throw new RuntimeException("Unknown or undefined type on section: " . $section->getId());
+            }
+            $sectionTypeId = $t->getId();
             $sectionType = $project->getSectionType($sectionTypeId);
 
             $viewData = [];
