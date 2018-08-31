@@ -43,6 +43,16 @@ $app->match(
 )->method('GET|POST');
 
 $app->match(
+    '/{projectId}/tests',
+    'Realm\\Controller\\WebController::testIndexAction'
+)->method('GET|POST');
+
+$app->match(
+    '/{projectId}/tests/{testId}',
+    'Realm\\Controller\\WebController::testViewAction'
+)->method('GET|POST');
+
+$app->match(
     '/{projectId}/mappings',
     'Realm\\Controller\\WebController::mappingIndexAction'
 )->method('GET|POST');

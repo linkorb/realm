@@ -1,0 +1,44 @@
+{% extends "@Theme/layout.html.twig" %}
+
+{% block content %}
+<h3>Test: {{ test.getId }} <span class="label label-info">{#{ test.getStatus() }#}-</span></h3>
+<dl>
+  <dt>ID</dt><dd>{{ test.getId }}</dd>
+</dl>
+
+<h3>Properties</h3>
+<ul>
+{% for property in test.getProperties() %}
+  <li><span class="badge">{{ property.getLanguage() }}</span> <b>{{ property.getName() }}</b>: {{ property.getValue() }}</li>
+{% endfor %}
+</ul>
+
+<h3>Assertions <small>{{ test.getAssertions()|length }}</small></h3>
+<table class="table">
+  <tr>
+    <th style="width: 10px;">Concept</th>
+    <th>Description</th>
+    <th>O</th>
+    <th>M</th>
+  </tr>
+  {% for assertion in test.getAssertions() %}
+  <tr>
+    <td style="white-space: nowrap;">
+      <a href="../concepts/{{ assertion.getConcept().getId() }}">{{ assertion.getConcept().getId() }}</a>
+    </td>
+    <td>
+      <b>{{ assertion.getDescription() }}</b><br />
+      <i>{{ assertion.getValue() }}</i>
+
+    </td>
+    <td>
+      {{ assertion.getOccurrence() }}
+    </td>
+    <td>
+      {{ assertion.getMultiplicity() }}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

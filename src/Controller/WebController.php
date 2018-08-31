@@ -97,6 +97,35 @@ class WebController
         return $response;
     }
 
+    public function testIndexAction(Application $app, Request $request, $projectId)
+    {
+        $data = [];
+        $data['project'] = $app->getProject($projectId);
+        $html = $app['twig']->render('tests/index.html.twig', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+
+    public function testViewAction(Application $app, Request $request, $projectId, $testId)
+    {
+        $data = [];
+        $data['project'] = $app->getProject($projectId);
+        $data['test'] = $data['project']->getTest($testId);
+        $html = $app['twig']->render('tests/view.html.twig', $data);
+
+        $response = new Response(
+            $html,
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+        return $response;
+    }
+
     public function mappingIndexAction(Application $app, Request $request, $projectId)
     {
         $data = [];

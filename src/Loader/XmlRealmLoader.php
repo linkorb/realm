@@ -11,6 +11,8 @@ use Realm\Model\Project;
 use Realm\Model\Property;
 use Realm\Model\Codelist;
 use Realm\Model\CodelistItem;
+use Realm\Model\Test;
+use Realm\Model\TestAssertion;
 use Realm\Model\SectionType;
 use Realm\Model\SectionFieldType;
 use RuntimeException;
@@ -80,6 +82,22 @@ class XmlRealmLoader
                 foreach ($root->concept as $conceptNode) {
                     $concept = $this->loadConcept($conceptNode, $project);
                     $project->addConcept($concept);
+                }
+            }
+        }
+
+        $files = glob($basePath . '/tests/*.xml');
+        foreach ($files as $filename) {
+            $xml = file_get_contents($filename);
+            $root = simplexml_load_string($xml);
+            if ($root->getName() == 'test') {
+                $test = $this->loadTest($root, $project);
+                $project->addTest($test);
+            }
+            if ($root->getName() == 'tests') {
+                foreach ($root->test as $testNode) {
+                    $test = $this->loadTest($testNode, $project);
+                    $project->addTest($test);
                 }
             }
         }
@@ -209,6 +227,25 @@ class XmlRealmLoader
 
         $this->loadProperties($root, $concept);
         return $concept;
+    }
+
+    public function loadTest(SimpleXMLElement $root, Project $project)
+    {
+        $test = new Test();
+        $test->setId((string) $root['id']);
+        foreach ($root->assertion as $assertionNode) {
+            $assertion = new TestAssertion();
+            $concept = $project->getConcept($assertionNode['concept']);
+            $assertion->setConcept($concept);
+            $assertion->setValue($assertionNode['value']);
+            $assertion->setDescription($assertionNode['description']);
+            $assertion->setMultiplicity($assertionNode['multiplicity']);
+            $assertion->setOccurrence($assertionNode['occurrence']);
+            $test->addAssertion($assertion);
+        }
+
+        $this->loadProperties($root, $test);
+        return $test;
     }
 
     public function loadSectionType(SimpleXMLElement $root, Project $project)

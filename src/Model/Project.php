@@ -15,6 +15,7 @@ class Project
     protected $fusions = [];
     protected $views = [];
     protected $mappings = [];
+    protected $tests = [];
     protected $basePath;
     protected $listed = true;
 
@@ -213,5 +214,21 @@ class Project
     {
         $this->listed = $listed;
         return $this;
+    }
+
+    public function addTest(Test $test)
+    {
+        $this->tests[$test->getId()] = $test;
+        return $this;
+    }
+
+    public function getTests()
+    {
+        return $this->tests;
+    }
+
+    public function getTest($testId)
+    {
+        return $this->tests[$testId];
     }
 }

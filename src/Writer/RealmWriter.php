@@ -22,6 +22,10 @@ class RealmWriter
             mkdir($basePath . '/codelists');
         }
 
+        if (!file_exists($basePath . '/tests')) {
+            mkdir($basePath . '/tests');
+        }
+
         foreach ($project->getConcepts() as $concept) {
             $dom = new DOMDocument('1.0', 'utf-8');
             $dom->preserveWhiteSpace = false;
@@ -47,6 +51,19 @@ class RealmWriter
             $filename = $basePath . '/codelists/' . $codelist->getId() . '.xml';
             file_put_contents($filename, $xml);
         }
+
+        foreach ($project->getTests() as $test) {
+            $dom = new DOMDocument('1.0', 'utf-8');
+            $dom->preserveWhiteSpace = false;
+            $dom->formatOutput = true;
+
+            $this->writeTest($project, $test, $dom);
+
+            $xml = $dom->saveXML();
+
+            $filename = $basePath . '/tests/' . $test->getId() . '.xml';
+            file_put_contents($filename, $xml);
+        }
     }
 
     // Write the whole realm into one file
@@ -63,6 +80,9 @@ class RealmWriter
         }
         foreach ($project->getCodelists() as $codelist) {
             $this->writeCodelist($project, $codelist, $root);
+        }
+        foreach ($project->getTests() as $test) {
+            $this->writeTest($project, $test, $root);
         }
 
         $xml = $dom->saveXML();
@@ -168,6 +188,35 @@ class RealmWriter
         }
 
         $this->addPropertyElements($dom, $codelist, $root);
+
+        $parentNode->appendChild($root);
+    }
+
+    public function writeTest(Project $project, $test, $parentNode)
+    {
+        if (!$test->getId()) {
+            throw new RuntimeException("Test doesn't have a required ID");
+        }
+
+        $dom = $parentNode->ownerDocument;
+        if (!$dom) {
+            $dom = $parentNode;
+        }
+        $root = $dom->createElement('test');
+        $root->setAttribute('id', $test->getId());
+
+        foreach ($test->getAssertions() as $assertion) {
+            $assertionElement = $dom->createElement('assertion');
+            $assertionElement->setAttribute('concept', $assertion->getConcept()->getId());
+            $assertionElement->setAttribute('multiplicity', $assertion->getMultiplicity());
+            $assertionElement->setAttribute('occurrence', $assertion->getOccurrence());
+            $assertionElement->setAttribute('value', $assertion->getValue());
+            $assertionElement->setAttribute('description', $assertion->getDescription());
+            // $this->addPropertyElements($dom, $assertion, $assertionElement);
+            $root->appendChild($assertionElement);
+        }
+
+        $this->addPropertyElements($dom, $assertion, $root);
 
         $parentNode->appendChild($root);
     }

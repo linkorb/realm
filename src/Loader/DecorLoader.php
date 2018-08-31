@@ -6,6 +6,8 @@ use SimpleXMLElement;
 use Realm\Model\Concept;
 use Realm\Model\Property;
 use Realm\Model\Codelist;
+use Realm\Model\Test;
+use Realm\Model\TestAssertion;
 use Realm\Model\CodelistItem;
 use RuntimeException;
 
@@ -21,6 +23,12 @@ class DecorLoader
         $root = simplexml_load_string($xml);
 
         $this->loadConcepts($project, $root);
+
+
+        $basePath = dirname($filename);
+        $xml = file_get_contents($basePath . '/peri20-tests.xml');
+        $root = simplexml_load_string($xml);
+        $this->loadTestsets($project, $root);
 
         return $project;
     }
@@ -149,4 +157,55 @@ class DecorLoader
             $obj->addProperty($property);
         }
     }
+
+
+    public function loadTestsets($project, SimpleXMLElement $root, $parent = null)
+    {
+        foreach ($root->test as $testNode) {
+            $test = new Test();
+            if ($parent) {
+                $test->setParent($parent);
+            }
+            $test->setId((string)$testNode['name']);
+            $project->addTest($test);
+
+            foreach ($testNode->name as $propertyNode) {
+                $property = new Property();
+                $property->setName($propertyNode->getName());
+                $property->setValue((string) $propertyNode);
+                $property->setLanguage((string) $propertyNode['language']);
+                $test->addProperty($property);
+            }
+            foreach ($testNode->desc as $propertyNode) {
+                $property = new Property();
+                $property->setName('description');
+                $property->setValue(trim((string) $propertyNode));
+                $property->setLanguage((string) $propertyNode['language']);
+                $test->addProperty($property);
+            }
+
+            foreach ($testNode->suppliedConcepts->concept as $conceptNode) {
+                $testAssertion = new TestAssertion();
+                $testAssertion->setOccurrence((int)$conceptNode['occurrence']);
+                $testAssertion->setMultiplicity((int)$conceptNode['multiplicity']);
+                $description = (string)$conceptNode;
+                $testAssertion->setDescription($description);
+                $testAssertion->setValue($conceptNode['assert']);
+                $ref = $conceptNode['ref'];
+                $conceptId = 'peri22-dataelement-' . substr($ref, strrpos($ref, '.') + 1);
+                if ($project->hasConcept($conceptId)) {
+                    $concept = $project->getConcept($conceptId);
+                    $testAssertion->setConcept($concept);
+                    $test->addAssertion($testAssertion);
+                } else {
+                    echo "Skipping assertion referencing unknown concept: $conceptId ($description)\n";
+                }
+            }
+
+            //$this->loadConcepts($project, $conceptNode, $concept);
+        }
+        // print_r($project->getTests());
+        return $project;
+    }
+
 }

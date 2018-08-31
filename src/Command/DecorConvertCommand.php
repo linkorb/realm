@@ -60,5 +60,6 @@ class DecorConvertCommand extends Command
 
         $realWriter = new RealmWriter();
         $realWriter->writeFiles($project, $path);
+        $output->writeLn("Done");
     }
 }
