@@ -20,7 +20,8 @@
     </ul>
   </fieldset>
 
-  <fieldset>
+  {% if fusion.getResources() %}
+  <fieldset class="attachments-info">
     <legend>Attachments: <small>{{ fusion.getAttachments()|length }}</small></legend>
     <ul class="nav nav-pills nav-stacked">
     {% for resource in fusion.getResources() %}
@@ -38,6 +39,7 @@
     {% endfor %}
     </ul>
   </fieldset>
+  {% endif %}
 
   <fieldset class="fusion-navigation">
     <legend>Resources</legend>
