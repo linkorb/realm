@@ -258,6 +258,15 @@ class WebController
         $fusion = $data['project']->getFusion($fusionId);
         $data['fusion'] = $fusion;
 
+        $language = getenv('REALM_LANGUAGE');
+        if (!$language) {
+            $language = 'en-US';
+        }
+
+        foreach ($fusion->getResources() as $resource) {
+            $resource->setLanguage($language);
+        }
+
         $html = '';
         foreach ($project->getViewsByType('fusion') as $view) {
             $viewData = [];

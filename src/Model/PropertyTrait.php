@@ -36,10 +36,12 @@ trait PropertyTrait
 
     public function getProperty($name, $languageCode)
     {
+        $languageCode = $this->normaliseLanguageCode($languageCode);
+
         if (!$this->hasProperty($name, $languageCode)) {
             throw new RuntimeException("No such property: $languageCode/$name");
         }
-        return $this->properties[$this->normaliseLanguageCode($languageCode)][$name];
+        return $this->properties[$languageCode][$name];
     }
 
     public function getPropertyValue($name, $languageCode)

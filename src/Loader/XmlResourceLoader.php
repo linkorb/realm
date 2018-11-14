@@ -44,7 +44,6 @@ class XmlResourceLoader
         $resource = new Resource();
         $resource->setProject($project);
         $resource->setId((string) $root['id']);
-        //$this->loadProperties($root, $sectionType);
 
         foreach ($root->sections->section as $sectionNode) {
             $section = new ResourceSection();

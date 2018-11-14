@@ -26,11 +26,21 @@
   </tr>
   {% for item in codelist.getItems() %}
   <tr>
-    <td>{{ item.getCode() }}</td>
+    <td><b>{{ item.getCode() }}</b></td>
     <td>{{ item.getCodeSystem() }}</td>
-    <td>{{ item.getDisplayName() }}</td>
+    <td><i>{{ item.getDisplayName() }}</i></td>
     <td>{{ item.getLevel() }}</td>
-    <td>{{ item.getType() }}</td>
+    <td>{{ item.getType() }}x</td>
+  </tr>
+  <tr class="active">
+    <td colspan="5">
+      <b>Properties:</b>
+      <ul>
+      {% for property in item.getProperties() %}
+        <li><span class="badge">{{ property.getLanguage() }}</span> <b>{{ property.getName() }}</b>: {{ property.getValue() }}</li>
+      {% endfor %}
+      </ul>
+    </td>
   </tr>
   {% endfor %}
 </table>
