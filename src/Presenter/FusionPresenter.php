@@ -106,7 +106,7 @@ class FusionPresenter extends BasePresenter
             return '<dt>?' . $conceptId . '?</dt><dd>' . $this->presentValueByConceptId($conceptId) . '</dd>';
         }
         if ($label == '') {
-            $label = $concept->getShortName();
+            $label = $concept->getPresenter()->presentLabel();
         }
         $html = '';
         $html .= '<dt>' . $label;
