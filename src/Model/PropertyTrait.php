@@ -39,7 +39,7 @@ trait PropertyTrait
         $languageCode = $this->normaliseLanguageCode($languageCode);
 
         if (!$this->hasProperty($name, $languageCode)) {
-            throw new RuntimeException("No such property: $languageCode/$name");
+            throw new RuntimeException("No such property: $name/$languageCode");
         }
         return $this->properties[$languageCode][$name];
     }
