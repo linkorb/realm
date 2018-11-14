@@ -265,6 +265,7 @@ class WebController
 
         foreach ($fusion->getResources() as $resource) {
             $resource->setLanguage($language);
+            $resource->setDebug(true);
         }
 
         $html = '';

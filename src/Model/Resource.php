@@ -12,6 +12,7 @@ class Resource
     protected $source;
     protected $project;
     protected $language = 'en-US';
+    protected $debug = false;
 
     public function getProject()
     {
@@ -102,6 +103,17 @@ class Resource
     public function setLanguage($language)
     {
         $this->language = $language;
+        return $this;
+    }
+
+    public function getDebug()
+    {
+        return $this->debug;
+    }
+
+    public function setDebug($debug)
+    {
+        $this->debug = $debug;
         return $this;
     }
 }

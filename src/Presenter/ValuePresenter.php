@@ -46,6 +46,19 @@ class ValuePresenter extends BasePresenter
 
     public function getDisplayValue($modifier = null)
     {
+        $value = $this->resolve($modifier);
+        $resource = $this->getResource();
+        if (!$resource->getDebug()) {
+            // Hide error details in non-debug mode
+            if ($value && ($value[0]=='!')) {
+                return '?';
+            }
+        }
+        return $value;
+    }
+
+    public function resolve($modifier = null)
+    {
         $value = $this->presenterObject->getValue();
         // Prefer explicitly defined displayValue
         if ($this->presenterObject->getDisplayValue()) {
@@ -63,19 +76,20 @@ class ValuePresenter extends BasePresenter
             switch ($concept->getDataType()) {
                 case 'date':
                 case 'datetime':
-                    if (!$value) {
-                        return '...';
+                    $value = str_replace('T', ' ', $value); // support `2016-09-14T12:11:00`
+                    if (!trim($value)) {
+                        return '';
                     }
                     try {
                         $parts = explode(' ', $value);
                         $date = DateTime::createFromFormat('Y-m-d', $parts[0]);
 
-                        $value = '??';
+                        $value = '!INVALID_DATETIME_FORMAT:' . $value;
                         if ($date) {
                             $value = (string) $date->format('d-m-Y');
                         }
                     } catch (\Exception $e) {
-                        $value = '?';
+                        $value = '!EXCEPTION_PARSING_DATETIME_FORMAT:' . $value;
                     }
                     return $value;
                     break;
@@ -86,15 +100,17 @@ class ValuePresenter extends BasePresenter
                         case 'FALSE':
                             return 'Nee';
                     }
-                    return '???';
+                    return '!INVALID_BOOLEAN:' . $value;
                 case 'code':
                     $codelist = $concept->getCodelist();
                     if (!$codelist) {
-                        throw new RuntimeException('Type code with undefined codelist');
+                        return '!NO_CODELIST_FOR_CONCEPT:' . $concept->getId();
+                    }
+                    if (!$value) {
+                        return '';
                     }
                     if (!$codelist->hasItem($value)) {
-                        //throw new RuntimeException("No such codelist item: " . $value);
-                        return '???';
+                        return '!UNDEFINED_CODELIST_ITEM:' . $value;
                     }
                     $item = $codelist->getItem($value);
                     if ($item) {
@@ -105,11 +121,15 @@ class ValuePresenter extends BasePresenter
                         }
                     }
                     break;
+                case 'text': // pass as-is
+                case 'identifier': // pass as-is
+                case 'quantity': // pass as-is
+                case 'count': // pass as-is
+                case 'string': // pass as-is
+                    break;
+                default:
+                    return '!UNKNOWN_DATA_TYPE:' . $concept->getDataType();
             }
-        }
-        // last resort, return raw value
-        if ($value === null) {
-            return null;
         }
         switch ($modifier) {
             case 'amenorrhea':
@@ -124,6 +144,10 @@ class ValuePresenter extends BasePresenter
                     return $weeks . '+' . $days;
                 }
                 break;
+            case '': // pass as-is
+                break;
+            default:
+                return '!UNKNOWN_MODIFIER:' . $modifier;
         }
         return $value;
     }
