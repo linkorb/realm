@@ -123,6 +123,7 @@ class ValuePresenter extends BasePresenter
                     break;
                 case 'text': // pass as-is
                 case 'identifier': // pass as-is
+                case 'complex': // pass as-is (probably not perfect)
                 case 'quantity': // pass as-is
                 case 'count': // pass as-is
                 case 'string': // pass as-is
