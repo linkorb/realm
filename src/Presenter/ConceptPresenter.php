@@ -9,6 +9,14 @@ class ConceptPresenter extends BasePresenter
     public function presentLabel($modifier = null)
     {
         $label = null;
+        $lang = 'nl-NL';
+        $concept = $this->presenterObject;
+
+        if ($concept->hasProperty('name', $lang)) {
+            $property = $concept->getProperty('name', $lang);
+            $label = $property->getValue();
+        }
+
         // TODO: Try fetching from a property first?
         if (!$label) {
             $label = $this->getShortName();
