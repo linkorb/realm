@@ -20,7 +20,7 @@ class FusionPresenter extends BasePresenter
             }
             $html .= $value->getPresenter()->getDisplayValue();
         }
-        if (is_null($html)) {
+        if (is_null($html) or ($html=='')) {
            $html = '&#8203;'; // way to enforce minimum 1 character hight spans
         }
         return $html;
@@ -82,7 +82,7 @@ class FusionPresenter extends BasePresenter
         $visor .= '</div>';
 
         $visor .= '</div>';
-        if (is_null($htmlValue)) {
+        if (is_null($htmlValue) or ($htmlValue=='')) {
             $htmlValue = '&#8203;'; // way to enforce minimum 1 character hight spans
         }
 
