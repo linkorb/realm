@@ -11,6 +11,7 @@ use Symfony\Component\Dotenv\Dotenv;
 use Realm\Command\RealmLoadCommand;
 use Realm\Command\RealmBuildCommand;
 use Realm\Command\ResourceParseCommand;
+use Realm\Command\ResourceTestCommand;
 use Realm\Command\DecorConvertCommand;
 use Realm\Command\SpreadsheetExampleCommand;
 use Realm\Command\TerminologyEditorCommand;
@@ -60,6 +61,7 @@ $application->setCommandLoader(
             RealmLoadCommand::getDefaultName() => RealmLoadCommand::class,
             RealmBuildCommand::getDefaultName() => RealmBuildCommand::class,
             ResourceParseCommand::getDefaultName() => ResourceParseCommand::class,
+            ResourceTestCommand::getDefaultName() => ResourceTestCommand::class,
             DecorConvertCommand::getDefaultName() => DecorConvertCommand::class,
             SpreadsheetExampleCommand::getDefaultName() => SpreadsheetExampleCommand::class,
             TerminologyEditorCommand::getDefaultName() => TerminologyEditorCommand::class,

@@ -3,4 +3,6 @@
 .php_cs.cache
 output/
 app/config/projects.yml
+projects.yml
+projects.yaml
 vendor/

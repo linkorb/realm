@@ -12,23 +12,16 @@ It allows you to define:
 * Resources
 * Fusions
 
-## Running the viewer
+## Web-based realm project viewer
 
-Run the following commands in your console:
-
-    git clone git@github.com:linkorb/realm.git
-    cd realm
-    composer install
-    php -S 0.0.0.0:8080 -t web/
-  
-The Realm viewer is now accessible using your browser by navigating to [http://127.0.0.1:8080](http://127.0.0.1:8080)
+You can view Realm projects using the [realm-server](https://github.com/linkorb/realm-server).
 
 ## Configuration
 
-Realm works with "projects" containing definitions. To configure the viewer:
+Realm works with "projects" containing definitions.
 
-1. copy `app/config/projects.yml.dist` to `app/config/projects.yml`
-2. edit `app/config/projects.yml' to your situation.
+1. copy `projects.yaml.dist` to `projects.yml`
+2. edit `projects.yaml` to your situation.
 
 You can use the `include_paths` array to specify one or more include paths that contain Realm project.
 This is used by projects that specify a `<dependency />` element in their `realm.xml` file.
@@ -37,8 +30,7 @@ Use the `projects` array to specify one or more projects:
 
 * `type`: `realm` (standard) or `decor` (for loading [decor](https://art-decor.org/) files)
 * `filename`: path to the project's `realm.xml` file
-* `unlisted`: optional, allows you to mark the project as unlisted on the frontpage. Direct links still work.
-
+* `unlisted`: optional, allows you to mark the project as unlisted on the viewer's frontpage. Direct links still work.
 
 ## License
 
