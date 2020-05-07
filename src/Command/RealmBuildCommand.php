@@ -28,7 +28,7 @@ class RealmBuildCommand extends Command
                 'realm',
                 'r',
                 InputOption::VALUE_REQUIRED,
-                null
+                'Realm name'
             )
         ;
     }

@@ -13,9 +13,9 @@ use Realm\Model\Project;
 use Realm\Writer\ResourceXmlWriter;
 use RuntimeException;
 
-class ResourceParseCommand extends Command
+class ResourceTestCommand extends Command
 {
-    protected static $defaultName = 'resource:parse';
+    protected static $defaultName = 'resource:test';
 
     /**
      * {@inheritdoc}
@@ -31,6 +31,12 @@ class ResourceParseCommand extends Command
                 'r',
                 InputOption::VALUE_REQUIRED,
                 'Realm name'
+            )
+            ->addOption(
+                'scenario',
+                's',
+                InputOption::VALUE_REQUIRED,
+                'Scenario name'
             )
             ->addOption(
                 'mode',
@@ -74,6 +80,8 @@ class ResourceParseCommand extends Command
         $realmId = $input->getOption('realm');
         $mode = $input->getOption('mode');
 
+        $scenario = $input->getOption('scenario');
+
         $language = $input->getOption('language');
         if (!$realmId) {
             throw new RuntimeException('Please pass a realm to load');
@@ -89,6 +97,8 @@ class ResourceParseCommand extends Command
         $writer = new ResourceXmlWriter();
         $doc = $writer->write($resource, $mode);
         echo $doc->saveXml();
+
+
         //var_dump($realm);
     }
 }

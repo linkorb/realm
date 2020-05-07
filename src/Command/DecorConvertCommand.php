@@ -27,13 +27,13 @@ class DecorConvertCommand extends Command
                 'filename',
                 'f',
                 InputOption::VALUE_REQUIRED,
-                null
+                'Filename'
             )
             ->addOption(
                 'output',
                 'o',
                 InputOption::VALUE_REQUIRED,
-                null
+                'Output'
             )
         ;
     }

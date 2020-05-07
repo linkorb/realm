@@ -32,13 +32,13 @@ class SpreadsheetExampleCommand extends Command
                 'filename',
                 'f',
                 InputOption::VALUE_REQUIRED,
-                null
+                'Filename'
             )
             ->addOption(
                 'realm',
                 'r',
                 InputOption::VALUE_REQUIRED,
-                null
+                'Realm name'
             )
         ;
     }
