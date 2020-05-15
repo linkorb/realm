@@ -3,18 +3,9 @@
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\Dotenv\Dotenv;
 
-use Realm\Command\RealmLoadCommand;
-use Realm\Command\RealmBuildCommand;
-use Realm\Command\ResourceParseCommand;
-use Realm\Command\ResourceTestCommand;
-use Realm\Command\DecorConvertCommand;
-use Realm\Command\SpreadsheetExampleCommand;
-use Realm\Command\TerminologyEditorCommand;
+use Realm\Command;
 
 $loader = __DIR__ . '/../vendor/autoload.php';
 
@@ -42,30 +33,13 @@ if (getenv('REALM_PATH')) {
     set_include_path(get_include_path(). ':' . getenv('REALM_PATH'));
 }
 
-// configure services
-$container = new ContainerBuilder();
-$phpFileLoader = new PhpFileLoader(
-    $container,
-    new FileLocator(dirname(__DIR__).'/app/config')
-);
-$phpFileLoader->load('cli-services.php');
-$container->compile();
-
-//configure the appplication
 $application = new Application('Realm', '1.0.0');
 $application->setCatchExceptions(true);
-$application->setCommandLoader(
-    new ContainerCommandLoader(
-        $container,
-        [
-            RealmLoadCommand::getDefaultName() => RealmLoadCommand::class,
-            RealmBuildCommand::getDefaultName() => RealmBuildCommand::class,
-            ResourceParseCommand::getDefaultName() => ResourceParseCommand::class,
-            ResourceTestCommand::getDefaultName() => ResourceTestCommand::class,
-            DecorConvertCommand::getDefaultName() => DecorConvertCommand::class,
-            SpreadsheetExampleCommand::getDefaultName() => SpreadsheetExampleCommand::class,
-            TerminologyEditorCommand::getDefaultName() => TerminologyEditorCommand::class,
-        ]
-    )
-);
+$application->add(new Command\RealmLoadCommand());
+$application->add(new Command\RealmBuildCommand());
+$application->add(new Command\ResourceParseCommand());
+$application->add(new Command\ResourceTestCommand());
+$application->add(new Command\DecorConvertCommand());
+$application->add(new Command\SpreadsheetExampleCommand());
+// $application->add(new Command\TerminologyEditorCommand());
 $application->run();
