@@ -137,7 +137,7 @@ class RealmWriter
     public function addPropertyElements($dom, $object, $element)
     {
         foreach ($object->getProperties() as $property) {
-            $propertyElement = $dom->createElement('property', $property->getValue());
+            $propertyElement = $dom->createElement('property', htmlspecialchars($property->getValue()));
             $propertyElement->setAttribute('name', $property->getName());
             $propertyElement->setAttribute('language', $property->getLanguage());
             $element->appendChild($propertyElement);
