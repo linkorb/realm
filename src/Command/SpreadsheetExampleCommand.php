@@ -99,6 +99,7 @@ class SpreadsheetExampleCommand extends Command
         //print_r($resource);
         $writer = new ResourceXmlWriter();
         $xml = $writer->write($resource);
-        exit($xml);
+        echo $xml;
+        return 0;
     }
 }

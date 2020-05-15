@@ -90,5 +90,6 @@ class ResourceParseCommand extends Command
         $doc = $writer->write($resource, $mode);
         echo $doc->saveXml();
         //var_dump($realm);
+        return 0;
     }
 }

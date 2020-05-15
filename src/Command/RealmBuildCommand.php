@@ -59,5 +59,6 @@ class RealmBuildCommand extends Command
             $output->writeLn('Writing to directory: ' . $path);
             $writer->writeFiles($project, $path);
         }
+        return 0;
     }
 }

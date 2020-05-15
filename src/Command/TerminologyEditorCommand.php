@@ -153,5 +153,6 @@ class TerminologyEditorCommand extends Command
         if (!$outputToStdOut) {
             fclose($fileHandle);
         }
+        return 0;
     }
 }

@@ -46,5 +46,6 @@ class RealmLoadCommand extends Command
         $realmLoader = new XmlRealmLoader();
         $realm = $realmLoader->load($realmId, $project);
         var_dump($realm);
+        return 0;
     }
 }

@@ -100,5 +100,6 @@ class ResourceTestCommand extends Command
 
 
         //var_dump($realm);
+        return 0;
     }
 }
