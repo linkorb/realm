@@ -3,10 +3,10 @@
 namespace Realm\Loader;
 
 use SimpleXMLElement;
-use Realm\Model\Value;
 use Realm\Model\Concept;
 use Realm\Model\Resource;
 use Realm\Model\ResourceSection;
+use Realm\Model\ResourceValue;
 use Realm\Model\Project;
 use DateTime;
 use RuntimeException;
@@ -66,7 +66,7 @@ class XmlFormLoader
             return;
         }
         foreach ($valueNodes as $valueNode) {
-            $value = new Value();
+            $value = new ResourceValue();
             $value->setSection($section);
             if (isset($valueNode['label'])) {
                 $value->setLabel((string) $valueNode['label']);

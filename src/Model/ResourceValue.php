@@ -5,7 +5,7 @@ namespace Realm\Model;
 use LinkORB\Presenter\PresenterTrait;
 use RuntimeException;
 
-class Value extends AbstractModel
+class ResourceValue extends AbstractModel
 {
     protected $displayValue;
     protected $value;

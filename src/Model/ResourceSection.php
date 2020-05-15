@@ -35,7 +35,7 @@ class ResourceSection extends AbstractModel
         return null;
     }
 
-    public function addValue(Value $value)
+    public function addValue(ResourceValue $value)
     {
         $this->values[] = $value;
         return $this;

@@ -3,11 +3,11 @@
 namespace Realm\Loader;
 
 use SimpleXMLElement;
-use Realm\Model\Value;
 use Realm\Model\Concept;
 use Realm\Model\Resource;
 use Realm\Model\ResourceSection;
 use Realm\Model\ResourceAttachment;
+use Realm\Model\ResourceValue;
 use Realm\Model\Project;
 use Realm\Model\Source;
 use RuntimeException;
@@ -97,7 +97,7 @@ class XmlResourceLoader
     public function loadResourceSectionValues(Project $project, ResourceSection $section, $valueNodes)
     {
         foreach ($valueNodes as $valueNode) {
-            $value = new Value();
+            $value = new ResourceValue();
             $value->setSection($section);
             $value->setLabel((string) $valueNode['label']);
             $value->setValue((string)$valueNode);
