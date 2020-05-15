@@ -4,7 +4,7 @@ namespace Realm\Model;
 
 use RuntimeException;
 
-class Project
+class Project extends AbstractModel
 {
     use PropertyTrait;
     protected $id;
@@ -19,16 +19,6 @@ class Project
     protected $basePath;
     protected $listed = true;
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
 
     public function addConcept(Concept $concept)
     {
@@ -39,11 +29,6 @@ class Project
     public function hasConcept($id)
     {
         return isset($this->concepts[$id]);
-    }
-
-    public function getConcepts()
-    {
-        return $this->concepts;
     }
 
     public function getConcept($id)
@@ -86,11 +71,6 @@ class Project
         return $this;
     }
 
-    public function getCodelists()
-    {
-        return $this->codelists;
-    }
-
     public function hasCodelist($id)
     {
         return isset($this->codelists[$id]);
@@ -110,11 +90,6 @@ class Project
         return $this;
     }
 
-    public function getResources()
-    {
-        return $this->resources;
-    }
-
     public function getResource($id)
     {
         return $this->resources[$id];
@@ -124,11 +99,6 @@ class Project
     {
         $this->mappings[$mapping->getId()] = $mapping;
         return $this;
-    }
-
-    public function getMappings()
-    {
-        return $this->mappings;
     }
 
     public function hasMapping($conceptId)
@@ -144,26 +114,10 @@ class Project
         return $this->mappings[$conceptId];
     }
 
-    public function getBasePath()
-    {
-        return $this->basePath;
-    }
-
-    public function setBasePath($basePath)
-    {
-        $this->basePath = $basePath;
-        return $this;
-    }
-
     public function addFusion(Fusion $fusion)
     {
         $this->fusions[$fusion->getId()] = $fusion;
         return $this;
-    }
-
-    public function getFusions()
-    {
-        return $this->fusions;
     }
 
     public function getFusion($id)
@@ -203,17 +157,6 @@ class Project
             }
         }
         return $views;
-    }
-
-    public function getListed()
-    {
-        return $this->listed;
-    }
-
-    public function setListed($listed)
-    {
-        $this->listed = $listed;
-        return $this;
     }
 
     public function addTest(Test $test)

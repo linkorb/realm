@@ -4,7 +4,7 @@ namespace Realm\Model;
 
 use RuntimeException;
 
-class Resource
+class Resource extends AbstractModel
 {
     protected $id;
     protected $sections = [];
@@ -14,25 +14,9 @@ class Resource
     protected $language = 'en-US';
     protected $debug = false;
 
-    public function getProject()
-    {
-        return $this->project;
-    }
-
     public function setProject(Project $project)
     {
         $this->project = $project;
-        return $this;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
         return $this;
     }
 
@@ -84,36 +68,9 @@ class Resource
         return $this->attachments[$id];
     }
 
-    public function getSource()
-    {
-        return $this->source;
-    }
-
     public function setSource(Source $source)
     {
         $this->source = $source;
-        return $this;
-    }
-
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-        return $this;
-    }
-
-    public function getDebug()
-    {
-        return $this->debug;
-    }
-
-    public function setDebug($debug)
-    {
-        $this->debug = $debug;
         return $this;
     }
 }

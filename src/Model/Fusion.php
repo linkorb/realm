@@ -4,28 +4,12 @@ namespace Realm\Model;
 
 use LinkORB\Presenter\PresenterTrait;
 
-class Fusion
+class Fusion extends AbstractModel
 {
     protected $id;
     protected $resources;
     protected $project;
     use PresenterTrait;
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function getProject()
-    {
-        return $this->project;
-    }
 
     public function setProject(Project $project)
     {
@@ -43,12 +27,7 @@ class Fusion
         $this->resources[] = $resource;
         return $this;
     }
-
-    public function getResources()
-    {
-        return $this->resources;
-    }
-
+    
     public function getKeyList()
     {
         $res = '';

@@ -2,6 +2,6 @@
 
 namespace Realm\Model;
 
-class DocumentType
+class DocumentType extends AbstractModel
 {
 }

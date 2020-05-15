@@ -4,7 +4,7 @@ namespace Realm\Model;
 
 use RuntimeException;
 
-class ConceptMapping
+class ConceptMapping extends AbstractModel
 {
     protected $id;
     protected $concept;
@@ -12,22 +12,6 @@ class ConceptMapping
     protected $comment;
     protected $status;
     protected $transformer;
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function getConcept()
-    {
-        return $this->concept;
-    }
 
     public function setConcept(Concept $concept)
     {
@@ -77,38 +61,5 @@ class ConceptMapping
             throw new RuntimeException("Can't map `" . $value . '` of mapping `' . $this->getId() . '`');
         }
         return $value;
-    }
-
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-        return $this;
-    }
-
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    public function getTransformer()
-    {
-        return $this->transformer;
-    }
-
-    public function setTransformer($transformer)
-    {
-        $this->transformer = $transformer;
-        return $this;
     }
 }

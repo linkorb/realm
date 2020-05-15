@@ -5,7 +5,7 @@ namespace Realm\Model;
 use LinkORB\Presenter\PresenterTrait;
 use RuntimeException;
 
-class Value
+class Value extends AbstractModel
 {
     protected $displayValue;
     protected $value;
@@ -17,28 +17,6 @@ class Value
     protected $repeatId;
 
     use PresenterTrait;
-
-    public function getSection()
-    {
-        return $this->section;
-    }
-
-    public function setSection($section)
-    {
-        $this->section = $section;
-        return $this;
-    }
-
-    public function getConceptId()
-    {
-        return $this->conceptId;
-    }
-
-    public function setConceptId($conceptId)
-    {
-        $this->conceptId = $conceptId;
-        return $this;
-    }
 
     public function getResource()
     {
@@ -67,39 +45,6 @@ class Value
         return $concept;
     }
 
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    public function setValue($value)
-    {
-        $this->value = $value;
-        return $this;
-    }
-
-    public function getLabel()
-    {
-        return $this->label;
-    }
-
-    public function setLabel($label)
-    {
-        $this->label = $label;
-        return $this;
-    }
-
-    public function getDisplayValue()
-    {
-        return $this->displayValue;
-    }
-
-    public function setDisplayValue($displayValue)
-    {
-        $this->displayValue = $displayValue;
-        return $this;
-    }
-
     /*
 
     public function getSourceConceptId()
@@ -124,15 +69,4 @@ class Value
         return $this;
     }
     */
-
-    public function getRepeatId()
-    {
-        return $this->repeatId;
-    }
-
-    public function setRepeatId($repeatId)
-    {
-        $this->repeatId = $repeatId;
-        return $this;
-    }
 }
