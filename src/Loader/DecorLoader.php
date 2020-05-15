@@ -26,9 +26,11 @@ class DecorLoader
 
 
         $basePath = dirname($filename);
-        $xml = file_get_contents($basePath . '/peri20-tests.xml');
-        $root = simplexml_load_string($xml);
-        $this->loadTestsets($project, $root);
+        if (file_exists($basePath . '/peri20-tests.xml')) {
+            $xml = file_get_contents($basePath . '/peri20-tests.xml');
+            $root = simplexml_load_string($xml);
+            $this->loadTestsets($project, $root);
+        }
 
         return $project;
     }
