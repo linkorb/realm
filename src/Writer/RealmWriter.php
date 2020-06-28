@@ -105,6 +105,9 @@ class RealmWriter
         if ($concept->getOid()) {
             $root->setAttribute('oid', $concept->getOid());
         }
+        if ($concept->getParent()) {
+            $root->setAttribute('parent', $concept->getParent()->getId());
+        }
         if ($concept->getShortName()) {
             $root->setAttribute('shortName', $concept->getShortName());
         }
@@ -128,6 +131,9 @@ class RealmWriter
         }
         if ($concept->getUnit()) {
             $root->setAttribute('unit', $concept->getUnit());
+        }
+        if ($concept->getOrderKey()) {
+            $root->setAttribute('orderKey', $concept->getOrderKey());
         }
         $this->addPropertyElements($dom, $concept, $root);
 

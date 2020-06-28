@@ -9,6 +9,7 @@ class Project extends AbstractModel
     use PropertyTrait;
     protected $id;
     protected $concepts = [];
+    protected $rootConcept;
     protected $codelists = [];
     protected $sectionTypes = [];
     protected $resources = [];

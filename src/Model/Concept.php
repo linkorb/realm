@@ -16,7 +16,9 @@ class Concept extends AbstractModel
     protected $lengthMin;
     protected $lengthMax;
     protected $unit;
-    protected $parent;
+    protected $parentId; // identifier
+    protected $parent; // object
+    protected $orderKey; // ordering (i.e. 1.4.2)
 
     use PropertyTrait;
     use PresenterTrait;
@@ -35,11 +37,6 @@ class Concept extends AbstractModel
     public function getShortNameHtml()
     {
         return str_replace('_', ' ', $this->getShortName());
-    }
-
-    public function getParent()
-    {
-        return $this->parent;
     }
 
     public function setParent(Concept $parent)

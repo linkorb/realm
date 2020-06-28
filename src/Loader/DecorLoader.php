@@ -22,7 +22,7 @@ class DecorLoader
         $xml = file_get_contents($filename);
         $root = simplexml_load_string($xml);
 
-        $this->loadConcepts($project, $root);
+        $this->loadConcepts($project, $root, null, null);
 
 
         $basePath = dirname($filename);
@@ -37,16 +37,20 @@ class DecorLoader
 
     public function loadConcepts($project, SimpleXMLElement $root, $parent = null)
     {
+        $counter = 1;
         foreach ($root->concept as $conceptNode) {
             $concept = new Concept();
+            $orderKey = $counter;
             if ($parent) {
                 $concept->setParent($parent);
+                $orderKey = $parent->getOrderKey() . '.' . $orderKey;
             }
             $concept->setType((string) $conceptNode['type']);
             $concept->setId((string) $conceptNode['iddisplay']);
             $concept->setOid((string) $conceptNode['id']);
             $concept->setShortName((string) $conceptNode['shortName']);
             $concept->setStatus((string) $conceptNode['statusCode']);
+            $concept->setOrderKey((string)$orderKey);
             $project->addConcept($concept);
             //echo (string)$conceptNode['iddisplay'] . "\n";
 
@@ -87,7 +91,8 @@ class DecorLoader
                     $concept->setCodelist($codelist);
                 }
             }
-            $this->loadConcepts($project, $conceptNode, $concept);
+            $this->loadConcepts($project, $conceptNode, $concept, $orderKey);
+            $counter++;
         }
         return $project;
     }

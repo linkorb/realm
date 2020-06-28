@@ -86,6 +86,17 @@ class XmlRealmLoader
             }
         }
 
+        // Attach parent objects from parentIds
+        foreach ($project->getConcepts() as $concept) {
+            $parentId = $concept->getParentId();
+            if ($parentId) {
+                $parent = $project->getConcept($parentId);
+                $concept->setParent($parent);
+            } else {
+                // $project->setRootConcept($concept);
+            }
+        }
+
         $files = glob($basePath . '/tests/*.xml');
         foreach ($files as $filename) {
             $xml = file_get_contents($filename);
@@ -189,6 +200,7 @@ class XmlRealmLoader
     {
         $codelist = new Codelist();
         $codelist->setId((string) $root['id']);
+        $codelist->setShortName((string) $root['shortName']);
         $this->loadProperties($root, $codelist);
         foreach ($root->item as $iNode) {
             $item = new CodelistItem();
@@ -209,15 +221,17 @@ class XmlRealmLoader
     public function loadConcept(SimpleXMLElement $root, Project $project)
     {
         $concept = new Concept();
-        $concept->setId((string) $root['id']);
-        $concept->setShortName((string) $root['shortName']);
-        $concept->setOid((string) $root['oid']);
-        $concept->setType((string) $root['type']);
-        $concept->setDataType((string) $root['dataType']);
-        $concept->setLengthMax((string) $root['lengthMax']);
-        $concept->setLengthMin((string) $root['lengthMin']);
-        $concept->setStatus((string) $root['status']);
-        $concept->setUnit((string) $root['unit']);
+        $concept->setId((string)$root['id']);
+        $concept->setShortName((string)$root['shortName']);
+        $concept->setParentId((string)$root['parent']);
+        $concept->setOid((string)$root['oid']);
+        $concept->setType((string)$root['type']);
+        $concept->setDataType((string)$root['dataType']);
+        $concept->setLengthMax((string)$root['lengthMax']);
+        $concept->setLengthMin((string)$root['lengthMin']);
+        $concept->setStatus((string)$root['status']);
+        $concept->setUnit((string)$root['unit']);
+        $concept->setOrderKey((string)$root['orderKey']);
         if (isset($root['codelist'])) {
             $codelistName = (string) $root['codelist'];
             $codelist = $project->getCodelist($codelistName);
