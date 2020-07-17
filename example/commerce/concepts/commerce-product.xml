@@ -1,11 +1,24 @@
 <concepts>
   <concept
+    id="commerce-product"
+    oid="1.2.3.4.5.6.7.8.20000"
+    shortName="Product"
+    type="group"
+    dataType="string"
+    lengthMax="64"
+    >
+    <property name="example">AA-001</property>
+    <property name="max-length">64</property>
+    <property name="definition">Unique code for the product</property>
+  </concept>
+  <concept
     id="commerce-product-code"
     oid="1.2.3.4.5.6.7.8.20001"
-    z="Product code"
+    shortName="Product code"
     type="item"
     dataType="string"
     lengthMax="64"
+    parent="commerce-product"
     >
     <property name="example">AA-001</property>
     <property name="max-length">64</property>
@@ -18,6 +31,7 @@
     type="item"
     dataType="string"
     lengthMax="64"
+    parent="commerce-product"
     >
     <property name="example">Red cotton shirt</property>
     <property name="max-length">64</property>

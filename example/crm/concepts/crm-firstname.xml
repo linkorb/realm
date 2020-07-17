@@ -1,11 +1,11 @@
 <concept
-  id="commerce-firstname"
-  oid="1.2.3.4.5.6.7.8.10001"
+  id="crm-firstname"
+  oid="2.2.2.2.2.2.2.2.10001"
   shortName="Firstname"
   type="item"
   dataType="string"
   lengthMax="64"
-  parent="commerce-name"
+  parent="crm-name"
   >
   <property name="example">John</property>
   <property name="max-length">64</property>

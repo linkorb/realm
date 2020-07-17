@@ -5,6 +5,7 @@
   type="item"
   dataType="string"
   lengthMax="64"
+  parent="commerce-name"
   >
   <property name="example">Jackson</property>
   <property name="max-length">64</property>

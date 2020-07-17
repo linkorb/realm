@@ -1,0 +1,14 @@
+<concept
+  id="crm-email"
+  oid="2.2.2.2.2.2.2.2.20001"
+  shortName="Email address"
+  type="item"
+  dataType="string"
+  lengthMax="64"
+  parent="crm-contact"
+  >
+  <property name="example">john@example.web</property>
+  <property name="max-length">64</property>
+  <property name="definition">Primary e-mail address</property>
+  <property name="notes">Used to communicate with contact</property>
+</concept>

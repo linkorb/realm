@@ -6,11 +6,13 @@ use SimpleXMLElement;
 use Realm\Model\Value;
 use Realm\Model\Concept;
 use Realm\Model\ConceptMapping;
-use Realm\Model\ConceptMappingItem;
+use Realm\Model\ConceptMappingRule;
 use Realm\Model\Project;
 use Realm\Model\Property;
 use Realm\Model\Codelist;
 use Realm\Model\CodelistItem;
+use Realm\Model\CodelistMapping;
+use Realm\Model\CodelistMappingRule;
 use Realm\Model\Test;
 use Realm\Model\TestAssertion;
 use Realm\Model\SectionType;
@@ -24,11 +26,11 @@ class XmlRealmLoader
         $filename = stream_resolve_include_path($realmId . '/realm.xml');
         if (!$filename) {
             $filename = stream_resolve_include_path('realm-' . $realmId . '/realm.xml');
-
-            if (!$filename) {
-                throw new RuntimeException("Realm ID `$realmId` not in REALM_PATH");
-            }
         }
+        if (!$filename) {
+            throw new RuntimeException("Realm ID `$realmId` not in REALM_PATH: " . getenv('REALM_PATH'));
+        }
+
         if (!$project) {
             $project = new Project();
         }
@@ -45,7 +47,6 @@ class XmlRealmLoader
         $basePath = dirname($filename);
         $xml = file_get_contents($filename);
         $realmRoot = simplexml_load_string($xml);
-
         foreach ($realmRoot->dependency as $dependencyNode) {
             $name = (string) $dependencyNode['name'];
             $filename = stream_resolve_include_path($name . '/realm.xml');
@@ -97,6 +98,26 @@ class XmlRealmLoader
             }
         }
 
+        // Auto-fill orderKey based on hierarchy where it's not yet defined
+        for ($depth=0; $depth<10; $depth++) {
+            $i=1;
+            foreach ($project->getConcepts() as $concept) {
+                $parentId = $concept->getParentId();
+                if ($concept->getDepth()==$depth) {
+                    $prefix = '';
+                    if ($parentId) {
+                        $prefix = $concept->getParent()->getOrderKey() . '.';
+                    }
+                    if (!$concept->getOrderKey()) {
+                        $concept->setOrderKey($prefix . $i);
+                    }
+                    $i++;
+                }
+            }
+        }
+
+
+
         $files = glob($basePath . '/tests/*.xml');
         foreach ($files as $filename) {
             $xml = file_get_contents($filename);
@@ -113,11 +134,18 @@ class XmlRealmLoader
             }
         }
 
-        $files = glob($basePath . '/mappings/*.xml');
+        $files = glob($basePath . '/conceptMappings/*.xml');
         foreach ($files as $filename) {
             $xml = file_get_contents($filename);
             $root = simplexml_load_string($xml);
-            $this->loadMappings($root, $project);
+            $this->loadConceptMapping($root, $project);
+        }
+
+        $files = glob($basePath . '/codelistMappings/*.xml');
+        foreach ($files as $filename) {
+            $xml = file_get_contents($filename);
+            $root = simplexml_load_string($xml);
+            $this->loadCodelistMapping($root, $project);
         }
 
         $files = glob($basePath . '/sectionTypes/*.xml');
@@ -167,7 +195,6 @@ class XmlRealmLoader
             $view = $viewLoader->loadFile($filename, $project);
             $project->addView($view);
         }
-
 
 
         $csvPropertyLoader = new CsvPropertyLoader();
@@ -291,37 +318,65 @@ class XmlRealmLoader
         }
     }
 
-    public function loadMappings($root, $project)
+    public function loadCodelistMapping($mappingNode, Project $project): void
     {
-        foreach ($root->mapping as $mappingNode) {
-            $mapping = new ConceptMapping();
-            $mapping->setId((string) $mappingNode['id']);
-            $mapping->setStatus((string) $mappingNode['status']);
-            $mapping->setTransformer((string) $mappingNode['transformer']);
+        // foreach ($root->codelistMapping as $mappingNode) {
+            $mapping = new CodelistMapping();
+
+            // Source
+            $codelistId = (string)$mappingNode['source'];
+            $source = $project->getCodelist($codelistId);
+            $mapping->setSource($source);
+
+            // Destination
+            $codelistId = (string)$mappingNode['destination'];
+            $destination = $project->getCodelist($codelistId);
+            $mapping->setDestination($destination);
+
+            $mapping->setId((string)$mappingNode['id']);
+            $mapping->setStatus((string)$mappingNode['status']);
             if (!$mapping->getStatus()) {
                 $mapping->setStatus('?');
             }
-            $conceptId = (string) $mappingNode['concept'];
-            if ($conceptId) {
-                $concept = $project->getConcept($conceptId);
-                $mapping->setConcept($concept);
-                $mapping->setComment((string) $mappingNode['comment']);
-                if ($mappingNode->item) {
-                    $codelist = $concept->getCodelist();
-                    if (!$codelist) {
-                        throw new RuntimeException('Mapping id ' . $mapping->getId() . ' for concept without codelist: ' . $concept->getId());
-                    }
-                    foreach ($mappingNode->item as $itemNode) {
-                        $item = new ConceptMappingItem();
-                        $item->setFrom((string) $itemNode['from']);
-                        $item->setLabel((string) $itemNode['label']);
-                        $i = $codelist->getItem((string) $itemNode['to']);
-                        $item->setTo($i);
-                        $mapping->addItem($item);
-                    }
+
+            foreach ($mappingNode->rule as $ruleNode) {
+                $rule = new CodelistMappingRule();
+                $input = $source->getItem((string)$ruleNode['input']);
+                $rule->setInput($input);
+                $output = $destination->getItem((string)$ruleNode['output']);
+                $rule->setOutput($output);
+                $this->loadProperties($ruleNode, $rule);
+                $mapping->addRule($rule);
+            }
+
+            foreach ($source->getItems() as $sourceItem) {
+                if (!$mapping->hasRule($sourceItem->getCode())) {
+                    $item = new CodelistMappingRule();
+                    $item->setInput($sourceItem);
+                    $mapping->addRule($item);
                 }
             }
-            $project->addMapping($mapping);
+            $project->addCodelistMapping($mapping);
+        //}
+    }
+
+    public function loadConceptMapping($mappingNode, $project)
+    {
+        $mapping = new ConceptMapping();
+        $mapping->setId((string)$mappingNode['id']);
+        $mapping->setStatus((string)$mappingNode['status']);
+        $mapping->setComment((string)$mappingNode['comment']?? null);
+        if (!$mapping->getStatus()) {
+            $mapping->setStatus('?');
         }
+
+        $input = $project->getConcept((string)$mappingNode['input']);
+        $mapping->setInput($input);
+        $output = $project->getConcept((string)$mappingNode['output']);
+        $mapping->setOutput($output);
+        $this->loadProperties($mappingNode, $mapping);
+
+
+        $project->addConceptMapping($mapping);
     }
 }

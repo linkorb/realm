@@ -9,13 +9,14 @@ class Project extends AbstractModel
     use PropertyTrait;
     protected $id;
     protected $concepts = [];
+    protected $conceptMappings = [];
     protected $rootConcept;
     protected $codelists = [];
+    protected $codelistMappings = [];
     protected $sectionTypes = [];
     protected $resources = [];
     protected $fusions = [];
     protected $views = [];
-    protected $mappings = [];
     protected $tests = [];
     protected $basePath;
     protected $listed = true;
@@ -39,6 +40,26 @@ class Project extends AbstractModel
             throw new RuntimeException('No such concept: ' . $id);
         }
         return $this->concepts[$id];
+    }
+
+
+    public function addConceptMapping(ConceptMapping $conceptMapping): self
+    {
+        $this->conceptMappings[$conceptMapping->getId()] = $conceptMapping;
+        return $this;
+    }
+
+    public function hasConceptMapping(string $conceptId): bool
+    {
+        return isset($this->conceptMappings[$conceptId]);
+    }
+
+    public function getConceptMapping($conceptId): ConceptMapping
+    {
+        if (!$this->hasConceptMapping($conceptId)) {
+            throw new RuntimeException('No concept mapping for conceptId: ' . $conceptId);
+        }
+        return $this->conceptMappings[$conceptId];
     }
 
     public function addSectionType(SectionType $sectionType)
@@ -85,6 +106,26 @@ class Project extends AbstractModel
         return $this->codelists[$id];
     }
 
+
+    public function addCodelistMapping(CodelistMapping $conceptMapping): self
+    {
+        $this->codelistMappings[$conceptMapping->getId()] = $conceptMapping;
+        return $this;
+    }
+
+    public function hasCodelistMapping(string $codelistMappingId): bool
+    {
+        return isset($this->codelistMappings[$codelistMappingId]);
+    }
+
+    public function getCodelistMapping($codelistMappingId): CodelistMapping
+    {
+        if (!$this->hasCodelistMapping($codelistMappingId)) {
+            throw new RuntimeException('No codelist mapping for codelistMappingId: ' . $codelistMappingId);
+        }
+        return $this->codelistMappings[$codelistMappingId];
+    }
+
     public function addResource(Resource $resource)
     {
         $this->resources[$resource->getId()] = $resource;
@@ -96,24 +137,6 @@ class Project extends AbstractModel
         return $this->resources[$id];
     }
 
-    public function addMapping(ConceptMapping $mapping)
-    {
-        $this->mappings[$mapping->getId()] = $mapping;
-        return $this;
-    }
-
-    public function hasMapping($conceptId)
-    {
-        return isset($this->mappings[$conceptId]);
-    }
-
-    public function getMapping($conceptId)
-    {
-        if (!$this->hasMapping($conceptId)) {
-            throw new RuntimeException('No concept mapping for conceptId: ' . $conceptId);
-        }
-        return $this->mappings[$conceptId];
-    }
 
     public function addFusion(Fusion $fusion)
     {

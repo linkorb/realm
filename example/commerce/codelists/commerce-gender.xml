@@ -1,5 +1,5 @@
-<codelist id="gender">
-  <property name="definition">List of genders</property>
+<codelist id="commerce-gender">
+  <property name="definition">List of genders used in commerce</property>
   <property name="oid">2.16.840.1.113883.2.4.11.110</property>
 
   <item

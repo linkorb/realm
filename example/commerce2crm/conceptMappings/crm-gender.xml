@@ -1,0 +1,8 @@
+<conceptMapping
+  id="crm-gender"
+  input="commerce-gender"
+  output="crm-gender"
+  comment="Partial match"
+  >
+  <property name="verified">Yes</property>
+</conceptMapping>

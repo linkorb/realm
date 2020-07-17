@@ -7,59 +7,23 @@ use RuntimeException;
 class ConceptMapping extends AbstractModel
 {
     protected $id;
-    protected $concept;
-    protected $items = [];
-    protected $comment;
+    protected $input;
+    protected $output;
     protected $status;
-    protected $transformer;
+    protected $comment;
 
-    public function setConcept(Concept $concept)
+    use PropertyTrait;
+
+    public function setInput(Concept $input)
     {
-        $this->concept = $concept;
+        $this->input = $input;
         return $this;
     }
 
-    public function addItem(ConceptMappingItem $item)
+    public function setOutput(Concept $output)
     {
-        $this->items[$item->getFrom()] = $item;
+        $this->output = $output;
         return $this;
     }
 
-    public function hasItems()
-    {
-        return count($this->items) > 0;
-    }
-
-    public function getItems()
-    {
-        return $this->items;
-    }
-
-    public function hasItem($value)
-    {
-        return isset($this->items[$value]);
-    }
-
-    public function getItem($value)
-    {
-        return $this->items[$value];
-    }
-
-    public function mapValue($value)
-    {
-        if ($this->hasItems()) {
-            if ($this->hasItem($value)) {
-                $item = $this->getItem($value);
-                return $item->getTo()->getCode();
-            }
-            if ($this->hasItem('*')) {
-                return $this->getItem('*')->getTo()->getCode();
-            }
-            if ($value == '') {
-                return '';
-            }
-            throw new RuntimeException("Can't map `" . $value . '` of mapping `' . $this->getId() . '`');
-        }
-        return $value;
-    }
 }

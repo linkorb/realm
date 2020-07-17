@@ -4,9 +4,9 @@
   shortName="Gender"
   type="item"
   dataType="code"
-  codelist="gender"
+  codelist="commerce-gender"
   >
   <property name="example">1</property>
-  <property name="definition">Gender</property>  
+  <property name="definition">Gender</property>
   <property name="notes">may contain multiple values of this concept</property>
 </concept>

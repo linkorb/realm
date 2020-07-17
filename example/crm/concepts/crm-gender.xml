@@ -1,0 +1,11 @@
+<concept
+  id="crm-gender"
+  oid="2.2.2.2.2.2.2.2.10003"
+  shortName="Gender"
+  type="item"
+  dataType="code"
+  codelist="crm-gender"
+  >
+  <property name="example">M</property>
+  <property name="definition">Gender</property>
+</concept>

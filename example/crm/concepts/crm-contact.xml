@@ -1,0 +1,10 @@
+<concept
+  id="crm-contact"
+  oid="2.2.2.2.2.2.2.2.20000"
+  shortName="Contact"
+  type="group"
+  dataType="string"
+  lengthMax="64"
+  >
+  <property name="definition">Contact details</property>
+</concept>

@@ -13,17 +13,17 @@ class Codelist extends AbstractModel
 
     use PropertyTrait;
 
-    public function addItem(CodelistItem $item)
+    public function addItem(CodelistItem $item): void
     {
         $this->items[] = $item;
     }
 
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
 
-    public function hasItem($code)
+    public function hasItem($code): bool
     {
         $item = $this->getItem($code);
         if (!$item) {
@@ -32,7 +32,7 @@ class Codelist extends AbstractModel
         return true;
     }
 
-    public function getItem($code)
+    public function getItem(string $code): CodelistItem
     {
         foreach ($this->items as $item) {
             if ($item->getCode() == $code) {

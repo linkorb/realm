@@ -1,0 +1,13 @@
+<concept
+  id="crm-name"
+  oid="2.2.2.2.2.2.2.2.10000"
+  shortName="Name"
+  type="group"
+  dataType="string"
+  lengthMax="64"
+  >
+  <property name="example">John Johnson</property>
+  <property name="max-length">64</property>
+  <property name="definition">Official full name registered at birth</property>
+  <property name="notes">may contain multiple values of this concept</property>
+</concept>

@@ -1,0 +1,19 @@
+<codelist id="crm-gender">
+  <property name="definition">List of genders used in CRM</property>
+  <property name="oid">2.2.2.2.2.2.2.2.110</property>
+
+  <item
+    code="M"
+    displayName="Male"
+  />
+  <item
+    code="F"
+    displayName="Female"
+  />
+  <item
+    code="O"
+    displayName="Other"
+    level="0"
+    type="L"
+  />
+</codelist>

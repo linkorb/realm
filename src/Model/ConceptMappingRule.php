@@ -2,11 +2,13 @@
 
 namespace Realm\Model;
 
-class ConceptMappingItem extends AbstractModel
+class ConceptMappingRule extends AbstractModel
 {
     protected $from;
     protected $label;
     protected $to;
+
+    use PropertyTrait;
 
     public function setTo(CodelistItem $to)
     {

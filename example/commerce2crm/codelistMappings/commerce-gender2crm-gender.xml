@@ -1,0 +1,9 @@
+<codelistMapping id="commerce-gender2crm-gender" source="commerce-gender" destination="crm-gender">
+  <property name="definition">Mapping commmerce to CRM gender</property>
+  <property name="oid">2.16.840.1.113883.2.4.11.110</property>
+
+  <rule input="1" output="M">
+    <property name="comment">Some note about 1 to M mapping</property>
+  </rule>
+  <rule input="2" output="F" />
+</codelistMapping>
