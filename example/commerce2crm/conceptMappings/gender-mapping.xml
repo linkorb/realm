@@ -1,5 +1,5 @@
 <conceptMapping
-  id="crm-gender"
+  id="gender-mapping"
   input="commerce-gender"
   output="crm-gender"
   comment="Partial match"

@@ -1,0 +1,7 @@
+<conceptMapping
+  id="lastname-mapping"
+  input="commerce-lastname"
+  comment="Not in source"
+  >
+  <property name="verified">No</property>
+</conceptMapping>
