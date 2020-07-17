@@ -370,10 +370,16 @@ class XmlRealmLoader
             $mapping->setStatus('?');
         }
 
-        $input = $project->getConcept((string)$mappingNode['input']);
-        $mapping->setInput($input);
-        $output = $project->getConcept((string)$mappingNode['output']);
-        $mapping->setOutput($output);
+        $conceptId = (string)$mappingNode['input'];
+        if ($conceptId) {
+            $input = $project->getConcept($conceptId);
+            $mapping->setInput($input);
+        }
+        $conceptId = (string)$mappingNode['output'];
+        if ($conceptId) {
+            $output = $project->getConcept($conceptId);
+            $mapping->setOutput($output);
+        }
         $this->loadProperties($mappingNode, $mapping);
 
 
