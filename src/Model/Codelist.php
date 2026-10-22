@@ -32,7 +32,7 @@ class Codelist extends AbstractModel
         return true;
     }
 
-    public function getItem(string $code): CodelistItem
+    public function getItem(string $code): ?CodelistItem
     {
         foreach ($this->items as $item) {
             if ($item->getCode() == $code) {
